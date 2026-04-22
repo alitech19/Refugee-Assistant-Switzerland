@@ -1,0 +1,79 @@
+[
+  {
+    "title": "SEM — Applying for asylum in Switzerland",
+    "url": "https://www.sem.admin.ch/sem/en/home/overview-asyl.html",
+    "topic": "asylum application, first steps, legal status, federal asylum centre, refugee process",
+    "content": "Official SEM overview for people applying for asylum in Switzerland. It explains who can apply, where an application can be submitted, who decides the case, and what usually happens after a decision.",
+    "is_official": 1
+  },
+  {
+    "title": "SEM — Asylum procedure",
+    "url": "https://www.sem.admin.ch/sem/en/home/asyl/asylverfahren.html",
+    "topic": "asylum procedure, timeline, interview, refugee status, asylum decision",
+    "content": "Official SEM page about the asylum procedure in Switzerland. It explains the main steps of the accelerated procedure and how applications are examined.",
+    "is_official": 1
+  },
+  {
+    "title": "SEM — Asylum regions and federal asylum centres",
+    "url": "https://www.sem.admin.ch/sem/en/home/asyl/asylverfahren/asylregionen-baz.html",
+    "topic": "federal asylum centre, asylum regions, accommodation, registration, canton",
+    "content": "Official SEM information about asylum regions and federal asylum centres in Switzerland. Useful for questions about where asylum procedures are handled and where applicants may stay during the federal phase.",
+    "is_official": 1
+  },
+  {
+    "title": "SEM — asylum-info.ch app",
+    "url": "https://www.sem.admin.ch/sem/en/home/asyl/asylverfahren/asylregionen-baz/asyl-info.html",
+    "topic": "asylum info, app, languages, life in Switzerland, healthcare, asylum centre",
+    "content": "Official SEM page about the asylum-info.ch app. It says the app provides general information in multiple languages about the asylum procedure, federal asylum centres, life in Switzerland, and healthcare.",
+    "is_official": 1
+  },
+  {
+    "title": "ch.ch — Permits for living in Switzerland",
+    "url": "https://www.ch.ch/en/foreign-nationals-in-switzerland/entry-and-stay-in-switzerland/permits-for-living-in-switzerland",
+    "topic": "permits, residence permit, living in Switzerland, foreign nationals, permit renewal",
+    "content": "Official Swiss government portal page about permits for living in Switzerland. Useful for questions about residence permits, permit categories, and extending a permit.",
+    "is_official": 1
+  },
+  {
+    "title": "SEM — Permit S (people in need of protection)",
+    "url": "https://www.sem.admin.ch/sem/en/home/themen/aufenthalt/nicht_eu_efta/ausweis_s__schutzbeduerftige.html",
+    "topic": "permit S, protection status S, Ukraine, work, canton",
+    "content": "Official SEM page about Permit S for people in need of protection. Useful for questions about what Permit S allows, work notifications, and reporting obligations.",
+    "is_official": 1
+  },
+  {
+    "title": "SEM — Permit F (provisionally admitted foreigners)",
+    "url": "https://www.sem.admin.ch/sem/en/home/themen/aufenthalt/nicht_eu_efta/ausweis_f__vorlaeufig.html",
+    "topic": "permit F, provisional admission, temporary admission, work, canton, identity document",
+    "content": "Official SEM page about Permit F for provisionally admitted foreigners. It explains that temporary admission is used when removal from Switzerland is unlawful, unreasonable, or impossible. Permit F is generally issued for 12 months and may be extended by the canton. People with Permit F may work in Switzerland, and the permit does not serve as proof of identity.",
+    "is_official": 1
+  },
+  {
+    "title": "SEM — B EU/EFTA permit (Resident foreign nationals)",
+    "url": "https://www.sem.admin.ch/sem/en/home/themen/aufenthalt/eu_efta/ausweis_b_eu_efta.html",
+    "topic": "permit B, residence permit, resident foreign nationals, EU EFTA, work, living in Switzerland",
+    "content": "Official SEM page about the B EU/EFTA residence permit. It explains that this permit is for foreign nationals who reside in Switzerland for a longer period for a certain purpose, with or without gainful employment. For EU/EFTA nationals, the permit is generally valid for five years under the conditions described on the page.",
+    "is_official": 1
+  },
+  {
+    "title": "SEM — C EU/EFTA permit (Settled foreign nationals)",
+    "url": "https://www.sem.admin.ch/sem/en/home/themen/aufenthalt/eu_efta/ausweis_c_eu_efta.html",
+    "topic": "permit C, settlement permit, permanent residence, settled foreign nationals, EU EFTA",
+    "content": "Official SEM page about the C EU/EFTA settlement permit. It explains that this permit is usually granted after five or ten years of residence in Switzerland and that the right to stay is not limited in time.",
+    "is_official": 1
+  },
+  {
+    "title": "SEM — Employment for persons seeking or granted asylum",
+    "url": "https://www.sem.admin.ch/sem/en/home/themen/arbeit/erwerbstaetige_asylbereich.html",
+    "topic": "recognised refugees B permit, asylum, work, employment, refugee status, permit B",
+    "content": "Official SEM page about employment for persons seeking or granted asylum. It refers to recognised refugees with a B permit, temporarily admitted persons with F permits, and persons in need of protection with S permits.",
+    "is_official": 1
+  },
+  {
+    "title": "Kanton Zürich — Migration Office",
+    "url": "https://www.zh.ch/de/sicherheitsdirektion/migrationsamt.html",
+    "topic": "canton Zurich, migration office, residence, permits, asylum, forms, contact",
+    "content": "Official Canton of Zurich migration office page. Useful as a canton-level source for residence, permits, asylum-related administration, forms, and contact information.",
+    "is_official": 1
+  }
+]

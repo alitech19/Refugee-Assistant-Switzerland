@@ -4,18 +4,22 @@ from pathlib import Path
 sys.path.append(str(Path(__file__).resolve().parent.parent))
 
 import streamlit as st
-from src.llm_service import process_user_input
-from src.database import init_db, save_interaction, get_recent_interactions
+from src.database import (
+    init_db,
+    seed_sources_from_json,
+    create_conversation,
+    save_message,
+    get_conversation_messages,
+    search_sources,
+)
+from src.llm_service import process_chat_turn
+from src.resolver import resolve_user_query
+from src.state_tracker import build_initial_state, update_state
 
-init_db()
 
-
-def parse_response(raw_text: str) -> dict:
+def parse_chat_response(raw_text: str) -> dict:
     data = {
-        "type": "",
-        "simple_explanation": "",
-        "what_is_expected": "",
-        "example_answer": "",
+        "answer": "",
         "safety_note": "",
     }
 
@@ -28,18 +32,9 @@ def parse_response(raw_text: str) -> dict:
 
         lower = line.lower()
 
-        if lower.startswith("type:"):
-            data["type"] = line.split(":", 1)[1].strip()
-            current_key = "type"
-        elif lower.startswith("simple explanation:"):
-            data["simple_explanation"] = line.split(":", 1)[1].strip()
-            current_key = "simple_explanation"
-        elif lower.startswith("what is expected:"):
-            data["what_is_expected"] = line.split(":", 1)[1].strip()
-            current_key = "what_is_expected"
-        elif lower.startswith("example answer:"):
-            data["example_answer"] = line.split(":", 1)[1].strip()
-            current_key = "example_answer"
+        if lower.startswith("answer:"):
+            data["answer"] = line.split(":", 1)[1].strip()
+            current_key = "answer"
         elif lower.startswith("safety note:"):
             data["safety_note"] = line.split(":", 1)[1].strip()
             current_key = "safety_note"
@@ -49,74 +44,125 @@ def parse_response(raw_text: str) -> dict:
     return data
 
 
-def render_parsed_response(parsed: dict):
-    if parsed["type"]:
-        st.markdown(f"**Type:** `{parsed['type']}`")
+def render_assistant_response(message: dict) -> None:
+    parsed = parse_chat_response(message["content"])
 
-    if parsed["simple_explanation"]:
-        st.markdown("### Simple explanation")
-        st.write(parsed["simple_explanation"])
-
-    if parsed["what_is_expected"]:
-        st.markdown("### What is expected")
-        st.write(parsed["what_is_expected"])
-
-    if parsed["example_answer"]:
-        st.markdown("### Example answer")
-        st.info(parsed["example_answer"])
+    if parsed["answer"]:
+        st.write(parsed["answer"])
 
     if parsed["safety_note"]:
-        st.markdown("### Safety note")
-        st.warning(parsed["safety_note"])
+        st.caption(parsed["safety_note"])
 
+    sources = message.get("sources", [])
+    if sources:
+        with st.expander("Sources"):
+            for src in sources:
+                st.markdown(f"**{src['title']}**")
+                st.markdown(f"[Open source]({src['url']})")
+                st.markdown("---")
+
+
+# Initialize database and source seeding
+init_db()
+seed_sources_from_json()
 
 st.set_page_config(page_title="Refugee Assistant Switzerland", page_icon="💬")
 st.title("Refugee Assistant Switzerland")
 st.caption("Guidance only — not legal advice")
-st.caption("Privacy-first: do not share unnecessary personal details. If location is relevant, canton is enough.")
-
-user_input = st.text_area(
-    "Paste a form question or ask a simple question",
-    placeholder=(
-        "Examples:\n"
-        "- Provide proof of residence\n"
-        "- What does legal status mean?\n"
-        "- Is canton information enough?"
-    ),
-    height=160,
+st.caption(
+    "Privacy-first: do not share unnecessary personal details. If location is relevant, canton is enough."
 )
 
-if "last_result" not in st.session_state:
-    st.session_state.last_result = None
+# Session state
+if "conversation_id" not in st.session_state:
+    st.session_state.conversation_id = create_conversation()
 
-if "last_input" not in st.session_state:
-    st.session_state.last_input = ""
+if "messages" not in st.session_state:
+    db_messages = get_conversation_messages(st.session_state.conversation_id)
+    st.session_state.messages = [
+        {"role": m["role"], "content": m["content"], "sources": []}
+        for m in db_messages
+    ]
 
-if st.button("Get Guidance", use_container_width=True):
-    if user_input.strip():
-        with st.spinner("Understanding your question..."):
-            result = process_user_input(user_input)
-            save_interaction(user_input, result)
-            st.session_state.last_result = result
-            st.session_state.last_input = user_input
-    else:
-        st.warning("Please enter a question first.")
+if "chat_state" not in st.session_state:
+    st.session_state.chat_state = build_initial_state()
 
-if st.session_state.last_result:
-    st.subheader("Latest result")
-    st.markdown(f"**Question:** {st.session_state.last_input}")
-    parsed_latest = parse_response(st.session_state.last_result)
-    render_parsed_response(parsed_latest)
+# Sidebar
+with st.sidebar:
+    st.subheader("Chat")
 
-with st.expander("Recent interactions"):
-    history = get_recent_interactions()
+    if st.button("Start new conversation", use_container_width=True):
+        st.session_state.conversation_id = create_conversation()
+        st.session_state.messages = []
+        st.session_state.chat_state = build_initial_state()
+        st.rerun()
 
-    if history:
-        for index, (user_q, response, created_at) in enumerate(history, start=1):
-            parsed_history = parse_response(response)
+    st.markdown("### What this assistant helps with")
+    st.markdown("- Official form questions")
+    st.markdown("- Simple administrative guidance")
+    st.markdown("- Canton-level location context only")
 
-            with st.expander(f"{index}. {created_at} — {user_q[:60]}"):
-                st.markdown(f"**Question:** {user_q}")
-                render_parsed_response(parsed_history)
-    else:
-        st.caption("No saved interactions yet.")
+    # Optional debug section
+    with st.expander("Debug state"):
+        st.json(st.session_state.chat_state)
+
+# Render chat history
+for message in st.session_state.messages:
+    with st.chat_message(message["role"]):
+        if message["role"] == "user":
+            st.write(message["content"])
+        else:
+            render_assistant_response(message)
+
+# Chat input
+user_prompt = st.chat_input("Ask about a form question or simple administrative issue")
+
+if user_prompt:
+    user_message = {
+        "role": "user",
+        "content": user_prompt,
+        "sources": [],
+    }
+    st.session_state.messages.append(user_message)
+    save_message(st.session_state.conversation_id, "user", user_prompt)
+
+    with st.chat_message("user"):
+        st.write(user_prompt)
+
+    with st.chat_message("assistant"):
+        with st.spinner("Thinking..."):
+            # STEP 3: resolve using conversation state
+            resolved = resolve_user_query(user_prompt, st.session_state.chat_state)
+
+            # update state after resolution
+            st.session_state.chat_state = update_state(
+                st.session_state.chat_state,
+                resolved
+            )
+
+            if resolved["needs_clarification"]:
+                assistant_text = (
+                    f"Answer: {resolved['clarification_question']}\n\n"
+                    "Safety note: I want to avoid guessing and give you more accurate guidance."
+                )
+                sources = []
+            else:
+                # STEP 4: retrieve using standalone_query, not raw input
+                sources = search_sources(resolved["standalone_query"], limit=2)
+
+                assistant_text = process_chat_turn(
+                    st.session_state.messages,
+                    resolved,
+                    sources,
+                )
+
+            assistant_message = {
+                "role": "assistant",
+                "content": assistant_text,
+                "sources": sources,
+            }
+
+            st.session_state.messages.append(assistant_message)
+            save_message(st.session_state.conversation_id, "assistant", assistant_text)
+
+            render_assistant_response(assistant_message)
