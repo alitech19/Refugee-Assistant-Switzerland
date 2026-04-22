@@ -9,71 +9,190 @@
   {
     "title": "SEM — Asylum procedure",
     "url": "https://www.sem.admin.ch/sem/en/home/asyl/asylverfahren.html",
-    "topic": "asylum procedure, timeline, interview, refugee status, asylum decision",
-    "content": "Official SEM page about the asylum procedure in Switzerland. It explains the main steps of the accelerated procedure and how applications are examined.",
+    "topic": "asylum procedure, timeline, interview, refugee status, asylum decision, accelerated procedure, extended procedure",
+    "content": "Official SEM page about the asylum procedure in Switzerland. There are two main procedures: the accelerated procedure (decided within 140 days at a federal asylum centre) and the extended procedure (for more complex cases, assigned to a canton). Every applicant has a right to a hearing before a decision is made.",
     "is_official": 1
   },
   {
     "title": "SEM — Asylum regions and federal asylum centres",
     "url": "https://www.sem.admin.ch/sem/en/home/asyl/asylverfahren/asylregionen-baz.html",
-    "topic": "federal asylum centre, asylum regions, accommodation, registration, canton",
-    "content": "Official SEM information about asylum regions and federal asylum centres in Switzerland. Useful for questions about where asylum procedures are handled and where applicants may stay during the federal phase.",
+    "topic": "federal asylum centre, asylum regions, accommodation, registration, canton, BAZ",
+    "content": "Official SEM information about asylum regions and federal asylum centres in Switzerland. Asylum seekers first stay in a federal asylum centre (BAZ) where their application is registered and processed. After the federal phase, those in the extended procedure are assigned to a canton.",
     "is_official": 1
   },
   {
-    "title": "SEM — asylum-info.ch app",
-    "url": "https://www.sem.admin.ch/sem/en/home/asyl/asylverfahren/asylregionen-baz/asyl-info.html",
-    "topic": "asylum info, app, languages, life in Switzerland, healthcare, asylum centre",
-    "content": "Official SEM page about the asylum-info.ch app. It says the app provides general information in multiple languages about the asylum procedure, federal asylum centres, life in Switzerland, and healthcare.",
-    "is_official": 1
-  },
-  {
-    "title": "ch.ch — Permits for living in Switzerland",
-    "url": "https://www.ch.ch/en/foreign-nationals-in-switzerland/entry-and-stay-in-switzerland/permits-for-living-in-switzerland",
-    "topic": "permits, residence permit, living in Switzerland, foreign nationals, permit renewal",
-    "content": "Official Swiss government portal page about permits for living in Switzerland. Useful for questions about residence permits, permit categories, and extending a permit.",
-    "is_official": 1
-  },
-  {
-    "title": "SEM — Permit S (people in need of protection)",
-    "url": "https://www.sem.admin.ch/sem/en/home/themen/aufenthalt/nicht_eu_efta/ausweis_s__schutzbeduerftige.html",
-    "topic": "permit S, protection status S, Ukraine, work, canton",
-    "content": "Official SEM page about Permit S for people in need of protection. Useful for questions about what Permit S allows, work notifications, and reporting obligations.",
+    "title": "SEM — Permit N (asylum seekers in procedure)",
+    "url": "https://www.sem.admin.ch/sem/en/home/themen/aufenthalt/nicht_eu_efta/ausweis_n.html",
+    "topic": "permit N, asylum seeker, N permit, asylum procedure, work restrictions, sojourn",
+    "content": "Permit N is issued to people who have applied for asylum and whose case is still being decided. It is a temporary sojourn document valid during the asylum procedure. People with Permit N are generally not allowed to work during the first three months in Switzerland. After three months, cantonal authorities may grant permission to work. Permit N does not guarantee the right to stay permanently.",
     "is_official": 1
   },
   {
     "title": "SEM — Permit F (provisionally admitted foreigners)",
     "url": "https://www.sem.admin.ch/sem/en/home/themen/aufenthalt/nicht_eu_efta/ausweis_f__vorlaeufig.html",
     "topic": "permit F, provisional admission, temporary admission, work, canton, identity document",
-    "content": "Official SEM page about Permit F for provisionally admitted foreigners. It explains that temporary admission is used when removal from Switzerland is unlawful, unreasonable, or impossible. Permit F is generally issued for 12 months and may be extended by the canton. People with Permit F may work in Switzerland, and the permit does not serve as proof of identity.",
+    "content": "Official SEM page about Permit F for provisionally admitted foreigners. Temporary admission is used when removal from Switzerland is unlawful, unreasonable, or impossible. Permit F is generally issued for 12 months and may be extended by the canton. People with Permit F may work in Switzerland, and the permit does not serve as proof of identity.",
+    "is_official": 1
+  },
+  {
+    "title": "SEM — Permit S (people in need of protection)",
+    "url": "https://www.sem.admin.ch/sem/en/home/themen/aufenthalt/nicht_eu_efta/ausweis_s__schutzbeduerftige.html",
+    "topic": "permit S, protection status S, Ukraine, work, canton, reporting obligations",
+    "content": "Official SEM page about Permit S for people in need of protection. Permit S allows people fleeing a war or civil conflict to stay in Switzerland without going through the full asylum procedure. Holders may work in Switzerland with a notification to the cantonal authority. Permit S was activated for people fleeing the war in Ukraine from 2022.",
     "is_official": 1
   },
   {
     "title": "SEM — B EU/EFTA permit (Resident foreign nationals)",
     "url": "https://www.sem.admin.ch/sem/en/home/themen/aufenthalt/eu_efta/ausweis_b_eu_efta.html",
     "topic": "permit B, residence permit, resident foreign nationals, EU EFTA, work, living in Switzerland",
-    "content": "Official SEM page about the B EU/EFTA residence permit. It explains that this permit is for foreign nationals who reside in Switzerland for a longer period for a certain purpose, with or without gainful employment. For EU/EFTA nationals, the permit is generally valid for five years under the conditions described on the page.",
+    "content": "Official SEM page about the B EU/EFTA residence permit. This permit is for foreign nationals who reside in Switzerland for a longer period. Recognised refugees are also issued a Permit B. For EU/EFTA nationals, the permit is generally valid for five years. Recognised refugees with Permit B have the right to work in Switzerland.",
     "is_official": 1
   },
   {
     "title": "SEM — C EU/EFTA permit (Settled foreign nationals)",
     "url": "https://www.sem.admin.ch/sem/en/home/themen/aufenthalt/eu_efta/ausweis_c_eu_efta.html",
-    "topic": "permit C, settlement permit, permanent residence, settled foreign nationals, EU EFTA",
-    "content": "Official SEM page about the C EU/EFTA settlement permit. It explains that this permit is usually granted after five or ten years of residence in Switzerland and that the right to stay is not limited in time.",
+    "topic": "permit C, settlement permit, permanent residence, settled foreign nationals, EU EFTA, long-term",
+    "content": "Official SEM page about the C EU/EFTA settlement permit. This permit is usually granted after five or ten years of residence in Switzerland and gives the right to stay that is not limited in time. It is one of the strongest permit categories in Switzerland.",
     "is_official": 1
   },
   {
     "title": "SEM — Employment for persons seeking or granted asylum",
     "url": "https://www.sem.admin.ch/sem/en/home/themen/arbeit/erwerbstaetige_asylbereich.html",
-    "topic": "recognised refugees B permit, asylum, work, employment, refugee status, permit B",
-    "content": "Official SEM page about employment for persons seeking or granted asylum. It refers to recognised refugees with a B permit, temporarily admitted persons with F permits, and persons in need of protection with S permits.",
+    "topic": "work, employment, asylum, refugee, permit B work rights, permit F work rights, permit S work rights, permit N work rights",
+    "content": "Official SEM page about work rights for people in the asylum system. Recognised refugees with Permit B may work freely. People with Permit F (temporary admission) may work with cantonal authorisation. People with Permit S may work with a notification to the canton. People with Permit N may not work during the first three months; after that, cantonal authorisation is required.",
     "is_official": 1
   },
   {
-    "title": "Kanton Zürich — Migration Office",
+    "title": "ch.ch — Permits for living in Switzerland",
+    "url": "https://www.ch.ch/en/foreign-nationals-in-switzerland/entry-and-stay-in-switzerland/permits-for-living-in-switzerland",
+    "topic": "permits, residence permit, living in Switzerland, foreign nationals, permit renewal, permit overview",
+    "content": "Official Swiss government portal page with an overview of all permit types for living in Switzerland. Explains the differences between Permit N, F, B, C, and S, when they apply, and how they can be extended or changed.",
+    "is_official": 1
+  },
+  {
+    "title": "SEM — Integration overview",
+    "url": "https://www.sem.admin.ch/sem/en/home/integration-einbuergerung.html",
+    "topic": "integration, integration program, KIP, cantonal integration program, language, social integration, employment integration",
+    "content": "Official SEM overview of integration in Switzerland. Integration includes language learning, vocational integration, and social integration. Each canton runs a Cantonal Integration Program (KIP) funded jointly by the federal government and cantons. Refugees and provisionally admitted persons are entitled to integration measures.",
+    "is_official": 1
+  },
+  {
+    "title": "SEM — Integration for refugees and temporarily admitted persons",
+    "url": "https://www.sem.admin.ch/sem/en/home/integration-einbuergerung/integration/fluechtlinge-va.html",
+    "topic": "integration, refugee integration, permit F integration, permit B refugee, language course, vocational, job market, integration program",
+    "content": "Recognised refugees (Permit B) and temporarily admitted persons (Permit F) have access to specific integration programs in Switzerland. These include language courses, early childhood programs, vocational preparation, and employment integration. The programs are coordinated at the cantonal level.",
+    "is_official": 1
+  },
+  {
+    "title": "FIDE — Language framework for integration in Switzerland",
+    "url": "https://www.fide-service.ch/fide/",
+    "topic": "FIDE, language test, German, French, Italian, language learning, integration, language certificate, A1, A2, B1",
+    "content": "FIDE is the Swiss federal framework for language skills used in integration. It covers German, French, and Italian. Language courses and the FIDE language certificate are part of the integration pathway in Switzerland. Many cantons require a language certificate for permit renewal or integration agreements.",
+    "is_official": 1
+  },
+  {
+    "title": "ch.ch — Learning languages in Switzerland",
+    "url": "https://www.ch.ch/en/foreign-nationals-in-switzerland/integration/learn-languages/",
+    "topic": "language courses, German, French, Italian, language learning, integration, language school, FIDE",
+    "content": "Official Swiss portal page about language learning for foreign nationals. Language courses are available across Switzerland through cantonal integration programs and various NGOs. Learning the local language (German, French, or Italian depending on the region) is a key step in integration and is often supported financially for refugees and asylum seekers.",
+    "is_official": 1
+  },
+  {
+    "title": "SEM — Healthcare and social assistance for asylum seekers",
+    "url": "https://www.sem.admin.ch/sem/en/home/asyl/sozialhilfe.html",
+    "topic": "healthcare, medical care, health, social assistance, asylum seeker, federal centre, canton, basic needs, emergency care",
+    "content": "Official SEM page about social assistance and healthcare for asylum seekers. During the federal phase, SEM is responsible for providing accommodation, food, and emergency healthcare. After assignment to a canton, the canton takes over. Asylum seekers receive basic healthcare coverage. The level of social assistance is lower than regular Swiss social welfare and is intended to cover basic needs only.",
+    "is_official": 1
+  },
+  {
+    "title": "ch.ch — Health insurance and healthcare in Switzerland",
+    "url": "https://www.ch.ch/en/health/health-insurance/",
+    "topic": "health insurance, KVG, healthcare, medical, hospital, doctor, insurance, premium reduction",
+    "content": "Official Swiss portal page about the health insurance system in Switzerland. Everyone living in Switzerland is legally required to have basic health insurance (KVG/LAMal). For refugees and asylum seekers, the canton usually arranges a collective insurance contract. Premium reductions (Prämienverbilligung) are available for people with low income.",
+    "is_official": 1
+  },
+  {
+    "title": "SEM — Education rights for children of asylum seekers",
+    "url": "https://www.sem.admin.ch/sem/en/home/asyl/sozialhilfe/bildung.html",
+    "topic": "education, school, children, asylum seeker children, right to education, canton, schooling",
+    "content": "Children of asylum seekers and refugees in Switzerland have the right to attend school. Cantons are responsible for ensuring access to schooling as soon as possible after arrival. This applies to children with Permit N, F, S, and B. In federal asylum centres, educational support is also provided.",
+    "is_official": 1
+  },
+  {
+    "title": "SEM — Family reunification",
+    "url": "https://www.sem.admin.ch/sem/en/home/themen/einreise/familiennachzug.html",
+    "topic": "family reunification, family, spouse, children, permit B refugee, permit F, family members, join family",
+    "content": "Official SEM page about family reunification in Switzerland. Recognised refugees with Permit B may apply for family reunification within three years of being granted refugee status. People with Permit F have more limited family reunification rights — they may apply after three years of provisional admission, but only if they are self-supporting. People with Permit N generally cannot bring family members during the asylum procedure.",
+    "is_official": 1
+  },
+  {
+    "title": "SEM — Negative asylum decision and legal remedies",
+    "url": "https://www.sem.admin.ch/sem/en/home/asyl/asylverfahren/rechtsmittel.html",
+    "topic": "negative decision, appeal, rejection, Dublin, legal remedy, Federal Administrative Court, deadline, legal aid",
+    "content": "If an asylum application is rejected, the person has the right to appeal. In the accelerated procedure, the appeal deadline is usually 7 days. In the extended procedure it is 30 days. Appeals are made to the Federal Administrative Court (FAC). Legal representation is provided during the procedure. It is very important to act quickly and seek legal advice immediately after receiving a negative decision.",
+    "is_official": 1
+  },
+  {
+    "title": "Federal Administrative Court — Asylum appeals",
+    "url": "https://www.bvger.ch/bvger/en/home.html",
+    "topic": "Federal Administrative Court, FAC, appeal, asylum appeal, negative decision, court, legal remedy",
+    "content": "The Federal Administrative Court (FAC) is the court that handles appeals against negative asylum decisions in Switzerland. If an asylum application is rejected by SEM, the applicant can appeal to the FAC within the legal deadline. The court reviews whether the decision was legally correct.",
+    "is_official": 1
+  },
+  {
+    "title": "OSAR — Swiss Refugee Council (legal aid and advice)",
+    "url": "https://www.osar.ch/en/",
+    "topic": "legal aid, legal advice, OSAR, SFH, Swiss Refugee Council, rights, support, NGO, appeal help",
+    "content": "The Swiss Refugee Council (OSAR/SFH) is the main NGO providing legal information and support for asylum seekers and refugees in Switzerland. They provide advice on rights, the asylum procedure, and appeals. They are an important resource when someone receives a negative decision or has questions about their legal situation.",
+    "is_official": 0
+  },
+  {
+    "title": "SEM — Naturalization (Swiss citizenship)",
+    "url": "https://www.sem.admin.ch/sem/en/home/integration-einbuergerung/einbuergerung.html",
+    "topic": "naturalization, citizenship, Swiss passport, Swiss citizen, integration, years of residence, ordinary naturalization, facilitated naturalization",
+    "content": "Official SEM page about naturalization (becoming a Swiss citizen). Ordinary naturalization requires at least 10 years of residence in Switzerland. Recognised refugees may have access to facilitated naturalization. Applicants must demonstrate integration, language skills, and knowledge of Swiss life. The process involves federal, cantonal, and municipal steps.",
+    "is_official": 1
+  },
+  {
+    "title": "SEM — asylum-info.ch app",
+    "url": "https://www.sem.admin.ch/sem/en/home/asyl/asylverfahren/asylregionen-baz/asyl-info.html",
+    "topic": "asylum info, app, languages, life in Switzerland, healthcare, asylum centre, mobile app",
+    "content": "Official SEM page about the asylum-info.ch app. The app provides general information in multiple languages about the asylum procedure, federal asylum centres, life in Switzerland, and healthcare.",
+    "is_official": 1
+  },
+  {
+    "title": "Canton Zurich — Migration Office",
     "url": "https://www.zh.ch/de/sicherheitsdirektion/migrationsamt.html",
-    "topic": "canton Zurich, migration office, residence, permits, asylum, forms, contact",
-    "content": "Official Canton of Zurich migration office page. Useful as a canton-level source for residence, permits, asylum-related administration, forms, and contact information.",
+    "topic": "canton Zurich, migration office, residence, permits, asylum, forms, contact, Zurich",
+    "content": "Official Canton of Zurich migration office. Handles residence permits, asylum administration, and related forms for people living in the canton of Zurich.",
+    "is_official": 1
+  },
+  {
+    "title": "Canton Bern — Migration and citizenship office",
+    "url": "https://www.pom.be.ch/de/start/themen/migration.html",
+    "topic": "canton Bern, migration office, residence, permits, asylum, Bern",
+    "content": "Official Canton of Bern migration and citizenship office. Responsible for residence permits, asylum procedure administration, and integration matters in the canton of Bern.",
+    "is_official": 1
+  },
+  {
+    "title": "Canton Geneva — Office cantonal de la population et des migrations (OCPM)",
+    "url": "https://www.ge.ch/organisation/office-cantonal-de-la-population-et-des-migrations-ocpm",
+    "topic": "canton Geneva, migration office, OCPM, residence, permits, asylum, Geneva, French",
+    "content": "Official Canton of Geneva migration office (OCPM). Handles residence permits, population registration, and migration administration in the canton of Geneva.",
+    "is_official": 1
+  },
+  {
+    "title": "Canton Vaud — Service de la population (SPOP)",
+    "url": "https://www.vd.ch/autorites/departements/dits/spop",
+    "topic": "canton Vaud, SPOP, migration office, residence, permits, asylum, Vaud, Lausanne, French",
+    "content": "Official Canton of Vaud population and migration service (SPOP). Handles residence permits and migration administration for people living in the canton of Vaud, including the Lausanne area.",
+    "is_official": 1
+  },
+  {
+    "title": "ch.ch — Rights and integration of refugees",
+    "url": "https://www.ch.ch/en/foreign-nationals-in-switzerland/integration/",
+    "topic": "integration, rights, refugee, integration program, language, work, social, Switzerland overview",
+    "content": "Official Swiss portal overview of integration rights and support for refugees and foreign nationals. Covers language learning, work rights, social integration, and where to get support across Switzerland.",
     "is_official": 1
   }
 ]

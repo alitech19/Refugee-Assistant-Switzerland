@@ -66,19 +66,14 @@ def seed_sources_from_json() -> None:
     if not SOURCES_FILE.exists():
         return
 
-    conn = get_connection()
-    cursor = conn.cursor()
-
-    cursor.execute("SELECT COUNT(*) FROM sources")
-    count = cursor.fetchone()[0]
-
-    if count > 0:
-        conn.close()
-        return
-
     with open(SOURCES_FILE, "r", encoding="utf-8") as f:
         items = json.load(f)
 
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    # Always replace sources so additions to the JSON file take effect on restart
+    cursor.execute("DELETE FROM sources")
     for item in items:
         cursor.execute(
             """
