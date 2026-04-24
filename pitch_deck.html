@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Refugee Assistant Switzerland — Pitch Deck</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #1a1a2e;
+      color: #fff;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .slide {
+      display: none;
+      width: 900px;
+      min-height: 520px;
+      background: #ffffff;
+      color: #1a1a2e;
+      border-radius: 16px;
+      padding: 56px 64px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+      position: relative;
+      animation: fadeIn 0.4s ease;
+    }
+
+    .slide.active { display: flex; flex-direction: column; justify-content: center; }
+
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+    .slide-number {
+      position: absolute;
+      top: 20px;
+      right: 28px;
+      font-size: 13px;
+      color: #aaa;
+      font-weight: 500;
+    }
+
+    .tag {
+      display: inline-block;
+      background: #D62828;
+      color: white;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 4px;
+      margin-bottom: 18px;
+    }
+
+    h1 {
+      font-size: 40px;
+      font-weight: 800;
+      color: #1a1a2e;
+      line-height: 1.2;
+      margin-bottom: 10px;
+    }
+
+    h2 {
+      font-size: 28px;
+      font-weight: 700;
+      color: #1a1a2e;
+      margin-bottom: 20px;
+    }
+
+    .subtitle {
+      font-size: 18px;
+      color: #555;
+      margin-bottom: 28px;
+    }
+
+    .highlight { color: #D62828; }
+
+    p { font-size: 16px; color: #333; line-height: 1.7; margin-bottom: 10px; }
+
+    ul { padding-left: 20px; margin-top: 8px; }
+    ul li { font-size: 16px; color: #333; line-height: 1.8; }
+    ul li strong { color: #1a1a2e; }
+
+    .stat-row {
+      display: flex;
+      gap: 24px;
+      margin: 24px 0;
+    }
+
+    .stat-box {
+      flex: 1;
+      background: #f7f7f7;
+      border-left: 4px solid #D62828;
+      border-radius: 8px;
+      padding: 18px 20px;
+    }
+
+    .stat-box .number {
+      font-size: 32px;
+      font-weight: 800;
+      color: #D62828;
+    }
+
+    .stat-box .label {
+      font-size: 13px;
+      color: #666;
+      margin-top: 4px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 16px;
+    }
+
+    th {
+      background: #D62828;
+      color: white;
+      padding: 10px 16px;
+      text-align: left;
+      font-size: 14px;
+    }
+
+    td {
+      padding: 10px 16px;
+      font-size: 15px;
+      border-bottom: 1px solid #eee;
+      color: #333;
+    }
+
+    tr:nth-child(even) td { background: #f9f9f9; }
+
+    .flow {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 24px;
+      flex-wrap: wrap;
+    }
+
+    .flow-box {
+      background: #f0f0f0;
+      border-radius: 10px;
+      padding: 14px 18px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #1a1a2e;
+      text-align: center;
+      flex: 1;
+      min-width: 120px;
+    }
+
+    .flow-box span {
+      display: block;
+      font-size: 11px;
+      font-weight: 400;
+      color: #777;
+      margin-top: 4px;
+    }
+
+    .arrow {
+      font-size: 22px;
+      color: #D62828;
+      font-weight: bold;
+    }
+
+    .next-box {
+      display: flex;
+      gap: 16px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+
+    .next-item {
+      flex: 1;
+      min-width: 150px;
+      background: #f7f7f7;
+      border-radius: 10px;
+      padding: 16px;
+      font-size: 14px;
+      color: #333;
+      border-top: 3px solid #D62828;
+    }
+
+    .next-item strong { display: block; margin-bottom: 4px; color: #1a1a2e; }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin-top: 28px;
+    }
+
+    button {
+      background: #D62828;
+      color: white;
+      border: none;
+      padding: 12px 32px;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    button:hover { background: #b01e1e; }
+    button:disabled { background: #ccc; cursor: default; }
+
+    .dot-row {
+      display: flex;
+      gap: 8px;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #ccc;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .dot.active { background: #D62828; }
+
+    .flag { font-size: 28px; margin-bottom: 8px; }
+
+    .footer-note {
+      position: absolute;
+      bottom: 18px;
+      left: 64px;
+      font-size: 12px;
+      color: #bbb;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- SLIDE 1: Problem -->
+  <div class="slide active" id="slide-1">
+    <span class="slide-number">1 / 6</span>
+    <div class="flag">🇨🇭</div>
+    <div class="tag">The Problem</div>
+    <h1>Refugees in Switzerland<br/><span class="highlight">don't know their rights.</span></h1>
+    <p class="subtitle">A complex legal system. A foreign language. No clear guide.</p>
+    <div class="stat-row">
+      <div class="stat-box">
+        <div class="number">30,000+</div>
+        <div class="label">Asylum applications in Switzerland per year</div>
+      </div>
+      <div class="stat-box">
+        <div class="number">5</div>
+        <div class="label">Different permit types — each with different rules</div>
+      </div>
+      <div class="stat-box">
+        <div class="number">0</div>
+        <div class="label">Free multilingual tools explaining all of it clearly</div>
+      </div>
+    </div>
+    <p>Legal aid is overwhelmed. Official websites are complex. Caseworkers are too busy.<br/>
+    <strong>The result: missed deadlines, missed rights, fear and isolation.</strong></p>
+    <div class="footer-note">PowerCoders — Solo Venture · Ali Sulaiman · 2026</div>
+  </div>
+
+  <!-- SLIDE 2: Solution -->
+  <div class="slide" id="slide-2">
+    <span class="slide-number">2 / 6</span>
+    <div class="tag">The Solution</div>
+    <h2>Refugee Assistant <span class="highlight">Switzerland</span></h2>
+    <p class="subtitle">A free, 24/7 AI chatbot — in the user's own language.</p>
+    <ul>
+      <li><strong>Multilingual:</strong> Responds in Arabic, French, German, Tigrinya and more — automatically</li>
+      <li><strong>Comprehensive:</strong> Covers permits N/F/B/C/S, asylum process, work rights, integration, healthcare, education, family reunification & appeals</li>
+      <li><strong>Trusted sources:</strong> Grounded in 27 official Swiss sources (SEM, ch.ch, FIDE, OSAR)</li>
+      <li><strong>Always available:</strong> No appointment needed — works 24/7 in the browser</li>
+      <li><strong>Free:</strong> No app download, no login, no cost for the user</li>
+    </ul>
+    <div class="footer-note">PowerCoders — Solo Venture · Ali Sulaiman · 2026</div>
+  </div>
+
+  <!-- SLIDE 3: Tech Stack -->
+  <div class="slide" id="slide-3">
+    <span class="slide-number">3 / 6</span>
+    <div class="tag">Tech Stack</div>
+    <h2>Architecture & <span class="highlight">Technology</span></h2>
+    <table>
+      <tr><th>Layer</th><th>Technology</th><th>Why</th></tr>
+      <tr><td>Language</td><td>Python</td><td>Fast development, rich AI ecosystem</td></tr>
+      <tr><td>Frontend</td><td>Streamlit</td><td>Web app with zero frontend code</td></tr>
+      <tr><td>LLM</td><td>LLM API</td><td>Free, fast, strong multilingual support</td></tr>
+      <tr><td>Knowledge Base</td><td>SQLite + 27 official sources</td><td>Lightweight RAG — no vector DB needed</td></tr>
+      <tr><td>Retrieval</td><td>Keyword scoring (custom)</td><td>Accurate for narrow Swiss asylum domain</td></tr>
+      <tr><td>Persistence</td><td>SQLite conversation history</td><td>Full chat memory across turns</td></tr>
+      <tr><td>Hosting</td><td>Streamlit Community Cloud</td><td>Free deployment, shareable link</td></tr>
+    </table>
+    <div class="footer-note">PowerCoders — Solo Venture · Ali Sulaiman · 2026</div>
+  </div>
+
+  <!-- SLIDE 4: How It Works -->
+  <div class="slide" id="slide-4">
+    <span class="slide-number">4 / 6</span>
+    <div class="tag">How It Works</div>
+    <h2>Lightweight <span class="highlight">RAG Pipeline</span></h2>
+    <p>The app retrieves relevant official sources and injects them into the LLM prompt — ensuring accurate, grounded answers.</p>
+    <div class="flow">
+      <div class="flow-box">🧑 User Input<span>Any language</span></div>
+      <div class="arrow">→</div>
+      <div class="flow-box">🔍 Keyword Search<span>27 Swiss sources in SQLite</span></div>
+      <div class="arrow">→</div>
+      <div class="flow-box">🧠 Groq LLM<span>LLaMA 3.3-70b + system prompt</span></div>
+      <div class="arrow">→</div>
+      <div class="flow-box">💬 Response<span>In user's language</span></div>
+    </div>
+    <p style="margin-top:24px;"><strong>Example:</strong> User asks <em>"Can I work with Permit F?"</em> in Arabic →
+    System finds SEM Permit F source → LLM answers in Arabic with accurate work rules.</p>
+    <div class="footer-note">PowerCoders — Solo Venture · Ali Sulaiman · 2026</div>
+  </div>
+
+  <!-- SLIDE 5: Logic Flow -->
+  <div class="slide" id="slide-5">
+    <span class="slide-number">5 / 6</span>
+    <div class="tag">Logic Flow</div>
+    <h2>How the App <span class="highlight">Makes Decisions</span></h2>
+    <div style="display:flex; gap:10px; align-items:flex-start; margin-top:16px; font-size:13px;">
+
+      <!-- Column 1: Start -->
+      <div style="display:flex; flex-direction:column; align-items:center; gap:6px; flex:1;">
+        <div style="background:#1a1a2e; color:white; border-radius:20px; padding:8px 14px; text-align:center; font-weight:700;">🧑 User types question</div>
+        <div style="color:#D62828; font-size:18px;">↓</div>
+        <div style="background:#fff3f3; border:2px solid #D62828; border-radius:8px; padding:8px 10px; text-align:center;">API Key<br/>configured?</div>
+        <div style="display:flex; gap:6px;">
+          <div style="display:flex; flex-direction:column; align-items:center;">
+            <div style="color:#aaa; font-size:11px;">No</div>
+            <div style="background:#ffeaea; border:1px solid #D62828; border-radius:6px; padding:6px 8px; text-align:center; color:#D62828; font-weight:600;">❌ Show error<br/>to user</div>
+          </div>
+          <div style="display:flex; flex-direction:column; align-items:center;">
+            <div style="color:#aaa; font-size:11px;">Yes</div>
+            <div style="color:#D62828; font-size:18px;">↓</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="color:#D62828; font-size:22px; margin-top:40px;">→</div>
+
+      <!-- Column 2: Understand -->
+      <div style="display:flex; flex-direction:column; align-items:center; gap:6px; flex:1;">
+        <div style="background:#f0f0f0; border-radius:8px; padding:8px 10px; text-align:center; font-weight:600;">Backend<br/>Understands question</div>
+        <div style="color:#D62828; font-size:18px;">↓</div>
+        <div style="background:#fff3f3; border:2px solid #D62828; border-radius:8px; padding:8px 10px; text-align:center;">Permit type<br/>detected?</div>
+        <div style="display:flex; gap:6px; margin-top:4px;">
+          <div style="display:flex; flex-direction:column; align-items:center;">
+            <div style="color:#aaa; font-size:11px;">Yes</div>
+            <div style="background:#e8f4e8; border:1px solid #2a7; border-radius:6px; padding:6px 8px; text-align:center; color:#1a5c2a; font-size:12px;">Strict search<br/>exact permit only</div>
+          </div>
+          <div style="display:flex; flex-direction:column; align-items:center;">
+            <div style="color:#aaa; font-size:11px;">No</div>
+            <div style="background:#e8f0ff; border:1px solid #4466cc; border-radius:6px; padding:6px 8px; text-align:center; color:#1a3a8a; font-size:12px;">General keyword<br/>search all sources</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="color:#D62828; font-size:22px; margin-top:40px;">→</div>
+
+      <!-- Column 3: Sources -->
+      <div style="display:flex; flex-direction:column; align-items:center; gap:6px; flex:1;">
+        <div style="background:#f0f0f0; border-radius:8px; padding:8px 10px; text-align:center; font-weight:600;">Search 27<br/>Swiss Sources</div>
+        <div style="color:#D62828; font-size:18px;">↓</div>
+        <div style="background:#fff3f3; border:2px solid #D62828; border-radius:8px; padding:8px 10px; text-align:center;">Sources<br/>found?</div>
+        <div style="display:flex; gap:6px; margin-top:4px;">
+          <div style="display:flex; flex-direction:column; align-items:center;">
+            <div style="color:#aaa; font-size:11px;">Yes</div>
+            <div style="background:#e8f4e8; border:1px solid #2a7; border-radius:6px; padding:6px 8px; text-align:center; color:#1a5c2a; font-size:12px;">Inject top 3<br/>into AI prompt</div>
+          </div>
+          <div style="display:flex; flex-direction:column; align-items:center;">
+            <div style="color:#aaa; font-size:11px;">No</div>
+            <div style="background:#fffbe8; border:1px solid #cc9900; border-radius:6px; padding:6px 8px; text-align:center; color:#7a5c00; font-size:12px;">AI answers from<br/>own knowledge</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="color:#D62828; font-size:22px; margin-top:40px;">→</div>
+
+      <!-- Column 4: AI + Output -->
+      <div style="display:flex; flex-direction:column; align-items:center; gap:6px; flex:1;">
+        <div style="background:#f0f0f0; border-radius:8px; padding:8px 10px; text-align:center; font-weight:600;">🧠 Groq AI generates<br/>response</div>
+        <div style="color:#D62828; font-size:18px;">↓</div>
+        <div style="background:#fff3f3; border:2px solid #D62828; border-radius:8px; padding:8px 10px; text-align:center;">Response<br/>received?</div>
+        <div style="display:flex; gap:6px; margin-top:4px;">
+          <div style="display:flex; flex-direction:column; align-items:center;">
+            <div style="color:#aaa; font-size:11px;">Yes</div>
+            <div style="background:#1a1a2e; color:white; border-radius:6px; padding:6px 8px; text-align:center; font-size:12px;">💬 Show answer<br/>in user's language</div>
+          </div>
+          <div style="display:flex; flex-direction:column; align-items:center;">
+            <div style="color:#aaa; font-size:11px;">Error</div>
+            <div style="background:#ffeaea; border:1px solid #D62828; border-radius:6px; padding:6px 8px; text-align:center; color:#D62828; font-size:12px;">❌ Show error<br/>try again</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="footer-note">PowerCoders — Solo Venture · Ali Sulaiman · 2026</div>
+  </div>
+
+  <!-- SLIDE 6: What's Next -->
+  <div class="slide" id="slide-6">
+    <span class="slide-number">6 / 6</span>
+    <div class="tag">What's Next</div>
+    <h2>Roadmap & <span class="highlight">Vision</span></h2>
+    <div class="next-box">
+      <div class="next-item"><strong>Deploy publicly</strong>Streamlit Community Cloud — shareable link for anyone in Switzerland</div>
+      <div class="next-item"><strong>NGO Partnership</strong>Integrate with OSAR, Caritas, Swiss Red Cross websites</div>
+      <div class="next-item"><strong>Voice Input</strong>Support low-literacy users who can speak but not type</div>
+      <div class="next-item"><strong>Canton Filter</strong>Let users select their canton for location-specific rules</div>
+      <div class="next-item"><strong>Semantic Search</strong>Upgrade retrieval to vector embeddings for smarter matching</div>
+    </div>
+    <p style="margin-top:24px; font-size:15px; color:#555;">
+      <strong>Goal:</strong> Every refugee in Switzerland has access to clear, accurate, multilingual information about their rights — for free, at any time.
+    </p>
+    <div class="footer-note">PowerCoders — Solo Venture · Ali Sulaiman · 2026</div>
+  </div>
+
+  <!-- Navigation -->
+  <div class="nav">
+    <button id="prevBtn" onclick="changeSlide(-1)" disabled>← Prev</button>
+    <div class="dot-row" id="dots"></div>
+    <button id="nextBtn" onclick="changeSlide(1)">Next →</button>
+  </div>
+
+  <script>
+    let current = 0;
+    const total = 6;
+
+    const dotsContainer = document.getElementById('dots');
+    for (let i = 0; i < total; i++) {
+      const d = document.createElement('div');
+      d.className = 'dot' + (i === 0 ? ' active' : '');
+      d.onclick = () => goTo(i);
+      dotsContainer.appendChild(d);
+    }
+
+    function goTo(index) {
+      document.getElementById(`slide-${current + 1}`).classList.remove('active');
+      document.querySelectorAll('.dot')[current].classList.remove('active');
+      current = index;
+      document.getElementById(`slide-${current + 1}`).classList.add('active');
+      document.querySelectorAll('.dot')[current].classList.add('active');
+      document.getElementById('prevBtn').disabled = current === 0;
+      document.getElementById('nextBtn').disabled = current === total - 1;
+    }
+
+    function changeSlide(dir) {
+      const next = current + dir;
+      if (next >= 0 && next < total) goTo(next);
+    }
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'ArrowRight') changeSlide(1);
+      if (e.key === 'ArrowLeft') changeSlide(-1);
+    });
+  </script>
+</body>
+</html>

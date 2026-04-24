@@ -1,4 +1,5 @@
 import os
+from datetime import date
 from pathlib import Path
 from typing import Any
 from openai import OpenAI
@@ -41,7 +42,14 @@ def process_chat_turn(
 
     sources_text = _format_sources(sources)
 
-    api_messages = [{"role": "system", "content": SYSTEM_PROMPT}]
+    today = date.today().strftime("%B %d, %Y")
+    system_with_date = (
+        f"{SYSTEM_PROMPT}\n\n"
+        f"TODAY'S DATE: {today}. "
+        f"Always use this date when the user asks what day or date it is."
+    )
+
+    api_messages = [{"role": "system", "content": system_with_date}]
 
     for msg in messages[:-1]:
         api_messages.append({"role": msg["role"], "content": msg["content"]})

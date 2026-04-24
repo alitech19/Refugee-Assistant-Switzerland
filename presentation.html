@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Refugee Assistant Switzerland — Presentation</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #0f1923;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .slide {
+      display: none;
+      width: 980px;
+      height: 560px;
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 30px 90px rgba(0,0,0,0.6);
+      animation: fadeIn 0.45s ease;
+      flex-direction: row;
+    }
+
+    .slide.active { display: flex; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .left {
+      width: 44%;
+      padding: 46px 42px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+    }
+
+    .left.light  { background: #ffffff; }
+    .left.dark   { background: #1a1a2e; }
+
+    .right {
+      width: 56%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .right.grey  { background: #f4f5f7; }
+    .right.dark  { background: #141425; }
+    .right.red   { background: #D62828; }
+    .right.navy  { background: #1a1a2e; }
+
+    .slide-num {
+      position: absolute;
+      top: 16px;
+      right: 20px;
+      font-size: 12px;
+      color: #aaa;
+      font-weight: 500;
+    }
+
+    .tag {
+      display: inline-block;
+      background: #D62828;
+      color: white;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 4px;
+      margin-bottom: 18px;
+      width: fit-content;
+    }
+
+    .tag.outline {
+      background: transparent;
+      border: 2px solid #D62828;
+      color: #D62828;
+    }
+
+    h1 {
+      font-size: 33px;
+      font-weight: 800;
+      color: #1a1a2e;
+      line-height: 1.2;
+      margin-bottom: 14px;
+    }
+
+    h1.w { color: #fff; }
+
+    h2 {
+      font-size: 25px;
+      font-weight: 700;
+      color: #1a1a2e;
+      line-height: 1.3;
+      margin-bottom: 14px;
+    }
+
+    h2.w { color: #fff; }
+
+    .red { color: #D62828; }
+
+    p  { font-size: 14px; color: #555; line-height: 1.7; }
+    p.w { color: #bbb; }
+
+    ul { list-style: none; margin-top: 6px; }
+    ul li {
+      font-size: 13.5px;
+      color: #444;
+      line-height: 1.9;
+      padding-left: 18px;
+      position: relative;
+    }
+    ul li::before {
+      content: "▸";
+      position: absolute;
+      left: 0;
+      color: #D62828;
+      font-weight: bold;
+    }
+    ul li.w { color: #ccc; }
+    ul li.w strong { color: #fff; }
+
+    .stats {
+      display: flex;
+      gap: 10px;
+      margin: 14px 0;
+    }
+
+    .stat {
+      flex: 1;
+      background: #fff5f5;
+      border-left: 3px solid #D62828;
+      border-radius: 6px;
+      padding: 10px;
+    }
+
+    .stat .n { font-size: 22px; font-weight: 800; color: #D62828; }
+    .stat .l { font-size: 10px; color: #888; margin-top: 2px; line-height: 1.4; }
+
+    table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 12.5px; }
+    th { background: #D62828; color: white; padding: 8px 10px; text-align: left; }
+    td { padding: 7px 10px; border-bottom: 1px solid #eee; color: #444; }
+    tr:nth-child(even) td { background: #fafafa; }
+
+    .quote {
+      margin-top: 18px;
+      font-size: 13px;
+      font-style: italic;
+      color: #777;
+      border-left: 3px solid #D62828;
+      padding-left: 12px;
+    }
+
+    /* Navigation */
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin-top: 22px;
+    }
+
+    button {
+      background: #D62828;
+      color: white;
+      border: none;
+      padding: 10px 28px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    button:hover { background: #b01e1e; }
+    button:disabled { background: #333; color: #666; cursor: default; }
+
+    .dots { display: flex; gap: 8px; }
+
+    .dot {
+      width: 9px; height: 9px;
+      border-radius: 50%;
+      background: #444;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .dot.active { background: #D62828; }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════
+     SLIDE 1 — THE PROBLEM
+═══════════════════════════════════════════ -->
+<div class="slide active" id="slide-1">
+  <div class="left light">
+    <span class="slide-num">1 / 6</span>
+    <div class="tag">The Problem</div>
+    <h1>Refugees in Switzerland<br/><span class="red">don't know<br/>their rights.</span></h1>
+    <div class="stats">
+      <div class="stat"><div class="n">8K+</div><div class="l">Asylum applications per year in Switzerland</div></div>
+      <div class="stat"><div class="n">5</div><div class="l">Permit types — each with different rules</div></div>
+      <div class="stat"><div class="n">0</div><div class="l">Free multilingual tools explaining it clearly</div></div>
+    </div>
+    <p>Legal aid is overwhelmed. Official websites are in German. Caseworkers are too busy.<br/><strong>Missed deadlines. Lost rights. Fear and isolation.</strong></p>
+  </div>
+  <div class="right grey">
+    <svg viewBox="0 0 520 560" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+      <!-- Swiss cross background faded -->
+      <rect x="185" y="55" width="90" height="290" rx="6" fill="#D62828" opacity="0.07"/>
+      <rect x="75" y="160" width="310" height="80" rx="6" fill="#D62828" opacity="0.07"/>
+
+      <!-- Floating documents -->
+      <g transform="rotate(-14,95,115)">
+        <rect x="55" y="75" width="75" height="95" rx="5" fill="white" stroke="#ddd" stroke-width="1.5"/>
+        <line x1="68" y1="98" x2="118" y2="98" stroke="#e0e0e0" stroke-width="2"/>
+        <line x1="68" y1="112" x2="118" y2="112" stroke="#e0e0e0" stroke-width="2"/>
+        <line x1="68" y1="126" x2="105" y2="126" stroke="#e0e0e0" stroke-width="2"/>
+        <line x1="68" y1="140" x2="115" y2="140" stroke="#e0e0e0" stroke-width="2"/>
+        <rect x="55" y="75" width="75" height="18" rx="5" fill="#D62828" opacity="0.2"/>
+      </g>
+      <g transform="rotate(9,380,95)">
+        <rect x="345" y="55" width="75" height="95" rx="5" fill="white" stroke="#ddd" stroke-width="1.5"/>
+        <line x1="358" y1="80" x2="408" y2="80" stroke="#e0e0e0" stroke-width="2"/>
+        <line x1="358" y1="94" x2="408" y2="94" stroke="#e0e0e0" stroke-width="2"/>
+        <line x1="358" y1="108" x2="395" y2="108" stroke="#e0e0e0" stroke-width="2"/>
+        <rect x="345" y="55" width="75" height="18" rx="5" fill="#D62828" opacity="0.2"/>
+      </g>
+      <g transform="rotate(-6,88,380)">
+        <rect x="48" y="340" width="75" height="95" rx="5" fill="white" stroke="#ddd" stroke-width="1.5"/>
+        <line x1="61" y1="363" x2="111" y2="363" stroke="#e0e0e0" stroke-width="2"/>
+        <line x1="61" y1="377" x2="111" y2="377" stroke="#e0e0e0" stroke-width="2"/>
+        <line x1="61" y1="391" x2="98" y2="391" stroke="#e0e0e0" stroke-width="2"/>
+        <rect x="48" y="340" width="75" height="18" rx="5" fill="#D62828" opacity="0.2"/>
+      </g>
+      <g transform="rotate(11,392,380)">
+        <rect x="360" y="340" width="75" height="95" rx="5" fill="white" stroke="#ddd" stroke-width="1.5"/>
+        <line x1="373" y1="363" x2="423" y2="363" stroke="#e0e0e0" stroke-width="2"/>
+        <line x1="373" y1="377" x2="423" y2="377" stroke="#e0e0e0" stroke-width="2"/>
+        <line x1="373" y1="391" x2="410" y2="391" stroke="#e0e0e0" stroke-width="2"/>
+        <rect x="360" y="340" width="75" height="18" rx="5" fill="#D62828" opacity="0.2"/>
+      </g>
+
+      <!-- Person body -->
+      <circle cx="260" cy="195" r="46" fill="#3d3d5c"/>
+      <!-- Worried eyes -->
+      <ellipse cx="246" cy="188" rx="5" ry="6" fill="white"/>
+      <ellipse cx="274" cy="188" rx="5" ry="6" fill="white"/>
+      <circle cx="248" cy="190" r="3" fill="#1a1a2e"/>
+      <circle cx="276" cy="190" r="3" fill="#1a1a2e"/>
+      <!-- Worried brows -->
+      <path d="M239,178 Q246,173 253,178" stroke="#1a1a2e" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <path d="M267,178 Q274,173 281,178" stroke="#1a1a2e" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <!-- Sad mouth -->
+      <path d="M248,208 Q260,202 272,208" stroke="#1a1a2e" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <!-- Body -->
+      <rect x="228" y="243" width="64" height="88" rx="14" fill="#3d3d5c"/>
+      <!-- Arms up in confusion -->
+      <path d="M228,262 Q198,242 183,218" stroke="#3d3d5c" stroke-width="20" stroke-linecap="round" fill="none"/>
+      <path d="M292,262 Q322,242 337,218" stroke="#3d3d5c" stroke-width="20" stroke-linecap="round" fill="none"/>
+      <!-- Legs -->
+      <rect x="232" y="329" width="24" height="68" rx="12" fill="#3d3d5c"/>
+      <rect x="263" y="329" width="24" height="68" rx="12" fill="#3d3d5c"/>
+
+      <!-- Question marks -->
+      <text x="148" y="258" font-size="52" fill="#D62828" opacity="0.65" font-weight="bold" font-family="Arial">?</text>
+      <text x="333" y="258" font-size="52" fill="#D62828" opacity="0.65" font-weight="bold" font-family="Arial">?</text>
+      <text x="238" y="128" font-size="40" fill="#D62828" opacity="0.45" font-weight="bold" font-family="Arial">?</text>
+    </svg>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     SLIDE 2 — THE SOLUTION
+═══════════════════════════════════════════ -->
+<div class="slide" id="slide-2">
+  <div class="left dark">
+    <span class="slide-num" style="color:#555;">2 / 6</span>
+    <div class="tag">The Solution</div>
+    <h2 class="w">Refugee Assistant <span class="red">Switzerland</span></h2>
+    <p class="w" style="margin-bottom:14px;">A free AI chatbot — available 24/7 — answering asylum questions in the user's own language.</p>
+    <ul>
+      <li class="w"><strong>Multilingual</strong> — Arabic, French, German, Tigrinya & more — auto-detected</li>
+      <li class="w"><strong>Comprehensive</strong> — Permits N/F/B/C/S, work, health, education, appeals</li>
+      <li class="w"><strong>Grounded</strong> — 27 official Swiss sources: SEM, ch.ch, FIDE, OSAR</li>
+      <li class="w"><strong>Always on</strong> — No login, no download, no appointment needed</li>
+      <li class="w"><strong>Free</strong> — Zero cost for the user</li>
+    </ul>
+  </div>
+  <div class="right dark">
+    <!-- Phone mockup with multilingual chat -->
+    <svg viewBox="0 0 300 500" width="255" xmlns="http://www.w3.org/2000/svg">
+      <!-- Phone body -->
+      <rect x="20" y="8" width="260" height="484" rx="36" fill="#2a2a3e" stroke="#3a3a5e" stroke-width="2"/>
+      <rect x="28" y="18" width="244" height="464" rx="28" fill="#141425"/>
+      <!-- Notch -->
+      <rect x="108" y="20" width="84" height="16" rx="8" fill="#2a2a3e"/>
+      <!-- Header bar -->
+      <rect x="28" y="46" width="244" height="46" fill="#D62828"/>
+      <text x="150" y="68" font-size="11" fill="white" text-anchor="middle" font-weight="bold">🇨🇭 Refugee Assistant</text>
+      <text x="150" y="84" font-size="9" fill="rgba(255,255,255,0.7)" text-anchor="middle">Online · Replies instantly</text>
+      <!-- Chat messages -->
+      <!-- User 1 (English) -->
+      <rect x="112" y="106" width="148" height="30" rx="12" fill="#D62828"/>
+      <text x="186" y="126" font-size="10" fill="white" text-anchor="middle">What is Permit F?</text>
+      <!-- Bot 1 -->
+      <rect x="40" y="148" width="182" height="46" rx="12" fill="#2a2a3e"/>
+      <text x="131" y="165" font-size="9" fill="#ccc" text-anchor="middle">Permit F = provisionally</text>
+      <text x="131" y="179" font-size="9" fill="#ccc" text-anchor="middle">admitted. You may work with</text>
+      <text x="131" y="193" font-size="9" fill="#ccc" text-anchor="middle">cantonal authorisation.</text>
+      <!-- User 2 (Arabic) -->
+      <rect x="112" y="206" width="148" height="30" rx="12" fill="#D62828"/>
+      <text x="186" y="226" font-size="10" fill="white" text-anchor="middle">هل يمكنني العمل؟</text>
+      <!-- Bot 2 (Arabic) -->
+      <rect x="40" y="248" width="182" height="46" rx="12" fill="#2a2a3e"/>
+      <text x="131" y="265" font-size="9" fill="#ccc" text-anchor="middle">نعم، يمكنك العمل بعد الحصول</text>
+      <text x="131" y="279" font-size="9" fill="#ccc" text-anchor="middle">على إذن من السلطة الكنتونية.</text>
+      <text x="131" y="293" font-size="9" fill="#888" text-anchor="middle">— SEM Switzerland</text>
+      <!-- User 3 (French) -->
+      <rect x="112" y="306" width="148" height="30" rx="12" fill="#D62828"/>
+      <text x="186" y="326" font-size="10" fill="white" text-anchor="middle">Et la santé?</text>
+      <!-- Bot typing -->
+      <rect x="40" y="348" width="80" height="30" rx="12" fill="#2a2a3e"/>
+      <circle cx="62" cy="363" r="4" fill="#555"/>
+      <circle cx="76" cy="363" r="4" fill="#555" opacity="0.7"/>
+      <circle cx="90" cy="363" r="4" fill="#555" opacity="0.4"/>
+      <!-- Input bar -->
+      <rect x="28" y="430" width="244" height="44" fill="#1e1e32"/>
+      <rect x="36" y="438" width="170" height="28" rx="14" fill="#2a2a3e"/>
+      <text x="121" y="457" font-size="9" fill="#555" text-anchor="middle">Ask in any language...</text>
+      <circle cx="244" cy="452" r="14" fill="#D62828"/>
+      <text x="244" y="458" font-size="14" fill="white" text-anchor="middle">→</text>
+    </svg>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     SLIDE 3 — TECH STACK
+═══════════════════════════════════════════ -->
+<div class="slide" id="slide-3">
+  <div class="left light">
+    <span class="slide-num">3 / 6</span>
+    <div class="tag">Tech Stack</div>
+    <h2>Architecture & <span class="red">Technology</span></h2>
+    <table>
+      <tr><th>Layer</th><th>Technology</th><th>Why</th></tr>
+      <tr><td>Language</td><td>Python</td><td>Rich AI ecosystem</td></tr>
+      <tr><td>Frontend</td><td>Streamlit</td><td>Web app, zero JS needed</td></tr>
+      <tr><td>AI Model</td><td>Open AI but not decided yet</td><td>Free, fast, multilingual</td></tr>
+      <tr><td>Knowledge Base</td><td>SQLite + 27 sources</td><td>Lightweight RAG</td></tr>
+      <tr><td>Retrieval</td><td>Keyword scoring</td><td>Accurate for Swiss domain</td></tr>
+      <tr><td>History</td><td>SQLite conversations</td><td>Full chat memory</td></tr>
+      <tr><td>Hosting</td><td>Streamlit Cloud</td><td>Free public deployment</td></tr>
+    </table>
+  </div>
+  <div class="right grey">
+    <svg viewBox="0 0 400 440" width="88%" xmlns="http://www.w3.org/2000/svg">
+      <!-- Layer 1: Frontend -->
+      <rect x="50" y="20" width="300" height="64" rx="12" fill="#4a90d9"/>
+      <text x="200" y="47" font-size="13" fill="white" text-anchor="middle" font-weight="bold">FRONTEND</text>
+      <text x="200" y="66" font-size="11" fill="rgba(255,255,255,0.75)" text-anchor="middle">Streamlit — Python Web Interface</text>
+      <!-- Arrow -->
+      <path d="M200,84 L200,108" stroke="#ccc" stroke-width="2" stroke-dasharray="5,3"/>
+      <polygon points="194,105 206,105 200,114" fill="#ccc"/>
+      <!-- Layer 2: Backend -->
+      <rect x="50" y="114" width="300" height="64" rx="12" fill="#5cb85c"/>
+      <text x="200" y="141" font-size="13" fill="white" text-anchor="middle" font-weight="bold">BACKEND</text>
+      <text x="200" y="160" font-size="11" fill="rgba(255,255,255,0.75)" text-anchor="middle">Query Processor · Session Manager</text>
+      <!-- Arrow -->
+      <path d="M200,178 L200,202" stroke="#ccc" stroke-width="2" stroke-dasharray="5,3"/>
+      <polygon points="194,199 206,199 200,208" fill="#ccc"/>
+      <!-- Layer 3: Knowledge Base -->
+      <rect x="50" y="208" width="300" height="64" rx="12" fill="#f0ad4e"/>
+      <text x="200" y="235" font-size="13" fill="white" text-anchor="middle" font-weight="bold">KNOWLEDGE BASE</text>
+      <text x="200" y="254" font-size="11" fill="rgba(255,255,255,0.75)" text-anchor="middle">SQLite · 27 Official Swiss Sources</text>
+      <!-- Arrow -->
+      <path d="M200,272 L200,296" stroke="#ccc" stroke-width="2" stroke-dasharray="5,3"/>
+      <polygon points="194,293 206,293 200,302" fill="#ccc"/>
+      <!-- Layer 4: AI Engine -->
+      <rect x="50" y="302" width="300" height="64" rx="12" fill="#D62828"/>
+      <text x="200" y="329" font-size="13" fill="white" text-anchor="middle" font-weight="bold">AI ENGINE</text>
+      <text x="200" y="348" font-size="11" fill="rgba(255,255,255,0.75)" text-anchor="middle">LLM API</text>
+      <!-- Labels on right -->
+      <text x="370" y="55" font-size="10" fill="#888">User sees</text>
+      <text x="370" y="149" font-size="10" fill="#888">Logic</text>
+      <text x="370" y="243" font-size="10" fill="#888">Sources</text>
+      <text x="370" y="337" font-size="10" fill="#888">Brain</text>
+      <!-- Vertical brace -->
+      <line x1="362" y1="20" x2="362" y2="366" stroke="#ddd" stroke-width="1"/>
+    </svg>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     SLIDE 4 — HOW IT WORKS (RAG)
+═══════════════════════════════════════════ -->
+<div class="slide" id="slide-4">
+  <div class="left light">
+    <span class="slide-num">4 / 6</span>
+    <div class="tag">How It Works</div>
+    <h2>Lightweight <span class="red">RAG Pipeline</span></h2>
+    <p style="margin-bottom:14px;">RAG = Retrieval-Augmented Generation. The app finds real Swiss sources first, then asks the AI to answer using them — so every response is grounded in official information.</p>
+    <ul>
+      <li>User asks a question in any language</li>
+      <li>Backend scores 27 Swiss official sources</li>
+      <li>Top 3 most relevant sources are selected</li>
+      <li>Sources + history sent to AI model</li>
+      <li>AI responds in the user's own language</li>
+    </ul>
+    <p style="margin-top:14px; font-size:13px;"><strong>Example:</strong> <em>"Can I work with Permit F?"</em> in Arabic → finds SEM source → responds in Arabic.</p>
+  </div>
+  <div class="right grey">
+    <svg viewBox="0 0 480 420" width="98%" xmlns="http://www.w3.org/2000/svg">
+
+      <!-- Official sources box (top) -->
+      <rect x="120" y="18" width="240" height="52" rx="10" fill="white" stroke="#ddd" stroke-width="1.5"/>
+      <text x="240" y="40" font-size="12" fill="#555" text-anchor="middle" font-weight="bold">📚 27 Official Swiss Sources</text>
+      <text x="240" y="57" font-size="10" fill="#888" text-anchor="middle">SEM · ch.ch · FIDE · OSAR · Canton offices</text>
+
+      <!-- Dashed line sources → AI -->
+      <line x1="240" y1="70" x2="240" y2="176" stroke="#ddd" stroke-width="1.5" stroke-dasharray="5,3"/>
+      <polygon points="234,173 246,173 240,180" fill="#ddd"/>
+
+      <!-- Step 1: User -->
+      <circle cx="60" cy="220" r="44" fill="#4a90d9"/>
+      <text x="60" y="210" font-size="22" text-anchor="middle">🧑</text>
+      <text x="60" y="230" font-size="10" fill="white" text-anchor="middle" font-weight="bold">USER</text>
+      <text x="60" y="244" font-size="9" fill="rgba(255,255,255,0.7)" text-anchor="middle">Any language</text>
+      <text x="60" y="278" font-size="10" fill="#888" text-anchor="middle">Step 1</text>
+
+      <!-- Arrow 1 -->
+      <line x1="106" y1="220" x2="146" y2="220" stroke="#D62828" stroke-width="2.5"/>
+      <polygon points="143,214 154,220 143,226" fill="#D62828"/>
+
+      <!-- Step 2: Search -->
+      <rect x="154" y="184" width="88" height="72" rx="12" fill="#f0ad4e"/>
+      <text x="198" y="210" font-size="20" text-anchor="middle">🔍</text>
+      <text x="198" y="228" font-size="9" fill="white" text-anchor="middle" font-weight="bold">KEYWORD</text>
+      <text x="198" y="240" font-size="9" fill="white" text-anchor="middle" font-weight="bold">SEARCH</text>
+      <text x="198" y="272" font-size="10" fill="#888" text-anchor="middle">Step 2</text>
+
+      <!-- Arrow 2 -->
+      <line x1="244" y1="220" x2="284" y2="220" stroke="#D62828" stroke-width="2.5"/>
+      <polygon points="281,214 292,220 281,226" fill="#D62828"/>
+
+      <!-- Step 3: AI -->
+      <rect x="292" y="184" width="88" height="72" rx="12" fill="#5cb85c"/>
+      <text x="336" y="210" font-size="20" text-anchor="middle">🧠</text>
+      <text x="336" y="228" font-size="9" fill="white" text-anchor="middle" font-weight="bold">AI</text>
+      <text x="336" y="240" font-size="9" fill="white" text-anchor="middle" font-weight="bold">LLM</text>
+      <text x="336" y="272" font-size="10" fill="#888" text-anchor="middle">Step 3</text>
+
+      <!-- Arrow 3 -->
+      <line x1="382" y1="220" x2="412" y2="220" stroke="#D62828" stroke-width="2.5"/>
+      <polygon points="409,214 420,220 409,226" fill="#D62828"/>
+
+      <!-- Step 4: Response -->
+      <circle cx="432" cy="220" r="36" fill="#D62828"/>
+      <text x="432" y="212" font-size="20" text-anchor="middle">💬</text>
+      <text x="432" y="230" font-size="9" fill="white" text-anchor="middle" font-weight="bold">ANSWER</text>
+      <text x="432" y="272" font-size="10" fill="#888" text-anchor="middle">Step 4</text>
+
+      <!-- DB save box (bottom) -->
+      <rect x="120" y="318" width="240" height="52" rx="10" fill="white" stroke="#ddd" stroke-width="1.5"/>
+      <text x="240" y="340" font-size="12" fill="#555" text-anchor="middle" font-weight="bold">💾 Saved to Database</text>
+      <text x="240" y="357" font-size="10" fill="#888" text-anchor="middle">Full conversation history stored in SQLite</text>
+      <line x1="240" y1="256" x2="240" y2="318" stroke="#ddd" stroke-width="1.5" stroke-dasharray="5,3"/>
+      <polygon points="234,314 246,314 240,322" fill="#ddd"/>
+    </svg>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     SLIDE 5 — LOGIC FLOW
+═══════════════════════════════════════════ -->
+<div class="slide" id="slide-5">
+  <div class="left light">
+    <span class="slide-num">5 / 6</span>
+    <div class="tag">Logic Flow</div>
+    <h2>How the App <span class="red">Makes Decisions</span></h2>
+    <ul style="margin-top:6px;">
+      <li>Every message checked for API key first</li>
+      <li>Question analyzed for permit type (N/F/B/C/S)</li>
+      <li>If permit found → strict source search</li>
+      <li>If no permit → general keyword search</li>
+      <li>Sources found → injected into AI prompt</li>
+      <li>No sources → AI uses its own knowledge</li>
+      <li>API error → user gets helpful message</li>
+      <li>Every answer saved to database</li>
+    </ul>
+  </div>
+  <div class="right grey">
+    <svg viewBox="0 0 340 510" width="82%" xmlns="http://www.w3.org/2000/svg">
+      <!-- Start -->
+      <rect x="85" y="8" width="170" height="34" rx="17" fill="#1a1a2e"/>
+      <text x="170" y="30" font-size="11" fill="white" text-anchor="middle" font-weight="bold">🧑 User types message</text>
+      <line x1="170" y1="42" x2="170" y2="60" stroke="#bbb" stroke-width="1.5"/>
+      <polygon points="164,57 176,57 170,64" fill="#bbb"/>
+
+      <!-- Decision 1: API Key -->
+      <polygon points="170,64 276,96 170,128 64,96" fill="#fff3f3" stroke="#D62828" stroke-width="1.5"/>
+      <text x="170" y="91" font-size="10" fill="#D62828" text-anchor="middle" font-weight="bold">API Key</text>
+      <text x="170" y="105" font-size="10" fill="#D62828" text-anchor="middle" font-weight="bold">ready?</text>
+      <!-- No branch -->
+      <line x1="276" y1="96" x2="316" y2="96" stroke="#D62828" stroke-width="1.5"/>
+      <text x="292" y="89" font-size="9" fill="#D62828">No</text>
+      <rect x="298" y="108" width="38" height="24" rx="5" fill="#ffeaea"/>
+      <text x="317" y="124" font-size="9" fill="#D62828" text-anchor="middle">❌ Error</text>
+      <!-- Yes -->
+      <line x1="170" y1="128" x2="170" y2="146" stroke="#bbb" stroke-width="1.5"/>
+      <text x="178" y="141" font-size="9" fill="#555">Yes</text>
+      <polygon points="164,143 176,143 170,150" fill="#bbb"/>
+
+      <!-- Decision 2: Permit detected? -->
+      <polygon points="170,150 276,182 170,214 64,182" fill="#fff3f3" stroke="#D62828" stroke-width="1.5"/>
+      <text x="170" y="177" font-size="10" fill="#D62828" text-anchor="middle" font-weight="bold">Permit</text>
+      <text x="170" y="191" font-size="10" fill="#D62828" text-anchor="middle" font-weight="bold">detected?</text>
+      <!-- Yes → strict -->
+      <line x1="64" y1="182" x2="24" y2="182" stroke="#5cb85c" stroke-width="1.5"/>
+      <text x="42" y="175" font-size="9" fill="#5cb85c">Yes</text>
+      <rect x="4" y="194" width="44" height="30" rx="5" fill="#e8f4e8"/>
+      <text x="26" y="207" font-size="8" fill="#2a7a2a" text-anchor="middle">Strict</text>
+      <text x="26" y="218" font-size="8" fill="#2a7a2a" text-anchor="middle">Search</text>
+      <!-- No → general -->
+      <line x1="276" y1="182" x2="316" y2="182" stroke="#4a90d9" stroke-width="1.5"/>
+      <text x="292" y="175" font-size="9" fill="#4a90d9">No</text>
+      <rect x="298" y="194" width="44" height="30" rx="5" fill="#e8f0ff"/>
+      <text x="320" y="207" font-size="8" fill="#224fa0" text-anchor="middle">General</text>
+      <text x="320" y="218" font-size="8" fill="#224fa0" text-anchor="middle">Search</text>
+      <!-- Merge -->
+      <line x1="26" y1="224" x2="26" y2="250" stroke="#bbb" stroke-width="1.5"/>
+      <line x1="26" y1="250" x2="170" y2="250" stroke="#bbb" stroke-width="1.5"/>
+      <line x1="320" y1="224" x2="320" y2="250" stroke="#bbb" stroke-width="1.5"/>
+      <line x1="320" y1="250" x2="170" y2="250" stroke="#bbb" stroke-width="1.5"/>
+      <polygon points="164,247 176,247 170,254" fill="#bbb"/>
+
+      <!-- Decision 3: Sources found? -->
+      <polygon points="170,254 276,286 170,318 64,286" fill="#fff3f3" stroke="#D62828" stroke-width="1.5"/>
+      <text x="170" y="281" font-size="10" fill="#D62828" text-anchor="middle" font-weight="bold">Sources</text>
+      <text x="170" y="295" font-size="10" fill="#D62828" text-anchor="middle" font-weight="bold">found?</text>
+      <!-- Yes → inject -->
+      <line x1="64" y1="286" x2="24" y2="286" stroke="#5cb85c" stroke-width="1.5"/>
+      <text x="42" y="279" font-size="9" fill="#5cb85c">Yes</text>
+      <rect x="4" y="298" width="44" height="30" rx="5" fill="#e8f4e8"/>
+      <text x="26" y="311" font-size="8" fill="#2a7a2a" text-anchor="middle">Inject</text>
+      <text x="26" y="322" font-size="8" fill="#2a7a2a" text-anchor="middle">top 3</text>
+      <!-- No → AI only -->
+      <line x1="276" y1="286" x2="316" y2="286" stroke="#f0ad4e" stroke-width="1.5"/>
+      <text x="292" y="279" font-size="9" fill="#f0ad4e">No</text>
+      <rect x="298" y="298" width="44" height="30" rx="5" fill="#fff8e8"/>
+      <text x="320" y="311" font-size="8" fill="#8a6000" text-anchor="middle">AI own</text>
+      <text x="320" y="322" font-size="8" fill="#8a6000" text-anchor="middle">knowledge</text>
+      <!-- Merge -->
+      <line x1="26" y1="328" x2="26" y2="358" stroke="#bbb" stroke-width="1.5"/>
+      <line x1="26" y1="358" x2="170" y2="358" stroke="#bbb" stroke-width="1.5"/>
+      <line x1="320" y1="328" x2="320" y2="358" stroke="#bbb" stroke-width="1.5"/>
+      <line x1="320" y1="358" x2="170" y2="358" stroke="#bbb" stroke-width="1.5"/>
+      <polygon points="164,355 176,355 170,362" fill="#bbb"/>
+
+      <!-- Decision 4: AI response received? -->
+      <polygon points="170,362 260,390 170,418 80,390" fill="#fff3f3" stroke="#D62828" stroke-width="1.5"/>
+      <text x="170" y="385" font-size="9" fill="#D62828" text-anchor="middle" font-weight="bold">Response</text>
+      <text x="170" y="399" font-size="9" fill="#D62828" text-anchor="middle" font-weight="bold">received?</text>
+      <!-- No -->
+      <line x1="260" y1="390" x2="300" y2="390" stroke="#D62828" stroke-width="1.5"/>
+      <text x="276" y="383" font-size="9" fill="#D62828">Error</text>
+      <rect x="292" y="402" width="38" height="24" rx="5" fill="#ffeaea"/>
+      <text x="311" y="418" font-size="9" fill="#D62828" text-anchor="middle">❌ Retry</text>
+      <!-- Yes -->
+      <line x1="170" y1="418" x2="170" y2="434" stroke="#bbb" stroke-width="1.5"/>
+      <text x="178" y="430" font-size="9" fill="#555">Yes</text>
+      <polygon points="164,431 176,431 170,438" fill="#bbb"/>
+
+      <!-- End -->
+      <rect x="78" y="438" width="184" height="34" rx="17" fill="#D62828"/>
+      <text x="170" y="460" font-size="11" fill="white" text-anchor="middle" font-weight="bold">💬 Answer shown to user</text>
+    </svg>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     SLIDE 6 — WHAT'S NEXT
+═══════════════════════════════════════════ -->
+<div class="slide" id="slide-6">
+  <div class="left dark">
+    <span class="slide-num" style="color:#555;">6 / 6</span>
+    <div class="tag">What's Next</div>
+    <h2 class="w">Roadmap & <span class="red">Vision</span></h2>
+    <ul style="margin-top:6px;">
+      <li class="w">Build & Deploy publicly on Streamlit Community Cloud</li>
+      <li class="w">Partner with OSAR, Caritas, Swiss Red Cross</li>
+      <li class="w">SEM Letter Reader — upload document, get explanation</li>
+      <li class="w">Asylum Hearing Coach — practice Q&A before interview</li>
+      <li class="w">WhatsApp access for mobile-only users</li>
+      <li class="w">Semantic search with vector embeddings</li>
+    </ul>
+    <div class="quote" style="border-color:#D62828; color:#aaa; margin-top:20px;">
+      "Every refugee in Switzerland deserves to understand their rights — free, in their own language, at any time."
+    </div>
+  </div>
+  <div class="right navy">
+    <svg viewBox="0 0 400 420" width="92%" xmlns="http://www.w3.org/2000/svg">
+      <!-- Timeline spine -->
+      <line x1="60" y1="60" x2="60" y2="380" stroke="#2a2a3e" stroke-width="3"/>
+
+      <!-- Milestone 1: MVP ✅ -->
+      <circle cx="60" cy="90" r="20" fill="#5cb85c"/>
+      <text x="60" y="96" font-size="14" text-anchor="middle" fill="white">✓</text>
+      <rect x="90" y="72" width="270" height="40" rx="8" fill="#1e2e1e"/>
+      <text x="105" y="88" font-size="12" fill="#5cb85c" font-weight="bold">MVP — Built &amp; Working</text>
+      <text x="105" y="104" font-size="10" fill="#6a8a6a">Multilingual chatbot · RAG pipeline · 27 sources</text>
+
+      <!-- Milestone 2: Deploy -->
+      <circle cx="60" cy="170" r="20" fill="#4a90d9"/>
+      <text x="60" y="176" font-size="14" text-anchor="middle" fill="white">🚀</text>
+      <rect x="90" y="152" width="270" height="40" rx="8" fill="#1a1e2e"/>
+      <text x="105" y="168" font-size="12" fill="#4a90d9" font-weight="bold">Deploy — Streamlit Cloud</text>
+      <text x="105" y="184" font-size="10" fill="#5a6a8a">Public link · Accessible to any refugee in CH</text>
+
+      <!-- Milestone 3: Doc Reader -->
+      <circle cx="60" cy="250" r="20" fill="#f0ad4e" opacity="0.8"/>
+      <text x="60" y="256" font-size="14" text-anchor="middle" fill="white">📄</text>
+      <rect x="90" y="232" width="270" height="40" rx="8" fill="#2a2010"/>
+      <text x="105" y="248" font-size="12" fill="#f0ad4e" font-weight="bold">SEM Letter Reader</text>
+      <text x="105" y="264" font-size="10" fill="#8a7040">Upload document → explained in your language</text>
+
+      <!-- Milestone 4: Hearing Coach -->
+      <circle cx="60" cy="330" r="20" fill="#D62828" opacity="0.7"/>
+      <text x="60" y="336" font-size="14" text-anchor="middle" fill="white">🎓</text>
+      <rect x="90" y="312" width="270" height="40" rx="8" fill="#2a1010"/>
+      <text x="105" y="328" font-size="12" fill="#D62828" font-weight="bold">Hearing Coach + WhatsApp</text>
+      <text x="105" y="344" font-size="10" fill="#8a4040">Practice interview Q&amp;A · Access via mobile</text>
+
+      <!-- Legend -->
+      <circle cx="90" cy="390" r="7" fill="#5cb85c"/>
+      <text x="103" y="395" font-size="10" fill="#888">Done</text>
+      <circle cx="148" cy="390" r="7" fill="#4a90d9"/>
+      <text x="161" y="395" font-size="10" fill="#888">Next</text>
+      <circle cx="206" cy="390" r="7" fill="#f0ad4e" opacity="0.8"/>
+      <text x="219" y="395" font-size="10" fill="#888">Soon</text>
+      <circle cx="262" cy="390" r="7" fill="#D62828" opacity="0.7"/>
+      <text x="275" y="395" font-size="10" fill="#888">Vision</text>
+    </svg>
+  </div>
+</div>
+
+<!-- Navigation -->
+<div class="nav">
+  <button id="prevBtn" onclick="changeSlide(-1)" disabled>← Prev</button>
+  <div class="dots" id="dots"></div>
+  <button id="nextBtn" onclick="changeSlide(1)">Next →</button>
+</div>
+
+<script>
+  let current = 0;
+  const total = 6;
+  const dotsEl = document.getElementById('dots');
+
+  for (let i = 0; i < total; i++) {
+    const d = document.createElement('div');
+    d.className = 'dot' + (i === 0 ? ' active' : '');
+    d.onclick = () => goTo(i);
+    dotsEl.appendChild(d);
+  }
+
+  function goTo(idx) {
+    document.getElementById(`slide-${current + 1}`).classList.remove('active');
+    document.querySelectorAll('.dot')[current].classList.remove('active');
+    current = idx;
+    document.getElementById(`slide-${current + 1}`).classList.add('active');
+    document.querySelectorAll('.dot')[current].classList.add('active');
+    document.getElementById('prevBtn').disabled = current === 0;
+    document.getElementById('nextBtn').disabled = current === total - 1;
+  }
+
+  function changeSlide(dir) {
+    const n = current + dir;
+    if (n >= 0 && n < total) goTo(n);
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight') changeSlide(1);
+    if (e.key === 'ArrowLeft')  changeSlide(-1);
+  });
+</script>
+</body>
+</html>
