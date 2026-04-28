@@ -215,7 +215,7 @@
       <div class="stat"><div class="n">5</div><div class="l">Permit types — each with different rules</div></div>
       <div class="stat"><div class="n">0</div><div class="l">Free multilingual tools explaining it clearly</div></div>
     </div>
-    <p>Legal aid is overwhelmed. Official websites are in German. Caseworkers are too busy.<br/><strong>Missed deadlines. Lost rights. Fear and isolation.</strong></p>
+    <p>Legal aid is overwhelmed. Official websites are in official Swiss languages. Caseworkers are too busy.<br/><strong>Missed deadlines. Lost rights. Fear and isolation.</strong></p>
   </div>
   <div class="right grey">
     <svg viewBox="0 0 520 560" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
@@ -293,11 +293,11 @@
     <h2 class="w">Refugee Assistant <span class="red">Switzerland</span></h2>
     <p class="w" style="margin-bottom:14px;">A free AI chatbot — available 24/7 — answering asylum questions in the user's own language.</p>
     <ul>
-      <li class="w"><strong>Multilingual</strong> — Arabic, French, German, Tigrinya & more — auto-detected</li>
-      <li class="w"><strong>Comprehensive</strong> — Permits N/F/B/C/S, work, health, education, appeals</li>
-      <li class="w"><strong>Grounded</strong> — 27 official Swiss sources: SEM, ch.ch, FIDE, OSAR</li>
-      <li class="w"><strong>Always on</strong> — No login, no download, no appointment needed</li>
-      <li class="w"><strong>Free</strong> — Zero cost for the user</li>
+      <li class="w"><strong>Multilingual</strong></li>
+      <li class="w"><strong>Comprehensive</strong></li>
+      <li class="w"><strong>Sources</strong></li>
+      <li class="w"><strong>Always on</strong></li>
+      <li class="w"><strong>Free</strong></li>
     </ul>
   </div>
   <div class="right dark">
@@ -360,7 +360,7 @@
       <tr><td>Language</td><td>Python</td><td>Rich AI ecosystem</td></tr>
       <tr><td>Frontend</td><td>Streamlit</td><td>Web app, zero JS needed</td></tr>
       <tr><td>AI Model</td><td>Open AI but not decided yet</td><td>Free, fast, multilingual</td></tr>
-      <tr><td>Knowledge Base</td><td>SQLite + 27 sources</td><td>Lightweight RAG</td></tr>
+      <tr><td>Knowledge Base</td><td>SQLite + 27 sources</td><td>Lightweight RAG OR Agentic RAG ai</td></tr>
       <tr><td>Retrieval</td><td>Keyword scoring</td><td>Accurate for Swiss domain</td></tr>
       <tr><td>History</td><td>SQLite conversations</td><td>Full chat memory</td></tr>
       <tr><td>Hosting</td><td>Streamlit Cloud</td><td>Free public deployment</td></tr>
@@ -412,13 +412,9 @@
     <span class="slide-num">4 / 6</span>
     <div class="tag">How It Works</div>
     <h2>Lightweight <span class="red">RAG Pipeline</span></h2>
-    <p style="margin-bottom:14px;">RAG = Retrieval-Augmented Generation. The app finds real Swiss sources first, then asks the AI to answer using them — so every response is grounded in official information.</p>
+    <p style="margin-bottom:14px;">RAG = Retrieval-Augmented Generation.</p>
     <ul>
-      <li>User asks a question in any language</li>
-      <li>Backend scores 27 Swiss official sources</li>
-      <li>Top 3 most relevant sources are selected</li>
-      <li>Sources + history sent to AI model</li>
-      <li>AI responds in the user's own language</li>
+      
     </ul>
     <p style="margin-top:14px; font-size:13px;"><strong>Example:</strong> <em>"Can I work with Permit F?"</em> in Arabic → finds SEM source → responds in Arabic.</p>
   </div>
@@ -492,14 +488,6 @@
     <div class="tag">Logic Flow</div>
     <h2>How the App <span class="red">Makes Decisions</span></h2>
     <ul style="margin-top:6px;">
-      <li>Every message checked for API key first</li>
-      <li>Question analyzed for permit type (N/F/B/C/S)</li>
-      <li>If permit found → strict source search</li>
-      <li>If no permit → general keyword search</li>
-      <li>Sources found → injected into AI prompt</li>
-      <li>No sources → AI uses its own knowledge</li>
-      <li>API error → user gets helpful message</li>
-      <li>Every answer saved to database</li>
     </ul>
   </div>
   <div class="right grey">

@@ -10,9 +10,39 @@ DB_PATH = DATA_DIR / "app.db"
 SOURCES_FILE = DATA_DIR / "official_sources.json"
 
 
+RETENTION_DAYS = 30
+
+
 def get_connection() -> sqlite3.Connection:
     DATA_DIR.mkdir(exist_ok=True)
     return sqlite3.connect(DB_PATH)
+
+
+def delete_old_conversations() -> int:
+    """Delete conversations and their messages older than RETENTION_DAYS. Returns count deleted."""
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute(
+        """
+        DELETE FROM messages
+        WHERE conversation_id IN (
+            SELECT id FROM conversations
+            WHERE created_at < datetime('now', ? || ' days')
+        )
+        """,
+        (f"-{RETENTION_DAYS}",),
+    )
+    cursor.execute(
+        """
+        DELETE FROM conversations
+        WHERE created_at < datetime('now', ? || ' days')
+        """,
+        (f"-{RETENTION_DAYS}",),
+    )
+    deleted = cursor.rowcount
+    conn.commit()
+    conn.close()
+    return deleted
 
 
 def init_db() -> None:
@@ -138,8 +168,21 @@ def get_conversation_messages(conversation_id: int) -> list[dict[str, Any]]:
     ]
 
 
+_STOP_WORDS = {
+    "do", "you", "know", "is", "in", "of", "to", "an", "or", "the",
+    "and", "me", "my", "we", "it", "at", "be", "he", "she", "so",
+    "if", "no", "on", "as", "up", "by", "go", "us", "can", "are",
+    "was", "for", "but", "not", "with", "this", "that", "from",
+    "have", "has", "had", "will", "would", "could", "should", "about",
+    "what", "when", "where", "who", "how", "why", "which", "there",
+    "their", "they", "been", "also", "more", "some", "than", "then",
+    "its", "any", "all", "out", "get", "one", "may", "use", "your",
+}
+
+
 def _tokenize(text: str) -> set[str]:
-    return set(re.findall(r"[a-zA-Z]{2,}", text.lower()))
+    tokens = set(re.findall(r"[a-zA-Z]{3,}", text.lower()))
+    return tokens - _STOP_WORDS
 
 
 def _extract_permit_code(text: str) -> str | None:
@@ -247,8 +290,8 @@ def search_sources(query: str, limit: int = 3) -> list[dict[str, Any]]:
 
     scored.sort(key=lambda x: x[0], reverse=True)
 
-    # Return only actually relevant results
-    filtered = [src for score, src in scored if score >= 3]
+    # Return only actually relevant results — threshold prevents junk sources
+    filtered = [src for score, src in scored if score >= 12]
     return filtered[:limit]
 
 

@@ -7,6 +7,7 @@ import streamlit as st
 from src.database import (
     init_db,
     seed_sources_from_json,
+    delete_old_conversations,
     create_conversation,
     save_message,
     get_conversation_messages,
@@ -19,6 +20,7 @@ from src.state_tracker import build_initial_state, update_state
 
 init_db()
 seed_sources_from_json()
+delete_old_conversations()
 
 st.set_page_config(
     page_title="Refugee Assistant Switzerland",
@@ -70,6 +72,8 @@ with st.sidebar:
     st.markdown("- [OSAR — Swiss Refugee Council](https://www.osar.ch/en/)")
 
     st.markdown("---")
+    st.caption("🔒 Your conversation is stored locally to provide context and processed via Groq AI to generate responses. Groq does not use your data for training. No data is sold or shared with other parties.")
+    st.markdown("---")
     if st.button("Start new conversation", use_container_width=True):
         st.session_state.conversation_id = create_conversation()
         st.session_state.messages = []
@@ -113,7 +117,7 @@ if user_prompt:
             except ValueError as e:
                 assistant_text = (
                     f"⚠️ Configuration error: {e}\n\n"
-                    "Please add your `ANTHROPIC_API_KEY` to the `.env` file and restart the app."
+                    "Please add your `GROQ_API_KEY` to the `.env` file and restart the app."
                 )
                 sources = []
 
