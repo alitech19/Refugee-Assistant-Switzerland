@@ -12,6 +12,8 @@ from src.database import (
     save_message,
     get_conversation_messages,
     search_sources,
+    save_feedback,
+    count_auto_news,
 )
 from src.llm_service import process_chat_turn
 from src.resolver import resolve_user_query
@@ -27,6 +29,23 @@ st.set_page_config(
     page_icon="🇨🇭",
     layout="centered",
 )
+
+# Auto-detect text direction so Arabic/Hebrew/Urdu render RTL, English LTR
+st.markdown("""
+<style>
+.stMarkdown p, .stMarkdown li, .stMarkdown span {
+    direction: auto;
+    unicode-bidi: plaintext;
+    text-align: start;
+}
+[data-testid="stChatMessageContent"] p,
+[data-testid="stChatMessageContent"] li {
+    direction: auto;
+    unicode-bidi: plaintext;
+    text-align: start;
+}
+</style>
+""", unsafe_allow_html=True)
 
 st.title("🇨🇭 Refugee Assistant Switzerland")
 st.caption(
@@ -49,8 +68,30 @@ if "messages" not in st.session_state:
 if "chat_state" not in st.session_state:
     st.session_state.chat_state = build_initial_state()
 
+CANTONS = [
+    "— Select your canton —",
+    "Aargau (AG)", "Appenzell Ausserrhoden (AR)", "Appenzell Innerrhoden (AI)",
+    "Basel-Landschaft (BL)", "Basel-Stadt (BS)", "Bern (BE)",
+    "Fribourg (FR)", "Geneva (GE)", "Glarus (GL)", "Graubünden (GR)",
+    "Jura (JU)", "Lucerne (LU)", "Neuchâtel (NE)", "Nidwalden (NW)",
+    "Obwalden (OW)", "Schaffhausen (SH)", "Schwyz (SZ)", "Solothurn (SO)",
+    "St. Gallen (SG)", "Thurgau (TG)", "Ticino (TI)", "Uri (UR)",
+    "Valais (VS)", "Vaud (VD)", "Zug (ZG)", "Zurich (ZH)",
+]
+
 # Sidebar
 with st.sidebar:
+    st.markdown("## Your Canton")
+    selected = st.selectbox(
+        "Select your canton for local answers:",
+        CANTONS,
+        index=0,
+        key="canton_selector",
+    )
+    canton = None if selected.startswith("—") else selected
+    if canton:
+        st.success(f"Showing answers tailored to **{canton}**")
+    st.markdown("---")
     st.markdown("## What I can help with")
     st.markdown("""
 - 🔖 **Permits** — N, F, B, C, S: what they mean and what they allow
@@ -74,6 +115,11 @@ with st.sidebar:
     st.markdown("---")
     st.caption("🔒 Your conversation is stored locally to provide context and processed via Groq AI to generate responses. Groq does not use your data for training. No data is sold or shared with other parties.")
     st.markdown("---")
+    news_count = count_auto_news()
+    if news_count:
+        st.caption(f"📡 {news_count} official news articles loaded from SEM & OSAR")
+
+    st.markdown("---")
     if st.button("Start new conversation", use_container_width=True):
         st.session_state.conversation_id = create_conversation()
         st.session_state.messages = []
@@ -81,7 +127,7 @@ with st.sidebar:
         st.rerun()
 
 # Render chat history
-for message in st.session_state.messages:
+for msg_idx, message in enumerate(st.session_state.messages):
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
         sources = message.get("sources", [])
@@ -91,6 +137,46 @@ for message in st.session_state.messages:
                     st.markdown(f"**{src['title']}**")
                     st.markdown(f"[Open source]({src['url']})")
                     st.markdown("---")
+
+    if message["role"] == "assistant":
+        fb_key = f"fb_{msg_idx}"
+        already_rated = st.session_state.get(fb_key)
+        if already_rated:
+            st.caption(f"{'👍' if already_rated == 1 else '👎'} Feedback recorded — thank you!")
+        else:
+            col1, col2, col3 = st.columns([1, 1, 8])
+            with col1:
+                if st.button("👍", key=f"up_{msg_idx}", help="This answer was helpful"):
+                    prev_user = next(
+                        (st.session_state.messages[i]["content"]
+                         for i in range(msg_idx - 1, -1, -1)
+                         if st.session_state.messages[i]["role"] == "user"),
+                        "",
+                    )
+                    save_feedback(
+                        st.session_state.conversation_id,
+                        prev_user,
+                        message["content"],
+                        1,
+                    )
+                    st.session_state[fb_key] = 1
+                    st.rerun()
+            with col2:
+                if st.button("👎", key=f"down_{msg_idx}", help="This answer was not helpful"):
+                    prev_user = next(
+                        (st.session_state.messages[i]["content"]
+                         for i in range(msg_idx - 1, -1, -1)
+                         if st.session_state.messages[i]["role"] == "user"),
+                        "",
+                    )
+                    save_feedback(
+                        st.session_state.conversation_id,
+                        prev_user,
+                        message["content"],
+                        -1,
+                    )
+                    st.session_state[fb_key] = -1
+                    st.rerun()
 
 # Chat input
 user_prompt = st.chat_input(
@@ -110,10 +196,10 @@ if user_prompt:
             resolved = resolve_user_query(user_prompt, st.session_state.chat_state)
             st.session_state.chat_state = update_state(st.session_state.chat_state, resolved)
 
-            sources = search_sources(resolved["standalone_query"], limit=3)
+            sources = search_sources(resolved["standalone_query"], limit=3, canton=canton)
 
             try:
-                assistant_text = process_chat_turn(st.session_state.messages, sources)
+                assistant_text = process_chat_turn(st.session_state.messages, sources, canton=canton)
             except ValueError as e:
                 assistant_text = (
                     f"⚠️ Configuration error: {e}\n\n"

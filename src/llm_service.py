@@ -34,6 +34,7 @@ def _format_sources(sources: list[dict[str, Any]]) -> str:
 def process_chat_turn(
     messages: list[dict[str, Any]],
     sources: list[dict[str, Any]],
+    canton: str | None = None,
 ) -> str:
     if not client:
         raise ValueError(
@@ -43,10 +44,19 @@ def process_chat_turn(
     sources_text = _format_sources(sources)
 
     today = date.today().strftime("%B %d, %Y")
+    canton_note = (
+        f"\nUSER'S CANTON: {canton}. "
+        "When answering questions about local offices, integration programmes, "
+        "language courses, or canton-specific procedures, prioritise information "
+        f"relevant to {canton}. Always mention the cantonal migration office "
+        "if it is relevant to the question."
+        if canton else ""
+    )
     system_with_date = (
         f"{SYSTEM_PROMPT}\n\n"
         f"TODAY'S DATE: {today}. "
         f"Always use this date when the user asks what day or date it is."
+        f"{canton_note}"
     )
 
     api_messages = [{"role": "system", "content": system_with_date}]
