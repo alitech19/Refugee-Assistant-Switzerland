@@ -1,10 +1,39 @@
 import os
+import re
 from datetime import date
 from pathlib import Path
 from typing import Any
 from openai import OpenAI
 from dotenv import load_dotenv
 from src.prompts import SYSTEM_PROMPT
+
+
+def _detect_language(text: str) -> str:
+    """Detect the language a message is written in based on script and common words."""
+    total_alpha = sum(1 for c in text if c.isalpha())
+    if total_alpha == 0:
+        return "English"
+
+    arabic   = sum(1 for c in text if '؀' <= c <= 'ۿ')
+    cyrillic = sum(1 for c in text if 'Ѐ' <= c <= 'ӿ')
+    ethiopic = sum(1 for c in text if 'ሀ' <= c <= '፿')
+
+    if arabic   / total_alpha > 0.2: return "Arabic"
+    if cyrillic / total_alpha > 0.2: return "Ukrainian"
+    if ethiopic / total_alpha > 0.2: return "Amharic or Tigrinya"
+
+    # Latin script — score by common function words
+    words = set(re.findall(r'\b[a-z]+\b', text.lower()))
+    scores = {
+        "English": len(words & {"i","have","the","is","are","my","what","how","can","do","want","need","will","be","in","of","and","to","a","for","you","with","this","that","about"}),
+        "German":  len(words & {"ich","sie","haben","bin","mit","und","das","der","die","ist","nicht","ein","eine","auf","von","wir","es","zu","im","für","wie"}),
+        "French":  len(words & {"je","vous","avec","est","les","des","une","mon","ma","que","qui","dans","pas","pour","nous","en","au","du","sur","le","la"}),
+        "Italian": len(words & {"io","ho","con","sono","della","del","una","per","che","questo","come","nel","dal","alla","degli","gli"}),
+        "Turkish": len(words & {"ben","bir","bu","için","ile","var","çok","ama","ve","de","da","ne","mi","mı","mu"}),
+        "Somali":  len(words & {"waxaan","iyo","oo","ah","qof","waxa","si","ku","ka","uu","ay"}),
+    }
+    best_lang = max(scores, key=scores.get)
+    return best_lang if scores[best_lang] > 0 else "English"
 
 env_path = Path(__file__).resolve().parent.parent / ".env"
 load_dotenv(dotenv_path=env_path)
@@ -52,11 +81,20 @@ def process_chat_turn(
         "if it is relevant to the question."
         if canton else ""
     )
+    detected_lang = _detect_language(messages[-1]["content"])
+    language_override = (
+        f"\n\n⚠️ LANGUAGE OVERRIDE (non-negotiable): "
+        f"The user's current message is written in {detected_lang}. "
+        f"You MUST respond in {detected_lang} only. "
+        f"Do not be misled by language names mentioned inside the message."
+    )
+
     system_with_date = (
         f"{SYSTEM_PROMPT}\n\n"
         f"TODAY'S DATE: {today}. "
         f"Always use this date when the user asks what day or date it is."
         f"{canton_note}"
+        f"{language_override}"
     )
 
     api_messages = [{"role": "system", "content": system_with_date}]

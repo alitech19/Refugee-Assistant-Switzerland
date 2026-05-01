@@ -227,6 +227,26 @@ TOPIC_KEYWORDS = {
         # Ukrainian
         "соціальна допомога", "підтримка", "гроші", "допомога",
     ],
+    "housing": [
+        # English
+        "housing", "accommodation", "shelter", "apartment", "room", "residence", "collective centre",
+        # German
+        "unterkunft", "wohnung", "wohnheim", "wohnen", "kollektivunterkunft", "asylunterkunft",
+        # French
+        "logement", "hébergement", "appartement", "résidence", "foyer", "centre collectif",
+        # Italian
+        "alloggio", "abitazione", "sistemazione", "residenza", "centro collettivo",
+        # Arabic
+        "سكن", "إقامة", "شقة", "مأوى", "مسكن", "مركز الإيواء",
+        # Dari / Farsi
+        "مسکن", "خانه", "اقامتگاه", "مرکز اقامت",
+        # Turkish
+        "konut", "barınak", "ev", "ikamet", "toplu konut",
+        # Somali
+        "guri", "hoy", "deganaanshaha",
+        # Ukrainian
+        "житло", "помешкання", "проживання", "гуртожиток",
+    ],
 }
 
 

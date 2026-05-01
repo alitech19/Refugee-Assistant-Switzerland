@@ -33,7 +33,19 @@ from src.resolver import _detect_topics
 RSS_FEEDS = [
     {
         "url": "https://d-nsbc-p.admin.ch/NSBSubscriber/feeds/rss?lang=de&org-nr=405",
+        "source_name": "SEM (Staatssekretariat für Migration)",
+    },
+    {
+        "url": "https://d-nsbc-p.admin.ch/NSBSubscriber/feeds/rss?lang=fr&org-nr=405",
+        "source_name": "SEM (Secrétariat d'État aux migrations)",
+    },
+    {
+        "url": "https://d-nsbc-p.admin.ch/NSBSubscriber/feeds/rss?lang=en&org-nr=405",
         "source_name": "SEM (State Secretariat for Migration)",
+    },
+    {
+        "url": "https://d-nsbc-p.admin.ch/NSBSubscriber/feeds/rss?lang=it&org-nr=405",
+        "source_name": "SEM (Segreteria di Stato della migrazione)",
     },
     {
         "url": "https://www.osar.ch/rss.xml",
