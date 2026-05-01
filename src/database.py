@@ -226,6 +226,15 @@ def count_auto_news() -> int:
     return count
 
 
+def get_last_fetch_time() -> str | None:
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT MAX(created_at) FROM auto_news")
+    result = cursor.fetchone()[0]
+    conn.close()
+    return result[:10] if result else None
+
+
 def save_feedback(
     conversation_id: int,
     user_message: str,
@@ -289,7 +298,7 @@ def search_sources(query: str, limit: int = 3, canton: str | None = None) -> lis
 
     # Include automatically fetched official news (no approval needed — trusted source)
     cursor.execute(
-        "SELECT id, title, url, topic, summary FROM auto_news ORDER BY id DESC LIMIT 200"
+        "SELECT id, title, url, topic, summary, published_at FROM auto_news ORDER BY id DESC LIMIT 200"
     )
     news_rows = cursor.fetchall()
     conn.close()
@@ -302,6 +311,7 @@ def search_sources(query: str, limit: int = 3, canton: str | None = None) -> lis
             "topic": row[3],
             "content": row[4],
             "is_official": 1,
+            "published_at": "",  # static sources have no meaningful publication date
         }
         for row in rows
     ] + [
@@ -312,6 +322,7 @@ def search_sources(query: str, limit: int = 3, canton: str | None = None) -> lis
             "topic": row[3] or "",
             "content": row[4] or "",
             "is_official": 1,
+            "published_at": row[5] or "",
         }
         for row in news_rows
     ]

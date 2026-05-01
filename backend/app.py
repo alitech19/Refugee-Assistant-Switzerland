@@ -14,6 +14,7 @@ from src.database import (
     search_sources,
     save_feedback,
     count_auto_news,
+    get_last_fetch_time,
 )
 from src.llm_service import process_chat_turn
 from src.resolver import resolve_user_query
@@ -91,6 +92,25 @@ with st.sidebar:
     canton = None if selected.startswith("—") else selected
     if canton:
         st.success(f"Showing answers tailored to **{canton}**")
+
+    st.markdown("---")
+    st.markdown("## Quick Questions")
+    st.caption("Tap to get an instant answer:")
+    QUICK_QUESTIONS = [
+        "What is Permit F and can I work with it?",
+        "How do I appeal a rejected asylum decision?",
+        "How can I bring my family to Switzerland?",
+        "What language courses are available for refugees?",
+        "What are my rights as an asylum seeker with Permit N?",
+        "What is Permit S for Ukrainians?",
+        "What housing do asylum seekers receive?",
+        "How do I get health insurance as a refugee?",
+    ]
+    for q in QUICK_QUESTIONS:
+        if st.button(q, use_container_width=True, key=f"qq_{q[:30]}"):
+            st.session_state.quick_prompt = q
+            st.rerun()
+
     st.markdown("---")
     st.markdown("## What I can help with")
     st.markdown("""
@@ -103,21 +123,28 @@ with st.sidebar:
 - 👨‍👩‍👧 **Family reunification** — rules by permit type
 - ⚖️ **Appeals** — what to do after a negative decision
 - 🏛️ **Naturalization** — path to Swiss citizenship
-- ❓ **General questions** — life and administration in Switzerland
+- 🏠 **Housing** — accommodation rules during the procedure
 """)
 
     st.markdown("---")
-    st.markdown("**Useful contacts**")
-    st.markdown("- [SEM (State Secretariat for Migration)](https://www.sem.admin.ch/en)")
-    st.markdown("- [ch.ch — Official Swiss portal](https://www.ch.ch/en/)")
-    st.markdown("- [OSAR — Swiss Refugee Council](https://www.osar.ch/en/)")
+    st.markdown("## Emergency Contacts")
+    st.error("🚨 Police: **117** · Ambulance: **144** · Emergency: **112**")
+    st.markdown("""
+- [OSAR — Free legal aid for asylum seekers](https://www.osar.ch)
+- [SEM — Official migration authority](https://www.sem.admin.ch)
+- [Swiss Red Cross](https://www.redcross.ch)
+- [ch.ch — Official Swiss portal](https://www.ch.ch/en/)
+""")
 
     st.markdown("---")
-    st.caption("🔒 Your conversation is stored locally to provide context and processed via Groq AI to generate responses. Groq does not use your data for training. No data is sold or shared with other parties.")
+    st.caption("🔒 Your conversation is stored locally and processed via Groq AI. Groq does not use your data for training. No data is sold or shared with other parties.")
     st.markdown("---")
     news_count = count_auto_news()
+    last_fetch = get_last_fetch_time()
     if news_count:
         st.caption(f"📡 {news_count} official news articles loaded from SEM & OSAR")
+    if last_fetch:
+        st.caption(f"🕐 News last updated: {last_fetch}")
 
     st.markdown("---")
     if st.button("Start new conversation", use_container_width=True):
@@ -135,6 +162,9 @@ for msg_idx, message in enumerate(st.session_state.messages):
             with st.expander("Official sources"):
                 for src in sources:
                     st.markdown(f"**{src['title']}**")
+                    pub = (src.get("published_at") or "")[:10]
+                    if pub:
+                        st.caption(f"Published: {pub}")
                     st.markdown(f"[Open source]({src['url']})")
                     st.markdown("---")
 
@@ -178,10 +208,14 @@ for msg_idx, message in enumerate(st.session_state.messages):
                     st.session_state[fb_key] = -1
                     st.rerun()
 
-# Chat input
-user_prompt = st.chat_input(
-    "Ask anything — asylum, permits, work, integration, healthcare… (any language)"
-)
+# Chat input — check for quick question button first
+user_prompt = st.session_state.get("quick_prompt")
+if user_prompt:
+    st.session_state.quick_prompt = None
+else:
+    user_prompt = st.chat_input(
+        "Ask anything — asylum, permits, work, integration, healthcare… (any language)"
+    )
 
 if user_prompt:
     user_message = {"role": "user", "content": user_prompt, "sources": []}
@@ -220,5 +254,8 @@ if user_prompt:
             with st.expander("Official sources"):
                 for src in sources:
                     st.markdown(f"**{src['title']}**")
+                    pub = (src.get("published_at") or "")[:10]
+                    if pub:
+                        st.caption(f"Published: {pub}")
                     st.markdown(f"[Open source]({src['url']})")
                     st.markdown("---")
