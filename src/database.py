@@ -226,6 +226,32 @@ def count_auto_news() -> int:
     return count
 
 
+def get_recent_news(limit: int = 3) -> list[dict]:
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute(
+        """
+        SELECT title, url, source_name, published_at
+        FROM auto_news
+        WHERE published_at != ''
+        ORDER BY published_at DESC
+        LIMIT ?
+        """,
+        (limit,),
+    )
+    rows = cursor.fetchall()
+    conn.close()
+    return [
+        {
+            "title": row[0],
+            "url": row[1],
+            "source_name": row[2],
+            "published_at": (row[3] or "")[:10],
+        }
+        for row in rows
+    ]
+
+
 def get_last_fetch_time() -> str | None:
     conn = get_connection()
     cursor = conn.cursor()

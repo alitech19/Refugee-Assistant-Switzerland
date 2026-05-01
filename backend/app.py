@@ -15,6 +15,7 @@ from src.database import (
     save_feedback,
     count_auto_news,
     get_last_fetch_time,
+    get_recent_news,
 )
 from src.llm_service import process_chat_turn
 from src.resolver import resolve_user_query
@@ -55,6 +56,19 @@ st.caption(
 )
 st.caption("⚠️ Guidance only — not legal advice. For important decisions, always consult an official source or legal aid organisation.")
 
+with st.expander("📋 Permit Quick Reference — N · F · B · C · S", expanded=False):
+    st.markdown("""
+| | **N** — Asylum seeker | **F** — Provisionally admitted | **B** — Recognised refugee | **C** — Settlement | **S** — Protection status |
+|---|---|---|---|---|---|
+| **Who** | Procedure pending | Temporarily admitted | Refugee status granted | Long-term resident | Displaced persons (e.g. Ukrainians) |
+| **Work** | After 3 months + cantonal authorisation | After 3 months + cantonal authorisation | Freely, no authorisation needed | Freely | Cantonal notification only |
+| **Duration** | Renewed every 12 months | Renewed annually | 1–2 years, renewable | Long-term (no annual renewal) | Reviewed regularly by government |
+| **Family reunification** | Not permitted | After 3 years in CH | Yes (conditions apply) | Yes (conditions apply) | Limited |
+| **Travel abroad** | Very restricted | Very restricted — get written permission first | Permitted | Permitted | Can travel to home country and return |
+| **Canton of residence** | Assigned by SEM | Cannot change without permission | Any canton | Any canton | Any canton |
+""")
+    st.caption("⚠️ Rules can vary by canton and individual case. Always verify with your cantonal migration office or OSAR (osar.ch).")
+
 # Session state
 if "conversation_id" not in st.session_state:
     st.session_state.conversation_id = create_conversation()
@@ -80,7 +94,7 @@ CANTONS = [
     "Valais (VS)", "Vaud (VD)", "Zug (ZG)", "Zurich (ZH)",
 ]
 
-# Sidebar
+# Sidebar — lean and focused
 with st.sidebar:
     st.markdown("## Your Canton")
     selected = st.selectbox(
@@ -94,57 +108,35 @@ with st.sidebar:
         st.success(f"Showing answers tailored to **{canton}**")
 
     st.markdown("---")
-    st.markdown("## Quick Questions")
-    st.caption("Tap to get an instant answer:")
-    QUICK_QUESTIONS = [
-        "What is Permit F and can I work with it?",
-        "How do I appeal a rejected asylum decision?",
-        "How can I bring my family to Switzerland?",
-        "What language courses are available for refugees?",
-        "What are my rights as an asylum seeker with Permit N?",
-        "What is Permit S for Ukrainians?",
-        "What housing do asylum seekers receive?",
-        "How do I get health insurance as a refugee?",
-    ]
-    for q in QUICK_QUESTIONS:
-        if st.button(q, use_container_width=True, key=f"qq_{q[:30]}"):
-            st.session_state.quick_prompt = q
-            st.rerun()
-
-    st.markdown("---")
-    st.markdown("## What I can help with")
-    st.markdown("""
-- 🔖 **Permits** — N, F, B, C, S: what they mean and what they allow
-- 📋 **Asylum procedure** — steps, timelines, hearings, decisions
-- 💼 **Work rights** — by permit type, cantonal authorisation
-- 🎓 **Integration** — language courses, FIDE test, social integration
-- 🏥 **Healthcare** — access during and after the asylum procedure
-- 🏫 **Education** — rights for children
-- 👨‍👩‍👧 **Family reunification** — rules by permit type
-- ⚖️ **Appeals** — what to do after a negative decision
-- 🏛️ **Naturalization** — path to Swiss citizenship
-- 🏠 **Housing** — accommodation rules during the procedure
-""")
+    with st.expander("📰 Latest News", expanded=False):
+        recent = get_recent_news(limit=3)
+        if recent:
+            for item in recent:
+                title_display = item['title'][:70] + ('…' if len(item['title']) > 70 else '')
+                st.markdown(f"**[{title_display}]({item['url']})**")
+                st.caption(f"{item['source_name']} · {item['published_at']}")
+                st.markdown("")
+        else:
+            st.caption("No news loaded yet. Run the fetch script.")
 
     st.markdown("---")
     st.markdown("## Emergency Contacts")
     st.error("🚨 Police: **117** · Ambulance: **144** · Emergency: **112**")
     st.markdown("""
-- [OSAR — Free legal aid for asylum seekers](https://www.osar.ch)
-- [SEM — Official migration authority](https://www.sem.admin.ch)
+- [OSAR — Free legal aid](https://www.osar.ch)
+- [SEM — Migration authority](https://www.sem.admin.ch)
 - [Swiss Red Cross](https://www.redcross.ch)
-- [ch.ch — Official Swiss portal](https://www.ch.ch/en/)
+- [ch.ch — Swiss portal](https://www.ch.ch/en/)
 """)
 
     st.markdown("---")
-    st.caption("🔒 Your conversation is stored locally and processed via Groq AI. Groq does not use your data for training. No data is sold or shared with other parties.")
-    st.markdown("---")
+    st.caption("🔒 Conversations stored locally, processed via Groq AI. No data sold or shared.")
     news_count = count_auto_news()
     last_fetch = get_last_fetch_time()
     if news_count:
-        st.caption(f"📡 {news_count} official news articles loaded from SEM & OSAR")
+        st.caption(f"📡 {news_count} articles from SEM & OSAR")
     if last_fetch:
-        st.caption(f"🕐 News last updated: {last_fetch}")
+        st.caption(f"🕐 Last updated: {last_fetch}")
 
     st.markdown("---")
     if st.button("Start new conversation", use_container_width=True):
@@ -208,14 +200,60 @@ for msg_idx, message in enumerate(st.session_state.messages):
                     st.session_state[fb_key] = -1
                     st.rerun()
 
-# Chat input — check for quick question button first
-user_prompt = st.session_state.get("quick_prompt")
-if user_prompt:
+# Welcome screen — shown only when conversation is empty
+if not st.session_state.messages:
+    st.markdown("### What would you like to know today?")
+    st.caption("Tap a topic or type your question below — I answer in your language.")
+    st.markdown("")
+
+    TOPICS = [
+        ("🔖", "Permits",        "What types of permits exist in Switzerland and what does each one allow?"),
+        ("📋", "Asylum",         "What are the steps of the Swiss asylum procedure?"),
+        ("💼", "Work rights",    "Can I work in Switzerland and what do I need to do?"),
+        ("🏥", "Healthcare",     "How do I access healthcare and get health insurance in Switzerland?"),
+        ("🎓", "Integration",    "What language courses and integration programs are available for refugees?"),
+        ("👨‍👩‍👧", "Family",         "How can I bring my family to Switzerland?"),
+        ("⚖️", "Appeals",        "How do I appeal a rejected asylum decision?"),
+        ("🏠", "Housing",        "What housing do asylum seekers receive in Switzerland?"),
+    ]
+
+    cols = st.columns(4)
+    for i, (emoji, label, question) in enumerate(TOPICS):
+        with cols[i % 4]:
+            if st.button(f"{emoji} {label}", use_container_width=True, key=f"topic_{label}"):
+                st.session_state.quick_prompt = question
+                st.rerun()
+
+    st.markdown("---")
+    st.markdown("**Common questions:**")
+
+    COMMON_Q = [
+        "What do I do when I first arrive in Switzerland as a refugee?",
+        "What is Permit F and can I work with it?",
+        "How do I appeal a rejected asylum decision?",
+        "How can I bring my family to Switzerland?",
+        "What is Permit S for Ukrainians?",
+        "What are the latest asylum updates in Switzerland?",
+    ]
+
+    cq_cols = st.columns(2)
+    for i, q in enumerate(COMMON_Q):
+        with cq_cols[i % 2]:
+            if st.button(q, use_container_width=True, key=f"cq_{i}"):
+                st.session_state.quick_prompt = q
+                st.rerun()
+
+    st.markdown("")
+
+# Chat input — always render so the text box is always visible
+typed_input = st.chat_input(
+    "Ask anything — asylum, permits, work, integration, healthcare… (any language)"
+)
+
+# Quick prompt from topic/question buttons takes priority over typed input
+user_prompt = st.session_state.get("quick_prompt") or typed_input
+if st.session_state.get("quick_prompt"):
     st.session_state.quick_prompt = None
-else:
-    user_prompt = st.chat_input(
-        "Ask anything — asylum, permits, work, integration, healthcare… (any language)"
-    )
 
 if user_prompt:
     user_message = {"role": "user", "content": user_prompt, "sources": []}

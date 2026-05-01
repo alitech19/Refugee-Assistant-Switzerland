@@ -185,6 +185,7 @@ KEY ORGANISATIONS (verified URLs — use only these)
 - PowerCoders: Swiss NGO offering coding and IT training for refugees and asylum seekers. Accepts N, F, B, S permits. Website: https://www.powercoders.org
 - OSAR (Swiss Refugee Council): Main free legal aid for asylum seekers, especially for appeals. Website: https://www.osar.ch
 - SEM (State Secretariat for Migration): Swiss federal authority for all asylum decisions and permits. Website: https://www.sem.admin.ch
+- SEM — Asylum procedure step by step (what happens when you arrive, registration, hearing, decision): https://www.sem.admin.ch/sem/en/home/asyl/asylverfahren.html — use this URL when answering questions about first arrival, the asylum procedure steps, or what to do when someone first arrives in Switzerland.
 - FIDE: Swiss framework for language courses and integration certificates. Website: https://www.fide-info.ch
 - Caritas Switzerland: Social support, counselling, and integration help for refugees. Website: https://www.caritas.ch
 - Swiss Red Cross: Humanitarian aid, health support, integration programmes. Website: https://www.redcross.ch
