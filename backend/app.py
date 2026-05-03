@@ -1,7 +1,12 @@
 import sys
+import os
 from pathlib import Path
 
 sys.path.append(str(Path(__file__).resolve().parent.parent))
+
+# Load env vars before any heavy imports so transformers picks them up
+from dotenv import load_dotenv
+load_dotenv(Path(__file__).resolve().parent.parent / ".env")
 
 import streamlit as st
 from src.database import (
@@ -17,7 +22,7 @@ from src.database import (
     get_last_fetch_time,
     get_recent_news,
 )
-from src.llm_service import process_chat_turn
+from src.llm_service import process_chat_turn, transcribe_audio
 from src.resolver import resolve_user_query
 from src.state_tracker import build_initial_state, update_state
 
@@ -82,6 +87,9 @@ if "messages" not in st.session_state:
 
 if "chat_state" not in st.session_state:
     st.session_state.chat_state = build_initial_state()
+
+if "voice_key" not in st.session_state:
+    st.session_state.voice_key = 0
 
 CANTONS = [
     "— Select your canton —",
@@ -244,6 +252,22 @@ if not st.session_state.messages:
                 st.rerun()
 
     st.markdown("")
+
+# Voice input — always visible, works in any language
+audio_input = st.audio_input(
+    "🎤 Speak your question in any language",
+    key=f"voice_{st.session_state.voice_key}",
+)
+if audio_input:
+    with st.spinner("Transcribing your question..."):
+        try:
+            transcribed = transcribe_audio(audio_input)
+            if transcribed:
+                st.session_state.voice_key += 1
+                st.session_state.quick_prompt = transcribed
+                st.rerun()
+        except Exception as e:
+            st.warning(f"Voice input could not be processed: {e}")
 
 # Chat input — always render so the text box is always visible
 typed_input = st.chat_input(

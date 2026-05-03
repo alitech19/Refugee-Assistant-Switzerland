@@ -47,6 +47,27 @@ client = OpenAI(
 MODEL = "llama-3.3-70b-versatile"
 
 
+def transcribe_audio(audio_file) -> str:
+    """Transcribe audio using Groq Whisper. Supports 99 languages."""
+    if not client:
+        raise ValueError("GROQ_API_KEY is not set.")
+    import io
+    audio_bytes = audio_file.read()
+    if not audio_bytes:
+        raise ValueError("The recording was empty — please try again.")
+    buf = io.BytesIO(audio_bytes)
+    # Groq needs a filename with a recognized audio extension to detect the format.
+    # Streamlit records as WebM in Chrome; we keep the original name if present.
+    original_name = getattr(audio_file, "name", "") or ""
+    buf.name = original_name if original_name else "audio.wav"
+    result = client.audio.transcriptions.create(
+        model="whisper-large-v3",
+        file=buf,
+        response_format="text",
+    )
+    return str(result).strip()
+
+
 def _format_sources(sources: list[dict[str, Any]]) -> str:
     if not sources:
         return ""

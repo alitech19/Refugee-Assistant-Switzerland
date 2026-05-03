@@ -113,6 +113,50 @@ def init_db() -> None:
         )
     """)
 
+    # Migrate: add embedding column to sources and auto_news if not present
+    for table in ("sources", "auto_news"):
+        try:
+            cursor.execute(f"ALTER TABLE {table} ADD COLUMN embedding BLOB")
+        except sqlite3.OperationalError:
+            pass  # column already exists
+
+    conn.commit()
+    conn.close()
+
+    # One-time migration: encode any existing rows that have no embedding yet
+    _migrate_missing_embeddings()
+
+
+def _migrate_missing_embeddings() -> None:
+    """Encode and store embeddings for any rows inserted before this feature."""
+    try:
+        from src.embeddings import encode_batch
+    except ImportError:
+        return
+
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT id, title, topic, content FROM sources WHERE embedding IS NULL")
+    rows = cursor.fetchall()
+    if rows:
+        ids = [r[0] for r in rows]
+        texts = [f"{r[1]} {r[2]} {r[3][:500]}" for r in rows]
+        for row_id, emb in zip(ids, encode_batch(texts)):
+            if emb:
+                cursor.execute("UPDATE sources SET embedding = ? WHERE id = ?", (emb, row_id))
+
+    cursor.execute("SELECT id, title, topic, summary FROM auto_news WHERE embedding IS NULL")
+    rows = cursor.fetchall()
+    if rows:
+        print(f"[embeddings] Encoding {len(rows)} existing news articles (one-time migration)…")
+        ids = [r[0] for r in rows]
+        texts = [f"{r[1]} {r[2] or ''} {r[3] or ''}"[:1000] for r in rows]
+        for row_id, emb in zip(ids, encode_batch(texts)):
+            if emb:
+                cursor.execute("UPDATE auto_news SET embedding = ? WHERE id = ?", (emb, row_id))
+        print("[embeddings] Migration complete.")
+
     conn.commit()
     conn.close()
 
@@ -124,16 +168,27 @@ def seed_sources_from_json() -> None:
     with open(SOURCES_FILE, "r", encoding="utf-8") as f:
         items = json.load(f)
 
+    # Batch-encode all source texts before opening the DB connection
+    try:
+        from src.embeddings import encode_batch
+        texts = [
+            f"{item['title']} {item.get('topic', '')} {item.get('content', '')[:500]}"
+            for item in items
+        ]
+        embeddings = encode_batch(texts)
+    except Exception:
+        embeddings = [None] * len(items)
+
     conn = get_connection()
     cursor = conn.cursor()
 
     # Always replace sources so additions to the JSON file take effect on restart
     cursor.execute("DELETE FROM sources")
-    for item in items:
+    for item, embedding in zip(items, embeddings):
         cursor.execute(
             """
-            INSERT INTO sources (title, url, topic, content, is_official)
-            VALUES (?, ?, ?, ?, ?)
+            INSERT INTO sources (title, url, topic, content, is_official, embedding)
+            VALUES (?, ?, ?, ?, ?, ?)
             """,
             (
                 item["title"],
@@ -141,6 +196,7 @@ def seed_sources_from_json() -> None:
                 item["topic"],
                 item["content"],
                 int(item.get("is_official", 1)),
+                embedding,
             ),
         )
 
@@ -202,14 +258,20 @@ def save_auto_news(
     published_at: str,
 ) -> bool:
     """Insert a news article. Returns True if new, False if URL already exists."""
+    try:
+        from src.embeddings import encode
+        embedding = encode(f"{title} {topic or ''} {summary or ''}"[:1000])
+    except Exception:
+        embedding = None
+
     conn = get_connection()
     cursor = conn.cursor()
     cursor.execute(
         """
-        INSERT OR IGNORE INTO auto_news (title, url, source_name, topic, summary, published_at)
-        VALUES (?, ?, ?, ?, ?, ?)
+        INSERT OR IGNORE INTO auto_news (title, url, source_name, topic, summary, published_at, embedding)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
         """,
-        (title, url, source_name, topic, summary, published_at),
+        (title, url, source_name, topic, summary, published_at, embedding),
     )
     conn.commit()
     inserted = cursor.rowcount > 0
@@ -315,7 +377,7 @@ def search_sources(query: str, limit: int = 3, canton: str | None = None) -> lis
     cursor = conn.cursor()
     cursor.execute(
         """
-        SELECT id, title, url, topic, content, is_official
+        SELECT id, title, url, topic, content, is_official, embedding
         FROM sources
         WHERE is_official = 1
         """
@@ -324,7 +386,7 @@ def search_sources(query: str, limit: int = 3, canton: str | None = None) -> lis
 
     # Include automatically fetched official news (no approval needed — trusted source)
     cursor.execute(
-        "SELECT id, title, url, topic, summary, published_at FROM auto_news ORDER BY id DESC LIMIT 200"
+        "SELECT id, title, url, topic, summary, published_at, embedding FROM auto_news ORDER BY id DESC LIMIT 200"
     )
     news_rows = cursor.fetchall()
     conn.close()
@@ -337,7 +399,8 @@ def search_sources(query: str, limit: int = 3, canton: str | None = None) -> lis
             "topic": row[3],
             "content": row[4],
             "is_official": 1,
-            "published_at": "",  # static sources have no meaningful publication date
+            "published_at": "",
+            "embedding": row[6],
         }
         for row in rows
     ] + [
@@ -349,6 +412,7 @@ def search_sources(query: str, limit: int = 3, canton: str | None = None) -> lis
             "content": row[4] or "",
             "is_official": 1,
             "published_at": row[5] or "",
+            "embedding": row[6],
         }
         for row in news_rows
     ]
@@ -356,6 +420,15 @@ def search_sources(query: str, limit: int = 3, canton: str | None = None) -> lis
     query_lower = query.lower()
     query_tokens = _tokenize(query)
     permit_code = _extract_permit_code(query)
+
+    # Encode the query for semantic search (works in any language)
+    try:
+        from src.embeddings import encode as _embed, cosine_similarity as _cos_sim
+        _query_emb = _embed(query)
+        _semantic_on = _query_emb is not None
+    except ImportError:
+        _semantic_on = False
+        _query_emb = None
 
     # 1) STRICT permit matching first
     if permit_code:
@@ -439,42 +512,51 @@ def search_sources(query: str, limit: int = 3, canton: str | None = None) -> lis
         (c for c in _COUNTRY_NAMES if c in query_lower), None
     )
 
-    # 2) General ranking for non-permit questions
+    # 2) General ranking for non-permit questions (hybrid keyword + semantic)
     scored = []
     for src in all_sources:
         haystack = f"{src['title']} {src['topic']} {src['content']}".lower()
         source_tokens = _tokenize(haystack)
 
-        score = 0
+        keyword_score = 0
 
         # Exact phrase bonuses
         if query_lower in haystack:
-            score += 30
+            keyword_score += 30
         if query_lower in src["title"].lower():
-            score += 40
+            keyword_score += 40
         if query_lower in src["topic"].lower():
-            score += 20
+            keyword_score += 20
 
         # Token overlap
         overlap = query_tokens.intersection(source_tokens)
-        score += len(overlap) * 3
+        keyword_score += len(overlap) * 3
 
         # Strong boost when a specific country matches a country-specific source
         if query_country and query_country in haystack:
-            score += 40
+            keyword_score += 40
 
         # Strong boost when canton is mentioned in the query text
         if query_canton_name and query_canton_name in haystack:
-            score += 100
+            keyword_score += 100
 
         # Additional boost from dropdown canton selection
         if canton:
             canton_lower = canton.lower()
             if canton_lower in haystack:
-                score += 60
+                keyword_score += 60
 
-        if score > 0:
-            scored.append((score, src))
+        if _semantic_on and _query_emb:
+            # Compute cosine similarity; fall back to 0 if source has no embedding yet
+            src_emb = src.get("embedding")
+            sem = _cos_sim(_query_emb, src_emb) if src_emb else 0.0
+            # Include if semantically relevant OR keyword-relevant
+            if sem >= 0.25 or keyword_score >= 12:
+                final_score = int(sem * 80) + min(keyword_score, 50)
+                scored.append((final_score, src))
+        else:
+            if keyword_score >= 12:
+                scored.append((keyword_score, src))
 
     scored.sort(key=lambda x: x[0], reverse=True)
 
