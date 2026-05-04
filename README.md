@@ -3,9 +3,7 @@
 > **Free, multilingual AI assistant helping refugees and asylum seekers understand Switzerland's asylum system — in their own language.**
 
 AmanCH answers questions about permits, work rights, asylum procedures, healthcare, family reunification, and integration — grounded in 70+ verified Swiss official sources (SEM, OSAR, cantonal offices), never guessing.
-
-**Live app:** [refugee-assistant-switzerland-gndat6oqniq737kahzd3p9.streamlit.app](https://refugee-assistant-switzerland-gndat6oqniq737kahzd3p9.streamlit.app)
-
+https://refugee-assistant-switzerland-gndat6oqniq737kahzd3p9.streamlit.app/
 ---
 
 ## Features
