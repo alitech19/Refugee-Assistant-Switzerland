@@ -149,7 +149,7 @@ def _migrate_missing_embeddings() -> None:
         return  # Nothing to do — model never loaded
 
     try:
-        from src.embeddings import encode_batch
+        from backend.embeddings import encode_batch
     except ImportError:
         return
 
@@ -293,7 +293,7 @@ def save_auto_news(
 ) -> bool:
     """Insert a news article. Returns True if new, False if URL already exists."""
     try:
-        from src.embeddings import encode
+        from backend.embeddings import encode
         embedding = encode(f"{title} {topic or ''} {summary or ''}"[:1000])
     except Exception:
         embedding = None
@@ -472,7 +472,7 @@ def search_sources(query: str, limit: int = 3, canton: str | None = None) -> lis
 
     # Encode the query for semantic search (works in any language)
     try:
-        from src.embeddings import encode as _embed, cosine_similarity as _cos_sim
+        from backend.embeddings import encode as _embed, cosine_similarity as _cos_sim
         _query_emb = _embed(query)
         _semantic_on = _query_emb is not None
     except ImportError:

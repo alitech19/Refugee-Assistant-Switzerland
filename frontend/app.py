@@ -13,7 +13,7 @@ load_dotenv(Path(__file__).resolve().parent.parent / ".env")
 
 import openai
 import streamlit as st
-from src.database import (
+from backend.database import (
     init_db,
     seed_sources_from_json,
     delete_old_conversations,
@@ -26,9 +26,9 @@ from src.database import (
     get_last_fetch_time,
     get_recent_news,
 )
-from src.llm_service import process_chat_turn, transcribe_audio, _detect_language
-from src.resolver import resolve_user_query
-from src.state_tracker import build_initial_state, update_state
+from backend.llm_service import process_chat_turn, transcribe_audio, _detect_language
+from backend.resolver import resolve_user_query
+from backend.state_tracker import build_initial_state, update_state
 
 
 init_db()
@@ -38,7 +38,7 @@ delete_old_conversations()
 # Warm the embedding model in the background so the first user question is fast
 def _warm_embeddings():
     try:
-        from src.database import _ensure_embeddings
+        from backend.database import _ensure_embeddings
         _ensure_embeddings()
     except Exception:
         pass
@@ -135,15 +135,117 @@ def _is_trivial(text: str) -> bool:
     return False
 
 st.set_page_config(
-    page_title="Refugee Assistant Switzerland",
+    page_title="AmanCH",
     page_icon="🇨🇭",
     layout="centered",
 )
 
-# Auto-detect text direction + mobile-responsive layout
 st.markdown("""
 <style>
-/* RTL support — Arabic, Urdu, Hebrew render correctly */
+/* ── Page ────────────────────────────────────── */
+.stApp {
+    background-color: #F7F6F3;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* ── Topbar: red line + white header ─────────── */
+[data-testid="stHeader"] {
+    background-color: #ffffff !important;
+    border-bottom: 3px solid #D52B1E !important;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.07) !important;
+}
+
+/* ── Sidebar ──────────────────────────────────── */
+[data-testid="stSidebar"] {
+    background-color: #EEECEA !important;
+    border-right: 1px solid rgba(0,0,0,0.07) !important;
+}
+
+/* ── Secondary buttons ───────────────────────── */
+[data-testid="baseButton-secondary"] {
+    background-color: #ffffff !important;
+    color: #D52B1E !important;
+    border: 1.5px solid #E8E6E3 !important;
+    border-radius: 10px !important;
+    font-weight: 500 !important;
+    font-size: 0.875rem !important;
+    letter-spacing: 0.01em !important;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.07) !important;
+    transition: all 0.15s ease !important;
+}
+[data-testid="baseButton-secondary"]:hover {
+    background-color: #D52B1E !important;
+    color: #ffffff !important;
+    border-color: #D52B1E !important;
+    box-shadow: 0 4px 12px rgba(213,43,30,0.28) !important;
+    transform: translateY(-1px) !important;
+}
+[data-testid="baseButton-secondary"]:focus {
+    box-shadow: 0 0 0 3px rgba(213,43,30,0.18) !important;
+}
+
+/* ── Primary buttons: selected permit pill ────── */
+[data-testid="baseButton-primary"] {
+    background: linear-gradient(135deg, #D52B1E 0%, #B8221A 100%) !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 10px !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.02em !important;
+    box-shadow: 0 3px 10px rgba(213,43,30,0.38) !important;
+    transition: all 0.15s ease !important;
+}
+[data-testid="baseButton-primary"]:hover {
+    background: linear-gradient(135deg, #B8221A 0%, #9E1D16 100%) !important;
+    box-shadow: 0 5px 14px rgba(213,43,30,0.45) !important;
+    transform: translateY(-1px) !important;
+}
+
+/* ── Chat messages ───────────────────────────── */
+[data-testid="stChatMessage"] {
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 1rem 1.25rem !important;
+    margin-bottom: 0.75rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05), 0 0 0 1px rgba(0,0,0,0.04);
+    transition: box-shadow 0.2s ease;
+}
+[data-testid="stChatMessage"]:has(img[alt="assistant"]) {
+    border-left: 3px solid #D52B1E;
+    border-radius: 0 14px 14px 0;
+}
+[data-testid="stChatMessage"]:has(img[alt="user"]) {
+    background: #FEF6F6;
+    border-radius: 14px 0 14px 14px;
+}
+
+/* ── Expander as card ────────────────────────── */
+[data-testid="stExpander"] {
+    background: #ffffff !important;
+    border: 1px solid rgba(0,0,0,0.07) !important;
+    border-radius: 12px !important;
+    box-shadow: 0 1px 5px rgba(0,0,0,0.05) !important;
+    overflow: hidden;
+}
+
+/* ── Info/alert box ──────────────────────────── */
+[data-testid="stAlert"] {
+    border-radius: 12px !important;
+    border-left-width: 4px !important;
+    border-left-color: #D52B1E !important;
+    background-color: #FEF6F6 !important;
+}
+
+/* ── Selectbox ───────────────────────────────── */
+[data-testid="stSelectbox"] > div > div {
+    background: #ffffff !important;
+    border-radius: 10px !important;
+    border-color: rgba(0,0,0,0.13) !important;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06) !important;
+}
+
+/* ── RTL support ─────────────────────────────── */
 .stMarkdown p, .stMarkdown li, .stMarkdown span {
     direction: auto;
     unicode-bidi: plaintext;
@@ -156,7 +258,7 @@ st.markdown("""
     text-align: start;
 }
 
-/* Mobile: stack 4-column topic buttons into 2 columns */
+/* ── Mobile responsive ───────────────────────── */
 @media (max-width: 640px) {
     section[data-testid="stMain"] .stHorizontalBlock {
         flex-wrap: wrap;
@@ -165,31 +267,80 @@ st.markdown("""
         min-width: 48% !important;
         flex: 1 1 48% !important;
     }
-    /* Larger tap targets for touch screens */
-    .stButton > button {
-        padding: 0.6rem 0.5rem !important;
-        font-size: 0.85rem !important;
+    [data-testid="baseButton-secondary"],
+    [data-testid="baseButton-primary"] {
+        padding: 0.6rem 0.4rem !important;
+        font-size: 0.82rem !important;
         min-height: 48px !important;
     }
-    /* Reduce side padding so content uses full screen width */
     .block-container {
         padding-left: 0.75rem !important;
         padding-right: 0.75rem !important;
     }
-    /* Audio player full width on mobile */
-    audio {
-        width: 100% !important;
-    }
+    audio { width: 100% !important; }
 }
 </style>
 """, unsafe_allow_html=True)
 
-st.title("🇨🇭 Refugee Assistant Switzerland")
-st.caption(
-    "Ask questions in **any language** — I will answer in your language. "
-    "This assistant covers all of Switzerland."
-)
+st.markdown("""
+<div style="background:#D52B1E;border-radius:12px;padding:0.75rem 1.25rem;
+            display:inline-flex;align-items:center;gap:0.9rem;margin-bottom:0.5rem;">
+  <div style="background:#ffffff;border-radius:5px;width:38px;height:38px;
+              display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+    <svg width="22" height="22" viewBox="0 0 22 22">
+      <rect x="9" y="1" width="4" height="20" fill="#D52B1E"/>
+      <rect x="1" y="9" width="20" height="4" fill="#D52B1E"/>
+    </svg>
+  </div>
+  <div>
+    <div style="color:#ffffff;font-size:1.45rem;font-weight:700;
+                line-height:1.15;letter-spacing:-0.01em;">AmanCH</div>
+    <div style="color:rgba(255,255,255,0.88);font-size:0.78rem;
+                font-weight:400;margin-top:2px;letter-spacing:0.01em;">
+      Refugee Assistant Switzerland
+    </div>
+  </div>
+</div>
+""", unsafe_allow_html=True)
+
 st.caption("⚠️ Guidance only — not legal advice. For important decisions, always consult an official source or legal aid organisation.")
+
+st.markdown(
+    '<p style="direction:ltr;text-align:center;color:#aaa;font-size:0.8rem;'
+    'letter-spacing:0.04em;margin:0.25rem 0 0.75rem 0;">'
+    'Welcome &nbsp;·&nbsp; Willkommen &nbsp;·&nbsp; Bienvenue &nbsp;·&nbsp;'
+    ' أهلاً &nbsp;·&nbsp; Ласкаво просимо &nbsp;·&nbsp; Bienvenido'
+    '</p>',
+    unsafe_allow_html=True,
+)
+
+_PERMIT_LABELS = {
+    "N": ("N", "Asylum seeker — procedure pending"),
+    "F": ("F", "Provisionally admitted"),
+    "B": ("B", "Recognised refugee"),
+    "C": ("C", "Settlement permit"),
+    "S": ("S", "Protection status (e.g. Ukraine)"),
+    "?": ("?", "I don't know my permit type"),
+}
+
+lbl_col, *pill_cols = st.columns([2.2, 1, 1, 1, 1, 1, 1])
+with lbl_col:
+    st.markdown(
+        '<div style="padding-top:0.45rem;font-size:0.82rem;color:#666;font-weight:500;">My permit:</div>',
+        unsafe_allow_html=True,
+    )
+for col, (code, (label, tooltip)) in zip(pill_cols, _PERMIT_LABELS.items()):
+    with col:
+        is_selected = st.session_state.get("selected_permit") == code
+        if st.button(
+            label,
+            key=f"pill_{code}",
+            use_container_width=True,
+            help=tooltip,
+            type="primary" if is_selected else "secondary",
+        ):
+            st.session_state.selected_permit = None if is_selected else code
+            st.rerun()
 
 with st.expander("📋 Permit Quick Reference — N · F · B · C · S", expanded=False):
     st.markdown("""
@@ -220,6 +371,9 @@ if "chat_state" not in st.session_state:
 
 if "voice_key" not in st.session_state:
     st.session_state.voice_key = 0
+
+if "selected_permit" not in st.session_state:
+    st.session_state.selected_permit = None
 
 CANTONS = [
     "— Select your canton —",
@@ -281,6 +435,7 @@ with st.sidebar:
         st.session_state.conversation_id = create_conversation()
         st.session_state.messages = []
         st.session_state.chat_state = build_initial_state()
+        st.session_state.selected_permit = None
         st.rerun()
 
 # Render chat history
@@ -446,7 +601,12 @@ if user_prompt:
             )
 
             try:
-                assistant_text = process_chat_turn(st.session_state.messages, sources, canton=canton)
+                assistant_text = process_chat_turn(
+                    st.session_state.messages,
+                    sources,
+                    canton=canton,
+                    permit=st.session_state.get("selected_permit"),
+                )
             except openai.RateLimitError:
                 assistant_text = (
                     "⚠️ The AI service is temporarily at capacity. Please wait a minute and try again.\n\n"

@@ -27,8 +27,8 @@ sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 import feedparser
 from datetime import datetime, timezone
 
-from src.database import init_db, save_auto_news, record_fetch_time
-from src.resolver import _detect_topics
+from backend.database import init_db, save_auto_news, record_fetch_time
+from backend.resolver import _detect_topics
 
 RSS_FEEDS = [
     {

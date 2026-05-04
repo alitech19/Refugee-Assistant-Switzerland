@@ -5,7 +5,7 @@ from pathlib import Path
 from typing import Any
 from openai import OpenAI
 from dotenv import load_dotenv
-from src.prompts import SYSTEM_PROMPT
+from backend.prompts import SYSTEM_PROMPT
 
 
 def _detect_language(text: str) -> str:
@@ -168,6 +168,7 @@ def process_chat_turn(
     messages: list[dict[str, Any]],
     sources: list[dict[str, Any]],
     canton: str | None = None,
+    permit: str | None = None,
 ) -> str:
     if not client:
         raise ValueError(
@@ -177,6 +178,22 @@ def process_chat_turn(
     sources_text = _format_sources(sources)
 
     today = date.today().strftime("%B %d, %Y")
+    if permit and permit != "?":
+        permit_note = (
+            f"\nUSER'S PERMIT TYPE: Permit {permit}. "
+            f"The user has already identified their permit as Permit {permit}. "
+            f"Tailor your entire answer specifically to Permit {permit} holders — "
+            f"do not give generic multi-permit answers."
+        )
+    elif permit == "?":
+        permit_note = (
+            "\nUSER'S PERMIT TYPE: Unknown. The user does not know their permit type. "
+            "If relevant to the question, gently help them identify it by asking what "
+            "stage of the asylum process they are in or what document they hold."
+        )
+    else:
+        permit_note = ""
+
     canton_note = (
         f"\nUSER'S CANTON: {canton}. "
         "When answering questions about local offices, integration programmes, "
@@ -197,6 +214,7 @@ def process_chat_turn(
         f"{SYSTEM_PROMPT}\n\n"
         f"TODAY'S DATE: {today}. "
         f"Always use this date when the user asks what day or date it is."
+        f"{permit_note}"
         f"{canton_note}"
         f"{language_override}"
     )
