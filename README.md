@@ -71,7 +71,30 @@ AmanCH/
 
 ---
 
-## Setup
+## Run with Docker
+
+The easiest way to run AmanCH locally — no Python or venv setup needed.
+
+**Option A — Docker Compose (recommended):**
+```bash
+# 1. Create your .env file with your Groq API key
+echo 'GROQ_API_KEY=your_key_here' > .env
+
+# 2. Build and run
+docker compose up
+```
+
+**Option B — Docker directly:**
+```bash
+docker build -t amanch .
+docker run -p 8501:8501 --env GROQ_API_KEY=your_key_here amanch
+```
+
+Open [http://localhost:8501](http://localhost:8501) in your browser.
+
+---
+
+## Setup (without Docker)
 
 ### 1. Clone the repository
 
