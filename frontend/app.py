@@ -35,16 +35,6 @@ init_db()
 seed_sources_from_json()
 delete_old_conversations()
 
-# Warm the embedding model in the background so the first user question is fast
-def _warm_embeddings():
-    try:
-        from backend.database import _ensure_embeddings
-        _ensure_embeddings()
-    except Exception:
-        pass
-
-threading.Thread(target=_warm_embeddings, daemon=True).start()
-
 # Auto-fetch news once per day in the background
 def _auto_fetch_news():
     try:
