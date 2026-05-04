@@ -11,6 +11,7 @@ sys.path.append(str(Path(__file__).resolve().parent.parent))
 from dotenv import load_dotenv
 load_dotenv(Path(__file__).resolve().parent.parent / ".env")
 
+import openai
 import streamlit as st
 from src.database import (
     init_db,
@@ -43,6 +44,24 @@ def _warm_embeddings():
         pass
 
 threading.Thread(target=_warm_embeddings, daemon=True).start()
+
+# Auto-fetch news once per day in the background
+def _auto_fetch_news():
+    try:
+        from datetime import date
+        last = get_last_fetch_time()
+        if last == date.today().isoformat():
+            return  # Already fetched today
+        import importlib.util
+        ROOT = Path(__file__).resolve().parent.parent
+        spec = importlib.util.spec_from_file_location("fetch_news", ROOT / "scripts" / "fetch_news.py")
+        mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mod)
+        mod.fetch_all()
+    except Exception:
+        pass
+
+threading.Thread(target=_auto_fetch_news, daemon=True).start()
 
 _TRIVIAL_WORDS = {
     "hello", "hi", "hey", "greetings", "good morning", "good afternoon", "good evening",
@@ -121,9 +140,10 @@ st.set_page_config(
     layout="centered",
 )
 
-# Auto-detect text direction so Arabic/Hebrew/Urdu render RTL, English LTR
+# Auto-detect text direction + mobile-responsive layout
 st.markdown("""
 <style>
+/* RTL support — Arabic, Urdu, Hebrew render correctly */
 .stMarkdown p, .stMarkdown li, .stMarkdown span {
     direction: auto;
     unicode-bidi: plaintext;
@@ -134,6 +154,32 @@ st.markdown("""
     direction: auto;
     unicode-bidi: plaintext;
     text-align: start;
+}
+
+/* Mobile: stack 4-column topic buttons into 2 columns */
+@media (max-width: 640px) {
+    section[data-testid="stMain"] .stHorizontalBlock {
+        flex-wrap: wrap;
+    }
+    section[data-testid="stMain"] .stHorizontalBlock > div[data-testid="stColumn"] {
+        min-width: 48% !important;
+        flex: 1 1 48% !important;
+    }
+    /* Larger tap targets for touch screens */
+    .stButton > button {
+        padding: 0.6rem 0.5rem !important;
+        font-size: 0.85rem !important;
+        min-height: 48px !important;
+    }
+    /* Reduce side padding so content uses full screen width */
+    .block-container {
+        padding-left: 0.75rem !important;
+        padding-right: 0.75rem !important;
+    }
+    /* Audio player full width on mobile */
+    audio {
+        width: 100% !important;
+    }
 }
 </style>
 """, unsafe_allow_html=True)
@@ -209,7 +255,7 @@ with st.sidebar:
                 st.caption(f"{item['source_name']} · {item['published_at']}")
                 st.markdown("")
         else:
-            st.caption("No news loaded yet. Run the fetch script.")
+            st.caption("News is loading in the background — check back shortly.")
 
     st.markdown("---")
     st.markdown("## Emergency Contacts")
@@ -228,7 +274,7 @@ with st.sidebar:
     if news_count:
         st.caption(f"📡 {news_count} articles from SEM & OSAR")
     if last_fetch:
-        st.caption(f"🕐 Last updated: {last_fetch}")
+        st.caption(f"🕐 Last checked: {last_fetch}")
 
     st.markdown("---")
     if st.button("Start new conversation", use_container_width=True):
@@ -302,6 +348,15 @@ for msg_idx, message in enumerate(st.session_state.messages):
 
 # Welcome screen — shown only when conversation is empty
 if not st.session_state.messages:
+    st.info(
+        "**What I can help with:** Swiss asylum procedure · Permits (N, F, B, C, S) · "
+        "Work rights · Language courses · Healthcare · Family reunification · Appeals · Housing\n\n"
+        "**Languages:** I reply in your language — Arabic, Tigrinya, Somali, Dari, Ukrainian, "
+        "Turkish, German, French, Italian, English, and more. Just write or speak naturally.\n\n"
+        "**Important:** I give guidance only — not legal advice. For appeals, rejections, or "
+        "urgent legal matters, always contact [OSAR](https://www.osar.ch) (free legal aid) or "
+        "[SEM](https://www.sem.admin.ch) directly."
+    )
     st.markdown("### What would you like to know today?")
     st.caption("Tap a topic or type your question below — I answer in your language.")
     st.markdown("")
@@ -392,6 +447,21 @@ if user_prompt:
 
             try:
                 assistant_text = process_chat_turn(st.session_state.messages, sources, canton=canton)
+            except openai.RateLimitError:
+                assistant_text = (
+                    "⚠️ The AI service is temporarily at capacity. Please wait a minute and try again.\n\n"
+                    "For urgent help while you wait:\n"
+                    "- [OSAR — Free legal aid](https://www.osar.ch)\n"
+                    "- [SEM — Migration authority](https://www.sem.admin.ch)\n"
+                    "- [ch.ch — Swiss portal](https://www.ch.ch/en/)"
+                )
+                sources = []
+            except (openai.APIConnectionError, openai.APIStatusError):
+                assistant_text = (
+                    "⚠️ Could not reach the AI service right now. Please check your internet connection and try again.\n\n"
+                    "For urgent help: [OSAR](https://www.osar.ch) · [SEM](https://www.sem.admin.ch)"
+                )
+                sources = []
             except ValueError as e:
                 assistant_text = (
                     f"⚠️ Configuration error: {e}\n\n"

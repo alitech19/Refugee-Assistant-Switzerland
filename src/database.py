@@ -116,6 +116,13 @@ def init_db() -> None:
         )
     """)
 
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS settings (
+            key TEXT PRIMARY KEY,
+            value TEXT NOT NULL
+        )
+    """)
+
     # Migrate: add embedding column to sources and auto_news if not present
     for table in ("sources", "auto_news"):
         try:
@@ -341,13 +348,27 @@ def get_recent_news(limit: int = 3) -> list[dict]:
     ]
 
 
+def record_fetch_time() -> None:
+    """Store the current UTC timestamp as the last successful news fetch time."""
+    from datetime import datetime, timezone
+    now = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute(
+        "INSERT OR REPLACE INTO settings (key, value) VALUES ('last_news_fetch', ?)",
+        (now,),
+    )
+    conn.commit()
+    conn.close()
+
+
 def get_last_fetch_time() -> str | None:
     conn = get_connection()
     cursor = conn.cursor()
-    cursor.execute("SELECT MAX(created_at) FROM auto_news")
-    result = cursor.fetchone()[0]
+    cursor.execute("SELECT value FROM settings WHERE key = 'last_news_fetch'")
+    row = cursor.fetchone()
     conn.close()
-    return result[:10] if result else None
+    return row[0] if row else None
 
 
 def save_feedback(

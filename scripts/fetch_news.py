@@ -27,7 +27,7 @@ sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 import feedparser
 from datetime import datetime, timezone
 
-from src.database import init_db, save_auto_news
+from src.database import init_db, save_auto_news, record_fetch_time
 from src.resolver import _detect_topics
 
 RSS_FEEDS = [
@@ -121,6 +121,7 @@ def fetch_all() -> None:
         print(f"  {new_count} new article(s) saved (from {len(feed.entries)} in feed)")
         total_new += new_count
 
+    record_fetch_time()
     print(f"\nDone. Total new articles today: {total_new}")
 
 
