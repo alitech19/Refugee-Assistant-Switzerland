@@ -92,7 +92,7 @@
   },
   {
     "title": "FIDE — Language framework for integration in Switzerland",
-    "url": "https://www.fide-service.ch/fide/",
+    "url": "https://www.fide-service.ch",
     "topic": "FIDE, language test, German, French, Italian, language learning, integration, language certificate, A1, A2, B1",
     "content": "FIDE is the Swiss federal framework for language skills used in integration. It covers German, French, and Italian. Language courses and the FIDE language certificate are part of the integration pathway in Switzerland. Many cantons require a language certificate for permit renewal or integration agreements.",
     "is_official": 1
@@ -168,31 +168,31 @@
     "is_official": 1
   },
   {
-    "title": "Canton Zurich — Migration Office",
+    "title": "Canton Zurich — Migration Office (Migrationsamt)",
     "url": "https://www.zh.ch/de/sicherheitsdirektion/migrationsamt.html",
-    "topic": "canton Zurich, migration office, residence, permits, asylum, forms, contact, Zurich",
-    "content": "Official Canton of Zurich migration office (Migrationsamt). Handles residence permits, asylum administration, work authorisation, and cantonal integration for people in Zurich. Contact the Migrationsamt Zurich for permit questions, appointments, and local integration programme information. German-speaking canton.",
+    "topic": "canton Zurich, ZH, migration office, residence, permits, asylum, forms, contact, Zurich, Zürich",
+    "content": "Official Canton of Zurich migration office: Migrationsamt des Kantons Zürich. Address: Berninastrasse 45, 8090 Zürich. Handles residence permits, asylum administration, work authorisation, and cantonal integration for people in Zurich. German-speaking canton.",
     "is_official": 1
   },
   {
-    "title": "Canton Bern — Migration and citizenship office",
-    "url": "https://www.pom.be.ch/de/start/themen/migration.html",
-    "topic": "canton Bern, migration office, residence, permits, asylum, Bern",
-    "content": "Official Canton of Bern migration and citizenship office. Responsible for residence permits, asylum procedure administration, work authorisation, and cantonal integration in Bern. Contact the migration office Bern for permit questions, appointments, and local integration programme information. German-speaking canton.",
+    "title": "Canton Bern — Migration Office (Amt für Bevölkerungsdienste)",
+    "url": "https://www.migration.sid.be.ch/de/start.html",
+    "topic": "canton Bern, BE, migration office, residence, permits, asylum, Bern, integration",
+    "content": "Official Canton of Bern migration office: Amt für Bevölkerungsdienste des Kantons Bern. Address: Ostermundigenstrasse 99B, 3006 Bern. Email: midi.info@be.ch. Handles residence permits, asylum administration, work authorisation, and integration in Bern. German-speaking canton.",
     "is_official": 1
   },
   {
     "title": "Canton Geneva — Office cantonal de la population et des migrations (OCPM)",
-    "url": "https://www.ge.ch/organisation/office-cantonal-de-la-population-et-des-migrations-ocpm",
+    "url": "https://www.ge.ch/organisation/office-cantonal-population-migrations-ocpm",
     "topic": "canton Geneva, migration office, OCPM, residence, permits, asylum, Geneva, French",
-    "content": "Official Canton of Geneva migration office (OCPM). Handles residence permits, population registration, work authorisation, asylum, and cantonal integration in Geneva. Contact the OCPM Geneva for permit questions, appointments, and local integration programme information. French-speaking canton.",
+    "content": "Official Canton of Geneva migration office: OCPM — Office cantonal de la population et des migrations. Address: Route de Chancy 88, 1213 Onex (Genève). Handles residence permits, population registration, work authorisation, asylum, and cantonal integration in Geneva. French-speaking canton.",
     "is_official": 1
   },
   {
-    "title": "Canton Vaud — Service de la population (SPOP)",
+    "title": "Canton Vaud — Service de la population (SPOP / Division étrangers)",
     "url": "https://www.vd.ch/autorites/departements/dits/spop",
-    "topic": "canton Vaud, SPOP, migration office, residence, permits, asylum, Vaud, Lausanne, French",
-    "content": "Official Canton of Vaud population and migration service (SPOP). Handles residence permits, asylum, work authorisation, and cantonal integration for people in Vaud including Lausanne. Contact the SPOP Vaud for permit questions, appointments, and local integration programme information. French-speaking canton.",
+    "topic": "canton Vaud, VD, SPOP, migration office, residence, permits, asylum, Vaud, Lausanne, French",
+    "content": "Official Canton of Vaud population and migration service: SPOP / Division étrangers. Address: Avenue de Beaulieu 19, 1014 Lausanne. Email: info.etrangers@vd.ch. Handles residence permits, asylum, work authorisation, and integration for people in Vaud including Lausanne. French-speaking canton.",
     "is_official": 1
   },
   {
@@ -203,17 +203,17 @@
     "is_official": 1
   },
   {
-    "title": "Canton Aargau — Migration Office (Migrationsamt)",
+    "title": "Canton Aargau — Migration Office (Amt für Migration und Integration)",
     "url": "https://www.ag.ch/de/verwaltung/dvi/migration-integration/migrationsamt",
     "topic": "canton Aargau, AG, migration office, residence, permits, asylum, integration, Aargau",
-    "content": "Official Canton of Aargau migration office. Handles residence permits, asylum administration, and integration matters for people living in canton Aargau. German-speaking canton. Contact the Migrationsamt Aargau for permit renewals, work authorisation, and cantonal integration programmes.",
+    "content": "Official Canton of Aargau migration office: Amt für Migration und Integration. Address: Bahnhofstrasse 88, 5001 Aarau. Email: migrationsamt@ag.ch. Handles residence permits, asylum administration, and integration for people in canton Aargau. German-speaking canton.",
     "is_official": 1
   },
   {
-    "title": "Canton Basel-Stadt — Migration Office (Amt für Migration)",
-    "url": "https://www.bs.ch/bvd/migration",
+    "title": "Canton Basel-Stadt — Migration Office (Migrationsamt)",
+    "url": "https://www.bs.ch/jsd/bdm/migrationsamt",
     "topic": "canton Basel-Stadt, BS, migration office, residence, permits, asylum, Basel, integration",
-    "content": "Official Canton of Basel-Stadt migration office. Handles residence permits, asylum administration, and integration for people living in canton Basel-Stadt. German-speaking canton. Contact the Amt für Migration Basel-Stadt for permit questions, work authorisation, and cantonal services.",
+    "content": "Official Canton of Basel-Stadt migration office: Migrationsamt Basel-Stadt. Address: Spiegelgasse 12, 4001 Basel. Handles residence permits, asylum administration, and integration for people in canton Basel-Stadt. German-speaking canton.",
     "is_official": 1
   },
   {
@@ -227,7 +227,7 @@
     "title": "Canton Fribourg — Service de la population et des migrants (SPoMi)",
     "url": "https://www.fr.ch/spomi",
     "topic": "canton Fribourg, FR, migration office, SPoMi, residence, permits, asylum, Fribourg, French, German, bilingual",
-    "content": "Official Canton of Fribourg population and migration service (SPoMi). Handles residence permits, asylum, and integration in canton Fribourg. Fribourg is a bilingual canton (French and German). Contact SPoMi for permit questions and cantonal integration programmes.",
+    "content": "Official Canton of Fribourg population and migration service: SPoMi — Service de la population et des migrants. Address: Route d'Englisberg 11, 1763 Granges-Paccot. Handles residence permits, asylum, and integration in canton Fribourg. Bilingual canton (French and German).",
     "is_official": 1
   },
   {
@@ -246,9 +246,9 @@
   },
   {
     "title": "Canton Lucerne — Migration Office (Dienststelle Migration)",
-    "url": "https://www.lu.ch/verwaltung/JSD/migration",
+    "url": "https://migration.lu.ch",
     "topic": "canton Lucerne, LU, Luzern, migration office, residence, permits, asylum, Lucerne, integration",
-    "content": "Official Canton of Lucerne migration office. Handles residence permits, asylum administration, and integration in canton Lucerne. German-speaking canton. Contact the Dienststelle Migration for permit questions, work authorisation, and cantonal integration programmes.",
+    "content": "Official Canton of Lucerne migration office: Dienststelle Migration. Address: Fruttstrasse 15, 6002 Luzern. Email: migration@lu.ch. Handles residence permits, asylum administration, and integration in canton Lucerne. German-speaking canton.",
     "is_official": 1
   },
   {
@@ -262,7 +262,7 @@
     "title": "Canton St. Gallen — Migration Office (Migrationsamt)",
     "url": "https://www.sg.ch/sicherheit-justiz/migration/auslaender.html",
     "topic": "canton St. Gallen, SG, migration office, residence, permits, asylum, St. Gallen, integration",
-    "content": "Official Canton of St. Gallen migration office. Handles residence permits, asylum administration, and integration matters for people living in canton St. Gallen. German-speaking canton.",
+    "content": "Official Canton of St. Gallen migration office: Migrationsamt St. Gallen. Address: Oberer Graben 38, 9001 St. Gallen. Handles residence permits, asylum administration, and integration for people in canton St. Gallen. German-speaking canton.",
     "is_official": 1
   },
   {
@@ -288,9 +288,9 @@
   },
   {
     "title": "Canton Valais — Service de la population et des migrations (SPM)",
-    "url": "https://www.vs.ch/web/sm/population-et-migrations",
+    "url": "https://www.vs.ch/web/spm/contact",
     "topic": "canton Valais, VS, Wallis, migration office, SPM, residence, permits, asylum, Valais, French, German, bilingual",
-    "content": "Official Canton of Valais population and migration service. Handles residence permits, asylum, and integration in canton Valais (Wallis). Bilingual canton (French and German). Contact the SPM for permit questions and cantonal integration programmes.",
+    "content": "Official Canton of Valais population and migration service: SPM — Service de la population et des migrations. Address: Avenue de la Gare 39, 1950 Sion. Email: spm-dbm-migration@admin.vs.ch. Handles residence permits, asylum, and integration in canton Valais (Wallis). Bilingual canton (French and German).",
     "is_official": 1
   },
   {
@@ -354,6 +354,146 @@
     "url": "https://www.ai.ch/themen/staat-und-recht/auslaenderrecht",
     "topic": "canton Appenzell Innerrhoden, AI, migration office, residence, permits, asylum, Appenzell, integration",
     "content": "Official Canton of Appenzell Innerrhoden migration information. Handles residence permits, asylum administration, and integration in canton Appenzell Innerrhoden. German-speaking canton.",
+    "is_official": 1
+  },
+  {
+    "title": "Canton Zurich — German Language Courses for Refugees and Asylum Seekers (Deutschkurse)",
+    "url": "https://www.zh.ch/de/migration-integration/integration/integrationsangebote.html",
+    "topic": "canton Zurich, ZH, language course, German course, Deutschkurs, fide, A1, A2, B1, language learning, refugee, asylum seeker, integration, Zürich, Zurich, Sprachkurs, Deutschkurse Zürich",
+    "content": "Canton Zurich offers subsidised German language courses (Deutschkurse) for refugees, asylum seekers (Permit N, F, B), and provisionally admitted persons. Courses follow the fide framework (national language integration standard). The Fachstelle Integration des Kantons Zürich coordinates course offerings. The City of Zurich also provides subsidised courses and course vouchers through its integration office. To find a course near you: use the fide course finder at fide-info.ch and filter for Kanton Zürich, or contact the Fachstelle Integration Kanton Zürich directly.",
+    "is_official": 1
+  },
+  {
+    "title": "Canton Zurich — Cantonal Integration Program KIP (Kantonales Integrationsprogramm Zürich)",
+    "url": "https://www.zh.ch/de/migration-integration/integration.html",
+    "topic": "canton Zurich, ZH, integration program, KIP, Integrationsprogramm, employment integration, Arbeitsintegration, language, asylum, refugee, social participation, Zürich, Zurich, integration coaching",
+    "content": "The Canton of Zurich Cantonal Integration Program (Kantonales Integrationsprogramm, KIP) is funded jointly by the canton and the federal government. It includes German language promotion (Sprachförderung), employment integration (Arbeitsintegration), early childhood education, civic orientation, and social participation programs. Refugees (Permit B) and provisionally admitted persons (Permit F) are eligible. The Fachstelle Integration Kanton Zürich coordinates all programs and advises on available offerings. Contact via the Sicherheitsdirektion des Kantons Zürich.",
+    "is_official": 1
+  },
+  {
+    "title": "Canton Geneva — French Language Courses for Refugees (Cours de français Genève)",
+    "url": "https://www.ge.ch/dossier/geneve-soutient-integration-etrangers/outils-information/trouver-cours-francais",
+    "topic": "canton Geneva, GE, language course, French course, cours de français, fide, integration, refugee, asylum seeker, Geneva, Genève, Genf, language learning, A1, A2, B1, cours langue Genève",
+    "content": "The Canton of Geneva has an official search tool to find French language courses (cours de français) for foreigners, refugees, and asylum seekers. Courses can be filtered by level, schedule, neighbourhood, and childcare availability. The Bureau de l'intégration et de la citoyenneté (BIC) manages course placement under the Swiss Integration Agenda. Many courses are free or heavily subsidised for Permit N, F, S, and B holders. To find courses: use this official Geneva search tool or the fide course finder at fide-info.ch filtering for Canton Geneva.",
+    "is_official": 1
+  },
+  {
+    "title": "Canton Geneva — Integration Programs for Refugees (Programme d'intégration cantonal PIC Genève)",
+    "url": "https://www.ge.ch/dossier/geneve-soutient-integration-etrangers",
+    "topic": "canton Geneva, GE, integration program, PIC, programme intégration cantonal, AIS, agenda intégration, employment, refugees, asylum seekers, Geneva, Genève, Réfugiés au travail, civic orientation",
+    "content": "The Canton of Geneva runs the Programme d'intégration cantonal (PIC) under the national Swiss Integration Agenda (AIS). Programs include: language and integration courses, early language assessment (bilan de compétences linguistiques), employment insertion (Réfugiés@Work), summer French courses (Français en Été), and civic orientation (connaissance de la Suisse). The BIC (Bureau de l'intégration et de la citoyenneté) manages all programs. Permit N, F, S, and B holders are eligible. Contact the OCPM or BIC for access and enrolment.",
+    "is_official": 1
+  },
+  {
+    "title": "Canton Bern — German Language Courses for Refugees (Deutschkurse Kanton Bern / DeutschBon)",
+    "url": "https://www.gsi.be.ch/de/start/ueber-uns/amt-fuer-integration-und-soziales.html",
+    "topic": "canton Bern, BE, language course, German course, Deutschkurs, fide, integration, refugee, asylum seeker, Bern, language learning, A1, A2, B1, DeutschBon, Deutschkurse Bern, Sprachförderung",
+    "content": "Canton Bern offers subsidised German language courses for refugees, asylum seekers (Permit N, F), and provisionally admitted persons through the Amt für Integration und Soziales (AIS). The City of Bern runs the DeutschBon voucher program for approved language schools. Courses are available from A1 to B2 level; many schools offer childcare (Kinderbetreuung). To find courses: use fide-info.ch and filter for Kanton Bern, or contact the AIS office at Postgasse 68, 3011 Bern. Verify current voucher conditions at gsi.be.ch.",
+    "is_official": 1
+  },
+  {
+    "title": "Canton Bern — Cantonal Integration Program KIP 3 (Kantonales Integrationsprogramm Bern)",
+    "url": "https://www.gsi.be.ch/de/start/ueber-uns/amt-fuer-integration-und-soziales/projekte-ais/kantonales-integrationsprogramm-kip-3.html",
+    "topic": "canton Bern, BE, integration program, KIP, KIP 3, Integrationsprogramm, employment, language, social integration, asylum, refugee, Bern, Amt für Integration, Arbeitsintegration, Sprachförderung Bern",
+    "content": "The Cantonal Integration Program KIP 3 (2024–2027) of Canton Bern is managed by the Amt für Integration und Soziales (AIS). It includes German language support (Sprachförderung), employment integration (Arbeitsintegration), early childhood programs (Frühförderung), civic orientation (Orientierung in der Schweiz), and social participation. Refugees (Permit B) and provisionally admitted persons (Permit F) are priority beneficiaries. Contact: Amt für Integration und Soziales, Postgasse 68, 3011 Bern.",
+    "is_official": 1
+  },
+  {
+    "title": "Canton Zug — German Language Courses for Refugees (Subventionierte Deutschkurse Kanton Zug)",
+    "url": "https://zg.ch/de/migration-integration/einreise-und-aufenthalt/integrationsangebote/deutschkurse",
+    "topic": "canton Zug, ZG, language course, German course, Deutschkurs, fide, integration, refugee, asylum seeker, Zug, language learning, A1, A2, B1, subventionierte Deutschkurse",
+    "content": "Canton Zug subsidises German language courses (A1–B2 level) through approved providers including Pro Arbeit, SAH Zentralschweiz, and SRK (Swiss Red Cross). fide-certified instruction is available. Courses are aimed at migrants with low incomes, including asylum seekers and refugees (Permit N, F, B). Personalised counselling is available through the Fachstelle Migration Zug. Contact: integration@zg.ch, Neugasse 2, 6301 Zug. Also search fide-info.ch for courses in Kanton Zug.",
+    "is_official": 1
+  },
+  {
+    "title": "Canton Zug — Cantonal Integration Program KIP (Kantonales Integrationsprogramm Zug)",
+    "url": "https://zg.ch/de/migration-integration/integration/kantonales-integrationsprogramm",
+    "topic": "canton Zug, ZG, integration program, KIP, Integrationsprogramm, employment, language, social integration, asylum, refugee, Zug, civic orientation, Fachstelle Migration",
+    "content": "The Canton of Zug Cantonal Integration Program (KIP) covers first information, language promotion, early childhood, and social participation. The Fachstelle Migration Zug (Migration Specialist Office) offers daily-life counselling and language courses for asylum seekers and refugees. Contact: integration@zg.ch, Neugasse 2, 6301 Zug. Refugees (Permit B) and provisionally admitted persons (Permit F) are eligible for KIP programs.",
+    "is_official": 1
+  },
+  {
+    "title": "Canton Aargau — German Language Courses for Refugees (Sprachförderung Kanton Aargau)",
+    "url": "https://www.ag.ch/de/themen/migration-integration/integration/foerderbereiche/sprachfoerderung",
+    "topic": "canton Aargau, AG, language course, German course, Deutschkurs, Sprachförderung, fide, integration, refugee, asylum seeker, Aargau, Aarau, Baden, language learning, A1, A2, B1, Alphabetisierung",
+    "content": "Canton Aargau subsidises German language courses from literacy/alphabetisation level through B1, offered in Aarau, Baden, and six regional locations — many with childcare. Programs include intensive A1 Plus courses and courses specifically for women. All courses are fide-certified. Permit N, F, and B holders are eligible for subsidised rates. Contact: integration@ag.ch. Additional course information at integrationaargau.ch and hallo-aargau.ch. Also use the fide course finder at fide-info.ch for Kanton Aargau.",
+    "is_official": 1
+  },
+  {
+    "title": "Canton Aargau — Cantonal Integration Program KIP (Kantonales Integrationsprogramm Aargau)",
+    "url": "https://www.ag.ch/de/themen/migration-integration/integration",
+    "topic": "canton Aargau, AG, integration program, KIP, KIP 3, Integrationsprogramm, employment, language, social integration, asylum, refugee, Aargau, Regional Integration Centers, RIF, Arbeitsintegration",
+    "content": "The Aargau Cantonal Integration Program (KIP 3, 2024–2027) combines integration measures with employment and education mainstreaming. The canton has organised 60+ municipalities into Regional Integration Centers (Regionale Integrationsfachstellen, RIF) that coordinate local programs. Financing is shared equally by the federal government, canton, and municipalities. Contact: Integration Section, Migrationsamt Aargau, Bahnhofstrasse 88, 5001 Aarau, integration@ag.ch.",
+    "is_official": 1
+  },
+  {
+    "title": "Canton Schaffhausen — Language Courses and Asylum Support (Asyl- und Flüchtlingsbetreuung SH)",
+    "url": "https://sh.ch/CMS/Webseite/Kanton-Schaffhausen/Beh-rde/Verwaltung/Departement-des-Innern/Sozialamt/Asyl--und-Fl-chtlingsbetreuung-399928-DE.html",
+    "topic": "canton Schaffhausen, SH, language course, German course, Deutschkurs, asylum, refugee, integration, Schaffhausen, asylum support, Flüchtlingsbetreuung, Migrationsamt Schaffhausen",
+    "content": "In Canton Schaffhausen, asylum and refugee care (Asyl- und Flüchtlingsbetreuung) is coordinated by the Sozialamt. Language courses and integration support for asylum seekers and refugees are managed in cooperation with the Migrationsamt Schaffhausen. For specific language course offerings and enrolment, contact the Migrationsamt Schaffhausen or the cantonal Sozialamt directly. Also use fide-info.ch to find courses in Kanton Schaffhausen.",
+    "is_official": 1
+  },
+  {
+    "title": "Canton Schaffhausen — Cantonal Integration Program KIP (Integrationsförderung Schaffhausen)",
+    "url": "https://sh.ch/CMS/Webseite/Kanton-Schaffhausen/Beh-rde/Verwaltung/Departement-des-Innern/Sozialamt/Integrationsf-rderung-399936-DE.html",
+    "topic": "canton Schaffhausen, SH, integration program, KIP, KIP 3, Integrationsprogramm, Integrationsförderung, employment, language, asylum, refugee, Schaffhausen, social participation",
+    "content": "Canton Schaffhausen implements the Cantonal Integration Program (KIP 3, 2024–2027) through the Sozialamt and Migrationsamt. Integration promotion (Integrationsförderung) covers language, employment, early childhood, and social participation. In small cantons like Schaffhausen, integration programs and language courses are often coordinated directly by the migration office. Contact the Migrationsamt Schaffhausen at migrationsamt.sh.ch for integration programme details and enrolment.",
+    "is_official": 1
+  },
+  {
+    "title": "Canton Lucerne — German Language Courses for Refugees (Deutsch lernen DAF Kanton Luzern)",
+    "url": "https://daf.lu.ch/Themen/Integration/Sprache",
+    "topic": "canton Lucerne, LU, language course, German course, Deutschkurs, fide, integration, refugee, asylum seeker, Lucerne, Luzern, language learning, A1, A2, DAF, mandatory German courses",
+    "content": "The Canton of Lucerne's Department for Asylum and Refugees (DAF) offers mandatory German language courses (Deutschkurse) three times per week for asylum seekers and provisionally admitted persons. Courses cover literacy through A2 level and are fide-certified. Instruction focuses on everyday practical language use. Contact: Abteilung Kurswesen, Museggstrasse 37, 6004 Luzern. Email: kurswesen.daf@lu.ch. Also use fide-info.ch for additional courses in Kanton Luzern.",
+    "is_official": 1
+  },
+  {
+    "title": "Canton Lucerne — Cantonal Integration Program KIP 3 (Kantonales Integrationsprogramm Luzern)",
+    "url": "https://disg.lu.ch/themen/integration/integration_aktivitaeten/integration_strategie",
+    "topic": "canton Lucerne, LU, integration program, KIP, KIP 3, Integrationsprogramm, employment, language, asylum, refugee, Lucerne, Luzern, DISG, social participation, Arbeitsintegration",
+    "content": "The Cantonal Integration Program KIP 3 (2024–2027) of Canton Lucerne covers seven promotion areas including language, employment, early childhood, and social participation. The program supports both migrants arriving via family reunion/employment and recognised refugees/provisionally admitted persons (Permit B, F). Managed by the Departement Gesundheit und Soziales (DISG), Rösslimattstrasse 37, Lucerne. Contact the DISG integration team for enrolment and programme access.",
+    "is_official": 1
+  },
+  {
+    "title": "Canton Basel-Stadt — German Language Courses for Refugees (Deutsch lernen Basel-Stadt)",
+    "url": "https://www.bs.ch/themen/bildung-und-kinderbetreuung/hoehere-bildung-und-weiterbildung/deutsch-lernen",
+    "topic": "canton Basel-Stadt, BS, Basel, language course, German course, Deutschkurs, fide, integration, refugee, asylum seeker, Basel, language learning, A1, A2, B1, Deutschkursgutscheine, voucher",
+    "content": "Canton Basel-Stadt offers comprehensive German learning support for refugees and asylum seekers. Residents with Permit B receive 80 free lesson vouchers (Deutschkursgutscheine) upon arrival, valid for one year. Reduced course fees are available for all canton residents. Childcare for children under 5 is co-financed. Free courses are also available for parents at selected primary schools. For Permit S holders (Ukrainians), contact Social Services at Klybeckstrasse 15, Basel. Full provider directory at deutschkurse.bs.ch. Also search fide-info.ch for Basel courses.",
+    "is_official": 1
+  },
+  {
+    "title": "Canton Basel-Stadt — Cantonal Integration Program KIP 3 (Fachstelle Integration Basel-Stadt)",
+    "url": "https://www.bs.ch/pd/gleichstellung-und-diversitaet/integration",
+    "topic": "canton Basel-Stadt, BS, Basel, integration program, KIP, KIP 3, Integrationsprogramm, Fachstelle Integration, employment, language, asylum, refugee, Basel, civic orientation, anti-discrimination",
+    "content": "Basel-Stadt's Cantonal Integration Program KIP 3 (2024–2027) focuses on seven areas: information and counselling, language, employment, early childhood, social participation, diversity and anti-discrimination, and interpretation services. Managed by the Fachstelle Integration und Antirassismus. Address: Schneidergasse 7, 4051 Basel. Email: integration@bs.ch. Refugees (Permit B) and provisionally admitted persons (Permit F) are priority beneficiaries.",
+    "is_official": 1
+  },
+  {
+    "title": "Canton Vaud — Language Courses and Integration Support for Refugees (CSIR Vaud)",
+    "url": "https://www.vd.ch/aides-financieres-et-soutien-social/appuis-concrets-aux-beneficiares-du-revenu-dinsertion/pour-les-refugies-permis-b-et-permis-f-soutien-et-programmes-dintegration",
+    "topic": "canton Vaud, VD, language course, French course, cours de français, fide, integration, refugee, asylum seeker, Vaud, Lausanne, CSIR, language learning, A1, A2, informatique, computer skills",
+    "content": "The Centre social d'intégration des réfugiés (CSIR) in Vaud serves recognised refugees and provisionally admitted persons (Permit B and F). Programs include French language courses, mathematics, computer skills, office software, and life integration workshops. CSIR Lausanne: Route des Plaines-du-Loup 1, 1014 Lausanne. Additional branches in Montreux and Yverdon serve other parts of the canton. Also use fide-info.ch to find French courses in Canton Vaud.",
+    "is_official": 1
+  },
+  {
+    "title": "Canton Vaud — Cantonal Integration Program PIC 3 (Bureau cantonal pour l'intégration BCI Vaud)",
+    "url": "https://www.vd.ch/deiep/bci",
+    "topic": "canton Vaud, VD, integration program, PIC, PIC 3, programme intégration cantonal, BCI, AIS, employment, language, asylum, refugee, Vaud, Lausanne, civic orientation, insertion professionnelle",
+    "content": "The Bureau cantonal pour l'intégration des étrangers et la prévention du racisme (BCI) coordinates the Vaud Cantonal Integration Program (PIC III, 2024–2027), implementing around 100 measures across seven integration domains. Main office: Avenue de Sévelin 46, 1014 Lausanne. Email: info.integration@vd.ch. Three regional branches cover the entire canton. BCI provides counselling to migrants and professionals, and coordinates employment insertion and language support programs.",
+    "is_official": 1
+  },
+  {
+    "title": "Canton Obwalden — German Language Courses for Refugees (Deutschkurse Kanton Obwalden)",
+    "url": "https://www.ow.ch/familie/5953",
+    "topic": "canton Obwalden, OW, language course, German course, Deutschkurs, fide, integration, refugee, asylum seeker, Obwalden, Sarnen, language learning, FrauKi, MuKi, Alpha, literacy, Sprachkurs",
+    "content": "Canton Obwalden subsidises German language courses at up to 70% cost coverage for refugees and asylum seekers. Courses are offered through the Bildungszentrum (BWZ) in Sarnen and Engelberg. Specialised offerings include: FrauKi-Deutschkurs (Thursday afternoons with childcare, CHF 3 per lesson), MuKi courses (Tuesday and Thursday mornings), Alpha literacy courses, and Plaudertasche (children aged 1.5–5 years). Contact the Fachstelle Gesellschaftsfragen Obwalden via ow.ch. Also use fide-info.ch for courses in Kanton Obwalden.",
+    "is_official": 1
+  },
+  {
+    "title": "Canton Obwalden — Cantonal Integration Program KIP 3 (Kantonales Integrationsprogramm Obwalden)",
+    "url": "https://www.ow.ch/dienstleistungen/9550",
+    "topic": "canton Obwalden, OW, integration program, KIP, KIP 3, Integrationsprogramm, employment, language, asylum, refugee, Obwalden, Sarnen, civic orientation, integration counselling",
+    "content": "Obwalden's KIP 3 (2024–2027) supports projects promoting coexistence and integration of migrants. Free and confidential integration counselling is available for all migrants on integration topics. Contact: Fachstelle Gesellschaftsfragen Obwalden. Email: integration@ow.ch. The Fachstelle coordinates all integration programs in the canton.",
     "is_official": 1
   }
 ]

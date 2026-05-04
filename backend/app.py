@@ -1,5 +1,8 @@
 import sys
 import os
+import io
+import re
+import threading
 from pathlib import Path
 
 sys.path.append(str(Path(__file__).resolve().parent.parent))
@@ -22,7 +25,7 @@ from src.database import (
     get_last_fetch_time,
     get_recent_news,
 )
-from src.llm_service import process_chat_turn, transcribe_audio
+from src.llm_service import process_chat_turn, transcribe_audio, _detect_language
 from src.resolver import resolve_user_query
 from src.state_tracker import build_initial_state, update_state
 
@@ -30,6 +33,87 @@ from src.state_tracker import build_initial_state, update_state
 init_db()
 seed_sources_from_json()
 delete_old_conversations()
+
+# Warm the embedding model in the background so the first user question is fast
+def _warm_embeddings():
+    try:
+        from src.database import _ensure_embeddings
+        _ensure_embeddings()
+    except Exception:
+        pass
+
+threading.Thread(target=_warm_embeddings, daemon=True).start()
+
+_TRIVIAL_WORDS = {
+    "hello", "hi", "hey", "greetings", "good morning", "good afternoon", "good evening",
+    "thanks", "thank you", "thank", "merci", "danke", "grazie", "gracias",
+    "ok", "okay", "sure", "yes", "no", "great", "good", "nice", "cool",
+    "bye", "goodbye", "see you", "ciao",
+    "سلام", "مرحبا", "شكرا", "اوكي",
+}
+
+
+# gTTS language codes (None = not supported by gTTS → falls back to English)
+_GTTS_LANG: dict[str, str | None] = {
+    "Arabic":              "ar",
+    "German":              "de",
+    "French":              "fr",
+    "Italian":             "it",
+    "Turkish":             "tr",
+    "Ukrainian":           "uk",
+    "English":             "en",
+    "Amharic or Tigrinya": "am",
+    "Dari or Farsi":       "fa",
+    "Swahili":             "sw",
+    "Somali":              None,
+    "Pashto":              None,
+    "Kurdish":             None,
+}
+
+
+def _strip_md(text: str) -> str:
+    """Remove markdown so TTS reads as natural speech."""
+    text = re.sub(r'\*\*(.+?)\*\*', r'\1', text)
+    text = re.sub(r'\*(.+?)\*',     r'\1', text)
+    text = re.sub(r'#+\s*',          '',    text)
+    text = re.sub(r'\[([^\]]+)\]\([^\)]+\)', r'\1', text)
+    text = re.sub(r'`[^`]+`',        '',    text)
+    text = re.sub(r'[⚠✓✗─━|]+',    '',    text)
+    return text.strip()
+
+
+def _tts_button(text: str, lang: str, key: str) -> None:
+    """Render a 🔊 Listen button. Generates audio server-side via gTTS on click."""
+    audio_key = f"tts_audio_{key}"
+    lang_code = _GTTS_LANG.get(lang) or "en"
+
+    if st.button("🔊 Listen", key=f"btn_{key}"):
+        try:
+            from gtts import gTTS
+            clean = _strip_md(text)[:2500]
+            tts = gTTS(text=clean, lang=lang_code, slow=False)
+            buf = io.BytesIO()
+            tts.write_to_fp(buf)
+            buf.seek(0)
+            st.session_state[audio_key] = buf.read()
+        except Exception:
+            st.session_state[audio_key] = None
+
+    if st.session_state.get(audio_key):
+        st.audio(st.session_state[audio_key], format="audio/mp3")
+
+
+def _is_trivial(text: str) -> bool:
+    """Return True for greetings/acknowledgements that need no source retrieval."""
+    stripped = text.strip().lower()
+    if stripped in _TRIVIAL_WORDS:
+        return True
+    # Very short messages with no question mark and no question words
+    if len(stripped) <= 15 and "?" not in stripped:
+        question_words = {"what", "how", "can", "when", "where", "who", "why", "which", "is", "are", "do"}
+        if not any(w in stripped.split() for w in question_words):
+            return True
+    return False
 
 st.set_page_config(
     page_title="Refugee Assistant Switzerland",
@@ -169,6 +253,14 @@ for msg_idx, message in enumerate(st.session_state.messages):
                     st.markdown("---")
 
     if message["role"] == "assistant":
+        # Detect language from the preceding user message for TTS
+        tts_lang = "English"
+        for i in range(msg_idx - 1, -1, -1):
+            if st.session_state.messages[i]["role"] == "user":
+                tts_lang = _detect_language(st.session_state.messages[i]["content"])
+                break
+        _tts_button(message["content"], tts_lang, f"hist_{msg_idx}")
+
         fb_key = f"fb_{msg_idx}"
         already_rated = st.session_state.get(fb_key)
         if already_rated:
@@ -292,7 +384,11 @@ if user_prompt:
             resolved = resolve_user_query(user_prompt, st.session_state.chat_state)
             st.session_state.chat_state = update_state(st.session_state.chat_state, resolved)
 
-            sources = search_sources(resolved["standalone_query"], limit=3, canton=canton)
+            sources = (
+                []
+                if _is_trivial(user_prompt)
+                else search_sources(resolved["standalone_query"], limit=2, canton=canton)
+            )
 
             try:
                 assistant_text = process_chat_turn(st.session_state.messages, sources, canton=canton)
@@ -312,6 +408,7 @@ if user_prompt:
         save_message(st.session_state.conversation_id, "assistant", assistant_text)
 
         st.markdown(assistant_text)
+        _tts_button(assistant_text, _detect_language(user_prompt), f"new_{st.session_state.conversation_id}")
         if sources:
             with st.expander("Official sources"):
                 for src in sources:

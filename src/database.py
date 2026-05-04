@@ -12,6 +12,9 @@ SOURCES_FILE = DATA_DIR / "official_sources.json"
 
 RETENTION_DAYS = 30
 
+# Set to True after _migrate_missing_embeddings() runs so we don't repeat it
+_embeddings_migrated = False
+
 
 def get_connection() -> sqlite3.Connection:
     DATA_DIR.mkdir(exist_ok=True)
@@ -123,12 +126,21 @@ def init_db() -> None:
     conn.commit()
     conn.close()
 
-    # One-time migration: encode any existing rows that have no embedding yet
-    _migrate_missing_embeddings()
-
 
 def _migrate_missing_embeddings() -> None:
-    """Encode and store embeddings for any rows inserted before this feature."""
+    """Encode and store embeddings for any rows that have none. No-op if all are present."""
+    # Fast path: check counts before loading the model
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT COUNT(*) FROM sources WHERE embedding IS NULL")
+    sources_null = cursor.fetchone()[0]
+    cursor.execute("SELECT COUNT(*) FROM auto_news WHERE embedding IS NULL")
+    news_null = cursor.fetchone()[0]
+    conn.close()
+
+    if sources_null == 0 and news_null == 0:
+        return  # Nothing to do — model never loaded
+
     try:
         from src.embeddings import encode_batch
     except ImportError:
@@ -137,68 +149,83 @@ def _migrate_missing_embeddings() -> None:
     conn = get_connection()
     cursor = conn.cursor()
 
-    cursor.execute("SELECT id, title, topic, content FROM sources WHERE embedding IS NULL")
-    rows = cursor.fetchall()
-    if rows:
+    if sources_null:
+        cursor.execute("SELECT id, title, topic, content FROM sources WHERE embedding IS NULL")
+        rows = cursor.fetchall()
         ids = [r[0] for r in rows]
         texts = [f"{r[1]} {r[2]} {r[3][:500]}" for r in rows]
         for row_id, emb in zip(ids, encode_batch(texts)):
             if emb:
                 cursor.execute("UPDATE sources SET embedding = ? WHERE id = ?", (emb, row_id))
 
-    cursor.execute("SELECT id, title, topic, summary FROM auto_news WHERE embedding IS NULL")
-    rows = cursor.fetchall()
-    if rows:
-        print(f"[embeddings] Encoding {len(rows)} existing news articles (one-time migration)…")
+    if news_null:
+        cursor.execute("SELECT id, title, topic, summary FROM auto_news WHERE embedding IS NULL")
+        rows = cursor.fetchall()
         ids = [r[0] for r in rows]
         texts = [f"{r[1]} {r[2] or ''} {r[3] or ''}"[:1000] for r in rows]
         for row_id, emb in zip(ids, encode_batch(texts)):
             if emb:
                 cursor.execute("UPDATE auto_news SET embedding = ? WHERE id = ?", (emb, row_id))
-        print("[embeddings] Migration complete.")
 
     conn.commit()
     conn.close()
 
 
+def _ensure_embeddings() -> None:
+    """Run embedding migration once per process lifetime."""
+    global _embeddings_migrated
+    if not _embeddings_migrated:
+        _migrate_missing_embeddings()
+        _embeddings_migrated = True
+
+
 def seed_sources_from_json() -> None:
+    global _embeddings_migrated
     if not SOURCES_FILE.exists():
         return
 
     with open(SOURCES_FILE, "r", encoding="utf-8") as f:
         items = json.load(f)
 
-    # Batch-encode all source texts before opening the DB connection
-    try:
-        from src.embeddings import encode_batch
-        texts = [
-            f"{item['title']} {item.get('topic', '')} {item.get('content', '')[:500]}"
-            for item in items
-        ]
-        embeddings = encode_batch(texts)
-    except Exception:
-        embeddings = [None] * len(items)
-
     conn = get_connection()
     cursor = conn.cursor()
 
-    # Always replace sources so additions to the JSON file take effect on restart
-    cursor.execute("DELETE FROM sources")
-    for item, embedding in zip(items, embeddings):
-        cursor.execute(
-            """
-            INSERT INTO sources (title, url, topic, content, is_official, embedding)
-            VALUES (?, ?, ?, ?, ?, ?)
-            """,
-            (
-                item["title"],
-                item["url"],
-                item["topic"],
-                item["content"],
-                int(item.get("is_official", 1)),
-                embedding,
-            ),
-        )
+    # Load existing rows keyed by URL to preserve embeddings already computed
+    cursor.execute("SELECT url, title, topic, content, embedding FROM sources")
+    existing: dict[str, dict] = {
+        row[0]: {"title": row[1], "topic": row[2], "content": row[3], "embedding": row[4]}
+        for row in cursor.fetchall()
+    }
+
+    json_urls = {item["url"] for item in items}
+
+    # Remove rows no longer in the JSON
+    for url in set(existing) - json_urls:
+        cursor.execute("DELETE FROM sources WHERE url = ?", (url,))
+
+    for item in items:
+        url = item["url"]
+        title   = item["title"]
+        topic   = item.get("topic", "")
+        content = item.get("content", "")
+        official = int(item.get("is_official", 1))
+
+        if url in existing:
+            ex = existing[url]
+            if ex["title"] != title or ex["topic"] != topic or ex["content"] != content:
+                # Content changed: update and clear embedding so it gets re-encoded lazily
+                cursor.execute(
+                    "UPDATE sources SET title=?, topic=?, content=?, is_official=?, embedding=NULL WHERE url=?",
+                    (title, topic, content, official, url),
+                )
+                _embeddings_migrated = False
+        else:
+            # New row: insert without embedding — will be encoded on first search
+            cursor.execute(
+                "INSERT INTO sources (title, url, topic, content, is_official) VALUES (?, ?, ?, ?, ?)",
+                (title, url, topic, content, official),
+            )
+            _embeddings_migrated = False
 
     conn.commit()
     conn.close()
@@ -373,6 +400,7 @@ def _extract_permit_code(text: str) -> str | None:
 
 
 def search_sources(query: str, limit: int = 3, canton: str | None = None) -> list[dict[str, Any]]:
+    _ensure_embeddings()  # lazy: loads model + encodes only on first call if needed
     conn = get_connection()
     cursor = conn.cursor()
     cursor.execute(
