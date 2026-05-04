@@ -1,0 +1,4 @@
+[server]
+# Disable file watcher to prevent Streamlit scanning the transformers library
+# (which generates thousands of harmless torchvision warnings in the terminal)
+fileWatcherType = "none"
