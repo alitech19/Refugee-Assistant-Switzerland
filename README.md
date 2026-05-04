@@ -75,6 +75,8 @@ AmanCH/
 
 The easiest way to run AmanCH locally — no Python or venv setup needed.
 
+**Prerequisites:** Install [Docker Desktop](https://www.docker.com/products/docker-desktop/) (free, available for Windows, Mac, and Linux). Make sure it is running before the steps below.
+
 **Option A — Docker Compose (recommended):**
 ```bash
 # 1. Create your .env file with your Groq API key
@@ -91,6 +93,8 @@ docker run -p 8501:8501 --env GROQ_API_KEY=your_key_here amanch
 ```
 
 Open [http://localhost:8501](http://localhost:8501) in your browser.
+
+> **Note:** The `data/` folder is mounted as a volume in Docker Compose, so your conversation history and news cache persist between container restarts.
 
 ---
 
