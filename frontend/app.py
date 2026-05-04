@@ -606,16 +606,28 @@ if user_prompt:
                     "- [ch.ch — Swiss portal](https://www.ch.ch/en/)"
                 )
                 sources = []
-            except (openai.APIConnectionError, openai.APIStatusError):
+            except openai.AuthenticationError:
+                assistant_text = (
+                    "⚠️ The API key is invalid or expired. Please update the `GROQ_API_KEY` in the app secrets and reboot.\n\n"
+                    "For urgent help: [OSAR](https://www.osar.ch) · [SEM](https://www.sem.admin.ch)"
+                )
+                sources = []
+            except openai.APIConnectionError:
                 assistant_text = (
                     "⚠️ Could not reach the AI service right now. Please check your internet connection and try again.\n\n"
+                    "For urgent help: [OSAR](https://www.osar.ch) · [SEM](https://www.sem.admin.ch)"
+                )
+                sources = []
+            except openai.APIStatusError as e:
+                assistant_text = (
+                    f"⚠️ The AI service returned an error (status {e.status_code}). Please try again in a moment.\n\n"
                     "For urgent help: [OSAR](https://www.osar.ch) · [SEM](https://www.sem.admin.ch)"
                 )
                 sources = []
             except ValueError as e:
                 assistant_text = (
                     f"⚠️ Configuration error: {e}\n\n"
-                    "Please add your `GROQ_API_KEY` to the `.env` file and restart the app."
+                    "Please add your `GROQ_API_KEY` to the app secrets and reboot."
                 )
                 sources = []
 
