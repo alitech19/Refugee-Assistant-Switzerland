@@ -14,6 +14,7 @@ BLUE   = RGBColor(0x4a, 0x90, 0xD9)
 GREEN  = RGBColor(0x5c, 0xb8, 0x5c)
 ORANGE = RGBColor(0xf0, 0xad, 0x4e)
 DGREY  = RGBColor(0x14, 0x14, 0x25)
+TEAL   = RGBColor(0x1a, 0x8f, 0x8f)
 
 W = Inches(13.33)
 H = Inches(7.50)
@@ -53,9 +54,9 @@ def txt(slide, text, left, top, width, height,
     r.font.italic = italic
 
 def tag(slide, label, left, top):
-    rect(slide, left, top, Inches(1.8), Inches(0.35), RED)
+    rect(slide, left, top, Inches(1.9), Inches(0.35), RED)
     txt(slide, label, left + Inches(0.1), top + Inches(0.05),
-        Inches(1.6), Inches(0.28), size=10, bold=True,
+        Inches(1.7), Inches(0.28), size=10, bold=True,
         color=WHITE, align=PP_ALIGN.CENTER)
 
 def slide_number(slide, n, total=4):
@@ -77,7 +78,7 @@ def bullet_list(slide, items, left, top, width,
         y += Inches(0.52)
 
 def red_line(slide, top):
-    r = rect(slide, Inches(0.45), top, Inches(0.5), Inches(0.06), RED)
+    rect(slide, Inches(0.45), top, Inches(0.5), Inches(0.06), RED)
 
 
 # ═══════════════════════════════════════════════════════════
@@ -85,12 +86,9 @@ def red_line(slide, top):
 # ═══════════════════════════════════════════════════════════
 s1 = add_slide()
 
-# Background: white left, light grey right
 LW = Inches(5.6)
 rect(s1, 0, 0, LW, H, WHITE)
 rect(s1, LW, 0, W - LW, H, LGREY)
-
-# Red top accent bar
 rect(s1, 0, 0, LW, Inches(0.08), RED)
 
 slide_number(s1, 1)
@@ -111,7 +109,6 @@ txt(s1, "Switzerland's asylum system is one of the most complex in Europe — "
     Inches(0.45), Inches(2.75), Inches(4.9), Inches(1.1),
     size=13, color=MGREY)
 
-# Stats
 stats = [
     ("100K+", "Refugees & asylum\nseekers in Switzerland"),
     ("5",     "Permit types, each with\ndifferent rights & rules"),
@@ -132,23 +129,17 @@ txt(s1, '"Missed deadlines. Lost rights. Fear and isolation.\nNot from bad law �
     Inches(0.45), Inches(5.4), Inches(4.9), Inches(0.9),
     size=12, italic=True, color=MGREY)
 
-# Right panel illustration
+# Right panel — Swiss cross illustration
 cx = LW + (W - LW) / 2
 cy = H / 2
-
-# Swiss cross (faded)
 rect(s1, cx - Inches(0.55), cy - Inches(2.0), Inches(1.1), Inches(4.0),
      RGBColor(0xF0, 0xD0, 0xD0))
 rect(s1, cx - Inches(2.0), cy - Inches(0.55), Inches(4.0), Inches(1.1),
      RGBColor(0xF0, 0xD0, 0xD0))
-
-# Person
 rect(s1, cx - Inches(0.5), cy - Inches(1.15), Inches(1.0), Inches(1.0),
      RGBColor(0x3d, 0x3d, 0x5c))
 rect(s1, cx - Inches(0.45), cy - Inches(0.2), Inches(0.9), Inches(1.2),
      RGBColor(0x3d, 0x3d, 0x5c))
-
-# Question marks
 txt(s1, "?", cx - Inches(2.0), cy - Inches(0.4),
     Inches(0.8), Inches(0.9), size=60, bold=True,
     color=RGBColor(0xD6, 0x28, 0x28), align=PP_ALIGN.CENTER)
@@ -171,76 +162,77 @@ rect(s2, 0, 0, LW, Inches(0.08), RED)
 slide_number(s2, 2)
 tag(s2, "THE SOLUTION", Inches(0.45), Inches(0.7))
 
-txt(s2, "Refugee Assistant Switzerland",
+txt(s2, "AmanCH",
     Inches(0.45), Inches(1.3), Inches(4.9), Inches(0.65),
-    size=26, bold=True, color=WHITE)
+    size=38, bold=True, color=WHITE)
+txt(s2, "امن  ·  Peace in Arabic. CH  ·  Switzerland.",
+    Inches(0.45), Inches(1.95), Inches(4.9), Inches(0.38),
+    size=12, italic=True, color=BGREY)
 
-txt(s2, "A free AI chatbot available 24/7 — answering questions about\n"
+txt(s2, "A free AI assistant available 24/7 — answering questions about\n"
         "asylum, work, education, healthcare, and integration\n"
-        "in the user's own language.",
-    Inches(0.45), Inches(2.1), Inches(4.9), Inches(1.0),
+        "in the refugee's own language.",
+    Inches(0.45), Inches(2.5), Inches(4.9), Inches(1.0),
     size=13, color=BGREY)
 
-red_line(s2, Inches(3.25))
+red_line(s2, Inches(3.6))
 
 bullet_list(s2, [
-    "Multilingual — 15+ languages (Arabic, Tigrinya, Dari, French…)",
-    "Covers everything — work rights, school, health, permits, appeals",
-    "Grounded in 27 verified Swiss official sources (SEM, OSAR, ch.ch)",
+    "15+ languages — Arabic, Tigrinya, Dari, Somali, Ukrainian, French…",
+    "Covers work rights, school, health, permits, family reunification",
+    "Grounded in 70+ verified Swiss official sources (SEM, OSAR, cantons)",
     "Always on — no appointment, no waiting, no account needed",
-    "Proactively warns about critical deadlines (e.g. 30-day appeal)",
+    "Proactively warns about the critical 30-day appeal deadline",
     "Free for every refugee in Switzerland",
-], Inches(0.45), Inches(3.45), Inches(4.9),
+], Inches(0.45), Inches(3.8), Inches(4.9),
    text_color=WHITE, dot_color=RED, size=13)
 
 # Right — phone mockup
-px = LW + Inches(1.5)
+px = LW + Inches(1.3)
 py = Inches(0.45)
-pw = Inches(3.5)
+pw = Inches(3.7)
 ph = Inches(6.4)
 
 rect(s2, px, py, pw, ph, RGBColor(0x2a, 0x2a, 0x3e))
 rect(s2, px + Inches(0.14), py + Inches(0.22),
      pw - Inches(0.28), ph - Inches(0.35), DGREY)
 
-# App header
 rect(s2, px + Inches(0.14), py + Inches(0.65),
      pw - Inches(0.28), Inches(0.7), RED)
-txt(s2, "Refugee Assistant Switzerland",
+txt(s2, "AmanCH",
     px + Inches(0.22), py + Inches(0.7),
     pw - Inches(0.4), Inches(0.32),
-    size=10, bold=True, color=WHITE, align=PP_ALIGN.CENTER)
+    size=13, bold=True, color=WHITE, align=PP_ALIGN.CENTER)
 txt(s2, "Online · Replies in seconds",
-    px + Inches(0.22), py + Inches(1.0),
+    px + Inches(0.22), py + Inches(1.02),
     pw - Inches(0.4), Inches(0.25),
     size=8, color=BGREY, align=PP_ALIGN.CENTER)
 
-# Chat messages
 chats = [
     ("user", "What is Permit F?"),
     ("bot",  "Permit F = provisionally admitted.\nYou may work with cantonal authorisation."),
     ("user", "هل يمكنني العمل؟"),
     ("bot",  "نعم، يمكنك العمل بعد الحصول على إذن."),
     ("user", "Puis-je inscrire mon enfant à l'école?"),
-    ("bot",  "Oui, tous les enfants ont le droit à l'école\nen Suisse, quel que soit le permis."),
+    ("bot",  "Oui, tous les enfants ont droit à l'école\nen Suisse, quel que soit le permis."),
 ]
 cy_c = py + Inches(1.5)
 for role, msg in chats:
     if role == "user":
-        bx2 = px + pw - Inches(2.6)
+        bx2 = px + pw - Inches(2.7)
         bc2, tc2 = RED, WHITE
     else:
         bx2 = px + Inches(0.22)
         bc2, tc2 = RGBColor(0x2a, 0x2a, 0x3e), BGREY
     bh2 = Inches(0.52) if "\n" not in msg else Inches(0.72)
-    rect(s2, bx2, cy_c, Inches(2.25), bh2, bc2)
+    rect(s2, bx2, cy_c, Inches(2.35), bh2, bc2)
     txt(s2, msg, bx2 + Inches(0.08), cy_c + Inches(0.06),
-        Inches(2.1), bh2, size=8, color=tc2)
+        Inches(2.2), bh2, size=8, color=tc2)
     cy_c += bh2 + Inches(0.1)
 
 
 # ═══════════════════════════════════════════════════════════
-# SLIDE 3 — TECH STACK
+# SLIDE 3 — DEMO (Live Product)
 # ═══════════════════════════════════════════════════════════
 s3 = add_slide()
 rect(s3, 0, 0, W, H, WHITE)
@@ -248,72 +240,136 @@ rect(s3, 0, 0, W, Inches(0.08), RED)
 rect(s3, 0, Inches(1.35), W, Inches(0.03), LGREY)
 
 slide_number(s3, 3)
-tag(s3, "TECH STACK", Inches(0.45), Inches(0.38))
-txt(s3, "Architecture & Technology",
-    Inches(2.5), Inches(0.32), Inches(8.0), Inches(0.7),
+tag(s3, "LIVE DEMO", Inches(0.45), Inches(0.38))
+txt(s3, "AmanCH — Live, Deployed, Used Today",
+    Inches(2.6), Inches(0.32), Inches(9.5), Inches(0.7),
     size=26, bold=True, color=NAVY, align=PP_ALIGN.LEFT)
 
-# 4 architecture layer boxes across the full width
-layers = [
-    (BLUE,   "FRONTEND",       "Streamlit",      "Python web interface\nZero JS required"),
-    (GREEN,  "BACKEND",        "Python",         "Query processing\nSession management"),
-    (ORANGE, "KNOWLEDGE BASE", "SQLite + RAG",   "27 Swiss official sources\nKeyword scoring retrieval"),
-    (RED,    "AI ENGINE",      "LLaMA 3.3-70b",  "Via Groq API\nFast, multilingual"),
+# Left column — browser mockup
+bm_x = Inches(0.45)
+bm_y = Inches(1.55)
+bm_w = Inches(7.2)
+bm_h = Inches(5.55)
+
+rect(s3, bm_x, bm_y, bm_w, bm_h, RGBColor(0xE8, 0xE8, 0xE8))
+rect(s3, bm_x, bm_y, bm_w, Inches(0.45), RGBColor(0xD0, 0xD0, 0xD0))
+
+# Browser dots
+for di, dc in enumerate([RGBColor(0xFF, 0x5F, 0x56),
+                          RGBColor(0xFF, 0xBD, 0x2E),
+                          RGBColor(0x27, 0xC9, 0x3F)]):
+    dot = s3.shapes.add_shape(1,
+        bm_x + Inches(0.15) + di * Inches(0.25),
+        bm_y + Inches(0.14), Inches(0.15), Inches(0.15))
+    dot.fill.solid(); dot.fill.fore_color.rgb = dc
+    dot.line.fill.background()
+
+# URL bar
+rect(s3, bm_x + Inches(0.7), bm_y + Inches(0.08),
+     bm_w - Inches(0.85), Inches(0.28), WHITE)
+txt(s3, "refugee-assistant-switzerland-gndat6oqniq737kahzd3p9.streamlit.app",
+    bm_x + Inches(0.75), bm_y + Inches(0.1),
+    bm_w - Inches(0.9), Inches(0.22),
+    size=8, color=MGREY)
+
+# App inside browser
+app_y = bm_y + Inches(0.5)
+app_h = bm_h - Inches(0.55)
+rect(s3, bm_x, app_y, bm_w, app_h, NAVY)
+
+# App header bar
+rect(s3, bm_x, app_y, bm_w, Inches(0.6), RED)
+txt(s3, "AmanCH — Refugee Assistant Switzerland",
+    bm_x + Inches(0.2), app_y + Inches(0.12),
+    bm_w - Inches(0.4), Inches(0.35),
+    size=13, bold=True, color=WHITE, align=PP_ALIGN.CENTER)
+
+# Permit selector strip
+rect(s3, bm_x, app_y + Inches(0.6), bm_w, Inches(0.38),
+     RGBColor(0x22, 0x22, 0x42))
+permits = ["N", "F", "B", "C", "S", "?"]
+px2 = bm_x + Inches(0.3)
+for p in permits:
+    bg = RED if p == "F" else RGBColor(0x33, 0x33, 0x55)
+    rect(s3, px2, app_y + Inches(0.65), Inches(0.55), Inches(0.25), bg)
+    txt(s3, p, px2, app_y + Inches(0.65),
+        Inches(0.55), Inches(0.25),
+        size=9, bold=True, color=WHITE, align=PP_ALIGN.CENTER)
+    px2 += Inches(0.65)
+
+# Chat messages inside app
+demo_chats = [
+    ("user", "Permit F",   "Can I work in Switzerland?"),
+    ("bot",  "AmanCH",     "Yes — with Permit F you can work after receiving\ncantonal authorisation from your migration office.\nSource: sem.admin.ch"),
+    ("user", "Permit F",   "كم يستغرق طلب تصريح العمل؟"),
+    ("bot",  "AmanCH",     "عادةً ما يستغرق القرار من أسبوع إلى ثلاثة أسابيع\nحسب الكانتون. تواصل مع مكتب الهجرة في كانتونك."),
 ]
-bw = Inches(2.9)
-bh = Inches(2.4)
-gap = Inches(0.24)
-total_w = 4 * bw + 3 * gap
-start_x = (W - total_w) / 2
-by2 = Inches(1.6)
+chat_y = app_y + Inches(1.1)
+for role, sender, msg in demo_chats:
+    if role == "user":
+        cbx = bm_x + bm_w - Inches(3.8)
+        cbc = RGBColor(0x8B, 0x1A, 0x1A)
+        ctc = WHITE
+    else:
+        cbx = bm_x + Inches(0.2)
+        cbc = RGBColor(0x2a, 0x2a, 0x4e)
+        ctc = BGREY
+    lines = msg.count("\n") + 1
+    cbh = Inches(0.38 + 0.28 * lines)
+    rect(s3, cbx, chat_y, Inches(3.6), cbh, cbc)
+    txt(s3, msg, cbx + Inches(0.1), chat_y + Inches(0.06),
+        Inches(3.4), cbh, size=9, color=ctc)
+    chat_y += cbh + Inches(0.12)
 
-for i, (col, category, tech, desc) in enumerate(layers):
-    bx2 = start_x + i * (bw + gap)
-    rect(s3, bx2, by2, bw, bh, col)
-    # category label
-    txt(s3, category, bx2, by2 + Inches(0.18), bw, Inches(0.38),
-        size=11, bold=True, color=WHITE, align=PP_ALIGN.CENTER)
-    # divider
-    rect(s3, bx2 + Inches(0.3), by2 + Inches(0.58), bw - Inches(0.6),
-         Inches(0.03), RGBColor(0xFF, 0xFF, 0xFF))
-    # tech name
-    txt(s3, tech, bx2, by2 + Inches(0.72), bw, Inches(0.55),
-        size=18, bold=True, color=WHITE, align=PP_ALIGN.CENTER)
-    # description
-    txt(s3, desc, bx2 + Inches(0.1), by2 + Inches(1.35), bw - Inches(0.2),
-        Inches(0.9), size=11, color=RGBColor(0xFF, 0xFF, 0xFF),
-        align=PP_ALIGN.CENTER)
-    # arrow between boxes
-    if i < len(layers) - 1:
-        txt(s3, "→", bx2 + bw, by2 + bh / 2 - Inches(0.25),
-            gap, Inches(0.5), size=20, bold=True,
-            color=BGREY, align=PP_ALIGN.CENTER)
+# Input bar at bottom of app
+rect(s3, bm_x, app_y + app_h - Inches(0.5), bm_w, Inches(0.5),
+     RGBColor(0x22, 0x22, 0x42))
+rect(s3, bm_x + Inches(0.2), app_y + app_h - Inches(0.42),
+     bm_w - Inches(1.2), Inches(0.32), RGBColor(0x33, 0x33, 0x55))
+txt(s3, "Type your question in any language…",
+    bm_x + Inches(0.3), app_y + app_h - Inches(0.4),
+    bm_w - Inches(1.4), Inches(0.28),
+    size=9, italic=True, color=BGREY)
+rect(s3, bm_x + bm_w - Inches(0.85), app_y + app_h - Inches(0.44),
+     Inches(0.6), Inches(0.34), RED)
+txt(s3, "→", bm_x + bm_w - Inches(0.85), app_y + app_h - Inches(0.44),
+    Inches(0.6), Inches(0.34),
+    size=12, bold=True, color=WHITE, align=PP_ALIGN.CENTER)
 
-# Bottom detail row
-details = [
-    ("Language Detection",  "Automatic — user writes in any language,\nbot responds in the same language"),
-    ("30-Day Alert",        "Bot proactively warns about critical\nSwiss appeal deadlines"),
-    ("Conversation Memory", "Full chat history stored in SQLite,\ncontext preserved across turns"),
-    ("Source Citation",     "Answers grounded in SEM, OSAR, ch.ch\n— not guesses, real Swiss law"),
+# Right column — key stats
+col_x = bm_x + bm_w + Inches(0.35)
+col_w = W - col_x - Inches(0.3)
+
+stats3 = [
+    ("70+",  "Verified Swiss\nofficial sources"),
+    ("15+",  "Languages\nsupported"),
+    ("5",    "Permit types\ncovered"),
+    ("24/7", "Available, free,\nno account needed"),
 ]
-dw = Inches(2.9)
-dy = by2 + bh + Inches(0.35)
-dh = Inches(1.55)
+sy = Inches(1.55)
+for val, lbl in stats3:
+    rect(s3, col_x, sy, col_w, Inches(1.35), RGBColor(0xFF, 0xF5, 0xF5))
+    rect(s3, col_x, sy, col_w, Inches(0.05), RED)
+    txt(s3, val, col_x, sy + Inches(0.1),
+        col_w, Inches(0.6), size=30, bold=True,
+        color=RED, align=PP_ALIGN.CENTER)
+    txt(s3, lbl, col_x, sy + Inches(0.7),
+        col_w, Inches(0.55), size=10,
+        color=MGREY, align=PP_ALIGN.CENTER)
+    sy += Inches(1.45)
 
-for i, (title, desc) in enumerate(details):
-    dx = start_x + i * (dw + gap)
-    rect(s3, dx, dy, dw, dh, LGREY)
-    rect(s3, dx, dy, dw, Inches(0.06), RED)
-    txt(s3, title, dx + Inches(0.15), dy + Inches(0.14),
-        dw - Inches(0.3), Inches(0.38),
-        size=11, bold=True, color=NAVY)
-    txt(s3, desc, dx + Inches(0.15), dy + Inches(0.52),
-        dw - Inches(0.3), Inches(0.9),
-        size=10, color=MGREY)
+# Live URL badge
+rect(s3, col_x, sy + Inches(0.1), col_w, Inches(0.55), NAVY)
+txt(s3, "LIVE NOW",
+    col_x, sy + Inches(0.15), col_w, Inches(0.25),
+    size=9, bold=True, color=RED, align=PP_ALIGN.CENTER)
+txt(s3, "streamlit.app",
+    col_x, sy + Inches(0.35), col_w, Inches(0.25),
+    size=8, color=BGREY, align=PP_ALIGN.CENTER)
 
 
 # ═══════════════════════════════════════════════════════════
-# SLIDE 4 — HOW IT WORKS (RAG) — Architecture Defense bonus
+# SLIDE 4 — FUTURE ROADMAP
 # ═══════════════════════════════════════════════════════════
 s4 = add_slide()
 rect(s4, 0, 0, W, H, WHITE)
@@ -321,83 +377,128 @@ rect(s4, 0, 0, W, Inches(0.08), RED)
 rect(s4, 0, Inches(1.35), W, Inches(0.03), LGREY)
 
 slide_number(s4, 4)
-tag(s4, "HOW IT WORKS", Inches(0.45), Inches(0.38))
-txt(s4, "RAG Pipeline — End to End",
-    Inches(2.5), Inches(0.32), Inches(8.0), Inches(0.7),
-    size=26, bold=True, color=NAVY)
+tag(s4, "FUTURE ROADMAP", Inches(0.45), Inches(0.38))
+txt(s4, "Where AmanCH Goes Next",
+    Inches(2.65), Inches(0.32), Inches(9.0), Inches(0.7),
+    size=26, bold=True, color=NAVY, align=PP_ALIGN.LEFT)
 
-# Flow steps (horizontal)
-flow = [
-    (NAVY,   "1. User Input",     "Any question\nin any language"),
-    (BLUE,   "2. Keyword Search", "Match against\n27 Swiss sources"),
-    (ORANGE, "3. Source Inject",  "Top 3 sources\nadded to prompt"),
-    (GREEN,  "4. LLM Generate",   "LLaMA 3.3-70b\nvia Groq API"),
-    (RED,    "5. Answer",         "Shown in user's\nlanguage"),
+# Timeline spine
+spine_y = Inches(3.1)
+rect(s4, Inches(0.6), spine_y, W - Inches(1.2), Inches(0.06), LGREY)
+
+phases = [
+    {
+        "label": "PHASE 1",
+        "period": "Now — MVP Complete",
+        "color": GREEN,
+        "icon": "✓",
+        "title": "Foundation Built",
+        "items": [
+            "AI chatbot live on Streamlit Cloud",
+            "70+ Swiss official sources loaded",
+            "15+ languages, voice input & TTS",
+            "All 5 permit types supported",
+            "30-day appeal deadline alerts",
+            "Free, no account needed",
+        ],
+        "done": True,
+    },
+    {
+        "label": "PHASE 2",
+        "period": "3–6 Months",
+        "color": BLUE,
+        "icon": "▶",
+        "title": "Scale & Deepen",
+        "items": [
+            "React frontend — mobile-first UI",
+            "Admin dashboard for NGOs",
+            "All 26 cantons with local data",
+            "Document upload & guidance",
+            "Offline mode for low-connectivity",
+            "Lawyer referral integration",
+        ],
+        "done": False,
+    },
+    {
+        "label": "PHASE 3",
+        "period": "6–12 Months",
+        "color": ORANGE,
+        "icon": "★",
+        "title": "Impact at Scale",
+        "items": [
+            "Native iOS & Android app",
+            "NGO & cantonal office partnerships",
+            "Expand to Germany, Austria, France",
+            "Real-time SEM decision tracking",
+            "Anonymous usage analytics for policy",
+            "Grant funding & sustainability model",
+        ],
+        "done": False,
+    },
 ]
-fw = Inches(2.1)
-fh = Inches(1.8)
-fgap = Inches(0.28)
-total_fw = len(flow) * fw + (len(flow) - 1) * fgap
-fx0 = (W - total_fw) / 2
-fy = Inches(1.7)
 
-for i, (col, title, desc) in enumerate(flow):
-    fx = fx0 + i * (fw + fgap)
-    rect(s4, fx, fy, fw, fh, col)
-    txt(s4, title, fx, fy + Inches(0.22), fw, Inches(0.45),
-        size=12, bold=True, color=WHITE, align=PP_ALIGN.CENTER)
-    rect(s4, fx + Inches(0.25), fy + Inches(0.7),
-         fw - Inches(0.5), Inches(0.03), WHITE)
-    txt(s4, desc, fx, fy + Inches(0.9), fw, Inches(0.75),
-        size=11, color=WHITE, align=PP_ALIGN.CENTER)
-    if i < len(flow) - 1:
-        txt(s4, "→", fx + fw, fy + fh / 2 - Inches(0.25),
-            fgap, Inches(0.5), size=18, bold=True,
-            color=BGREY, align=PP_ALIGN.CENTER)
+phase_w = Inches(3.8)
+phase_gap = Inches(0.37)
+total_pw = 3 * phase_w + 2 * phase_gap
+phase_x0 = (W - total_pw) / 2
 
-# Example query banner
-rect(s4, Inches(1.5), fy + fh + Inches(0.4),
-     W - Inches(3.0), Inches(0.75), RGBColor(0xFF, 0xF5, 0xF5))
-txt(s4, 'Example: User asks "Can I work with Permit F?" in Arabic  →  '
-        'Bot finds SEM source  →  Responds in Arabic with correct answer  →  Saves to history',
-    Inches(1.7), fy + fh + Inches(0.53),
-    W - Inches(3.4), Inches(0.45),
-    size=12, color=RED, italic=True, align=PP_ALIGN.CENTER)
+for i, ph in enumerate(phases):
+    px3 = phase_x0 + i * (phase_w + phase_gap)
+    col = ph["color"]
 
-# Design decisions section
-txt(s4, "Key Architecture Decisions",
-    Inches(0.5), fy + fh + Inches(1.5), W - Inches(1.0), Inches(0.45),
-    size=16, bold=True, color=NAVY)
+    # Dot on spine
+    dot_cx = px3 + phase_w / 2 - Inches(0.18)
+    dot = s4.shapes.add_shape(1, dot_cx, spine_y - Inches(0.15),
+                               Inches(0.36), Inches(0.36))
+    dot.fill.solid(); dot.fill.fore_color.rgb = col
+    dot.line.fill.background()
 
-decisions = [
-    ("Why keyword search, not vectors?",
-     "Swiss asylum domain is structured & predictable. Keyword scoring is faster,\n"
-     "cheaper, and accurate enough for this domain — no GPU needed."),
-    ("Why Groq + LLaMA 3.3-70b?",
-     "Fast inference, multilingual capability, OpenAI-compatible API.\n"
-     "Free tier covers MVP usage — easy to swap for another model later."),
-    ("Why SQLite?",
-     "Zero-config, serverless, perfect for single-user Streamlit deployment.\n"
-     "Stores both the knowledge base and conversation history in one file."),
-]
-dw2 = Inches(3.9)
-dy2 = fy + fh + Inches(2.1)
-dh2 = Inches(1.4)
-dx2_0 = Inches(0.5)
+    # Phase label + period above spine
+    txt(s4, ph["label"],
+        px3, spine_y - Inches(0.72), phase_w, Inches(0.3),
+        size=10, bold=True, color=col, align=PP_ALIGN.CENTER)
+    txt(s4, ph["period"],
+        px3, spine_y - Inches(0.42), phase_w, Inches(0.28),
+        size=9, color=MGREY, align=PP_ALIGN.CENTER)
 
-for i, (q, a) in enumerate(decisions):
-    dx2 = dx2_0 + i * (dw2 + Inches(0.25))
-    rect(s4, dx2, dy2, dw2, dh2, LGREY)
-    rect(s4, dx2, dy2, dw2, Inches(0.06), RED)
-    txt(s4, q, dx2 + Inches(0.15), dy2 + Inches(0.14),
-        dw2 - Inches(0.3), Inches(0.38),
-        size=11, bold=True, color=NAVY)
-    txt(s4, a, dx2 + Inches(0.15), dy2 + Inches(0.52),
-        dw2 - Inches(0.3), Inches(0.82),
-        size=10, color=MGREY)
+    # Card below spine
+    card_y = spine_y + Inches(0.32)
+    card_h = Inches(3.65)
+    rect(s4, px3, card_y, phase_w, card_h, LGREY)
+    rect(s4, px3, card_y, phase_w, Inches(0.07), col)
+
+    # Card header
+    rect(s4, px3, card_y + Inches(0.07), phase_w, Inches(0.62), col)
+    txt(s4, ph["icon"] + "  " + ph["title"],
+        px3 + Inches(0.15), card_y + Inches(0.16),
+        phase_w - Inches(0.3), Inches(0.42),
+        size=13, bold=True, color=WHITE, align=PP_ALIGN.CENTER)
+
+    # Bullet items
+    item_y = card_y + Inches(0.82)
+    for item in ph["items"]:
+        d2 = s4.shapes.add_shape(1,
+            px3 + Inches(0.2), item_y + Inches(0.14),
+            Inches(0.09), Inches(0.09))
+        d2.fill.solid(); d2.fill.fore_color.rgb = col
+        d2.line.fill.background()
+        item_color = MGREY if ph["done"] else NAVY
+        txt(s4, item,
+            px3 + Inches(0.37), item_y,
+            phase_w - Inches(0.5), Inches(0.44),
+            size=11, color=item_color)
+        item_y += Inches(0.46)
+
+# Bottom vision statement
+rect(s4, Inches(0.6), Inches(7.0), W - Inches(1.2), Inches(0.38),
+     RGBColor(0xFF, 0xF5, 0xF5))
+rect(s4, Inches(0.6), Inches(7.0), W - Inches(1.2), Inches(0.04), RED)
+txt(s4, "Vision: Every refugee in Switzerland — and Europe — has a trusted, knowledgeable guide in their own language, in their pocket, for free.",
+    Inches(0.8), Inches(7.04), W - Inches(1.6), Inches(0.32),
+    size=11, italic=True, color=RED, align=PP_ALIGN.CENTER)
 
 
 # ── Save ─────────────────────────────────────────────────
-out = "Refugee_Assistant_PitchDeck.pptx"
+out = "AmanCH_PitchDeck.pptx"
 prs.save(out)
 print(f"Saved: {out}")
