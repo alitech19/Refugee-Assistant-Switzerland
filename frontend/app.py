@@ -139,12 +139,22 @@ st.markdown("""
     -webkit-font-smoothing: antialiased;
 }
 
-/* ── Topbar: red line + white header ─────────── */
+/* ── Topbar: match page background ───────────── */
 [data-testid="stHeader"] {
-    background-color: #ffffff !important;
-    border-bottom: 3px solid #D52B1E !important;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.07) !important;
+    background-color: #F7F6F3 !important;
+    border-bottom: none !important;
+    box-shadow: none !important;
 }
+
+/* ── Reduce default top padding ──────────────── */
+.block-container {
+    padding-top: 2rem !important;
+}
+
+/* ── Hide Streamlit branding ──────────────────── */
+#MainMenu { visibility: hidden; }
+footer { visibility: hidden; }
+[data-testid="stToolbar"] { display: none; }
 
 /* ── Sidebar ──────────────────────────────────── */
 [data-testid="stSidebar"] {
@@ -273,20 +283,20 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 st.markdown("""
-<div style="background:#D52B1E;border-radius:12px;padding:0.75rem 1.25rem;
-            display:inline-flex;align-items:center;gap:0.9rem;margin-bottom:0.5rem;">
-  <div style="background:#ffffff;border-radius:5px;width:38px;height:38px;
+<div style="background:#D52B1E;border-radius:14px;padding:1rem 1.5rem;
+            display:flex;align-items:center;gap:1rem;margin-bottom:0.75rem;">
+  <div style="background:#ffffff;border-radius:8px;width:44px;height:44px;
               display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-    <svg width="22" height="22" viewBox="0 0 22 22">
+    <svg width="24" height="24" viewBox="0 0 22 22">
       <rect x="9" y="1" width="4" height="20" fill="#D52B1E"/>
       <rect x="1" y="9" width="20" height="4" fill="#D52B1E"/>
     </svg>
   </div>
-  <div>
-    <div style="color:#ffffff;font-size:1.45rem;font-weight:700;
-                line-height:1.15;letter-spacing:-0.01em;">AmanCH</div>
-    <div style="color:rgba(255,255,255,0.88);font-size:0.78rem;
-                font-weight:400;margin-top:2px;letter-spacing:0.01em;">
+  <div style="flex:1;">
+    <div style="color:#ffffff;font-size:1.7rem;font-weight:800;
+                line-height:1.1;letter-spacing:-0.02em;">AmanCH</div>
+    <div style="color:rgba(255,255,255,0.85);font-size:0.8rem;
+                font-weight:400;margin-top:3px;letter-spacing:0.02em;">
       Refugee Assistant Switzerland
     </div>
   </div>
