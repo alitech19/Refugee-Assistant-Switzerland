@@ -61,6 +61,7 @@ a:hover { text-decoration: underline; color: var(--gold); }
   text-align: left; font-size: 0.85rem; font-weight: 600;
   color: var(--primary); cursor: pointer; padding: 0;
 }
+.news-total { font-size: 0.72rem; color: var(--text-faint); margin-top: 0.25rem; }
 .news-list { margin-top: 0.6rem; display: flex; flex-direction: column; gap: 0.6rem; }
 .news-item { display: flex; flex-direction: column; }
 .news-item a { font-size: 0.8rem; color: var(--text); font-weight: 500; }

@@ -13,10 +13,14 @@ const CANTONS = [
 
 export default function Sidebar({ open, canton, onCantonChange, onNewConversation }) {
   const [news, setNews] = useState([]);
+  const [totalArticles, setTotalArticles] = useState(null);
   const [newsOpen, setNewsOpen] = useState(false);
 
   useEffect(() => {
-    getNews(3).then(d => setNews(d.news || [])).catch(() => {});
+    getNews().then(d => {
+      setNews(d.news || []);
+      setTotalArticles(d.total_articles ?? null);
+    }).catch(() => {});
   }, []);
 
   if (!open) return null;
@@ -41,6 +45,9 @@ export default function Sidebar({ open, canton, onCantonChange, onNewConversatio
         <button className="news-toggle" onClick={() => setNewsOpen(o => !o)}>
           📰 Latest News {newsOpen ? "▲" : "▼"}
         </button>
+        {totalArticles !== null && (
+          <p className="news-total">{totalArticles} articles indexed from SEM & Swiss sources</p>
+        )}
         {newsOpen && (
           <div className="news-list">
             {news.length === 0
