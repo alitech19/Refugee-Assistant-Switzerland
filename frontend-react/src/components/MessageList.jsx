@@ -1,5 +1,12 @@
 import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import { useState } from "react";
+
+const mdComponents = {
+  a: ({ href, children }) => (
+    <a href={href} target="_blank" rel="noreferrer noopener">{children}</a>
+  ),
+};
 
 function Message({ msg, index, onFeedback, onTTS }) {
   const [sourcesOpen, setSourcesOpen] = useState(false);
@@ -9,7 +16,7 @@ function Message({ msg, index, onFeedback, onTTS }) {
     <div className={`message ${isBot ? "bot" : "user"}`}>
       <div className="message-bubble">
         {isBot
-          ? <ReactMarkdown>{msg.content}</ReactMarkdown>
+          ? <ReactMarkdown remarkPlugins={[remarkGfm]} components={mdComponents}>{msg.content}</ReactMarkdown>
           : <p>{msg.content}</p>
         }
       </div>
