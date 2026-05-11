@@ -1,24 +1,37 @@
 # AmanCH — Refugee Assistant Switzerland
 
 > **Free, multilingual AI assistant helping refugees and asylum seekers understand Switzerland's asylum system — in their own language.**
+> *Aman = Peace · CH = Switzerland*
 
-AmanCH answers questions about permits, work rights, asylum procedures, healthcare, family reunification, and integration — grounded in 70+ verified Swiss official sources (SEM, OSAR, cantonal offices), never guessing.
+AmanCH answers questions about permits, work rights, asylum procedures, healthcare, family reunification, and integration — grounded in 70+ verified Swiss official sources (SEM, OSAR, cantonal offices). It never guesses, never invents URLs, and always responds in the user's own language.
 
-**Live app:** [refugee-assistant-switzerland-gndat6oqniq737kahzd3p9.streamlit.app](https://refugee-assistant-switzerland-gndat6oqniq737kahzd3p9.streamlit.app)
+---
+
+## Live App
+
+| Service | URL |
+|---|---|
+| **Web app (React)** | [refugee-assistant-switzerland.vercel.app](https://refugee-assistant-switzerland.vercel.app) |
+| **API (FastAPI)** | [amanch.onrender.com](https://amanch.onrender.com) |
+| **API health check** | [amanch.onrender.com/health](https://amanch.onrender.com/health) |
+
+> **Note:** The API is hosted on Render's free tier. After 15 minutes of inactivity it sleeps — the first request after a sleep takes ~30 seconds to respond. Subsequent requests are fast.
 
 ---
 
 ## Features
 
-- **15+ languages** — Arabic, Tigrinya, Somali, Dari, Ukrainian, Turkish, German, French, Italian, English, and more. Detects the language automatically and always responds in the same language.
-- **Permit-aware answers** — Users select their permit type (N · F · B · C · S · ?) and every answer is tailored specifically to that permit.
-- **Canton-specific information** — Select your canton and get answers about local migration offices, language courses, and integration programmes.
-- **RAG pipeline** — Every answer is grounded in retrieved Swiss official sources. The LLM is never allowed to invent URLs or fabricate legal facts.
-- **Voice input** — Ask questions by speaking in any language (Whisper via Groq).
+- **15+ languages** — Arabic, Tigrinya, Somali, Dari, Ukrainian, Turkish, German, French, Italian, English, and more. Language is detected automatically; the assistant always replies in the same language.
+- **Permit-aware answers** — Select your permit type (N · F · B · C · S · ?) and every answer is tailored to that permit's specific rights and restrictions.
+- **Canton-specific information** — Select your canton to get answers about local migration offices, language courses, and integration programmes.
+- **RAG pipeline** — Every answer is grounded in retrieved Swiss official sources. The LLM is forbidden from inventing URLs or fabricating legal facts.
+- **Clickable source links** — Sources cited in every answer are shown as clickable hyperlinks pointing to official Swiss websites.
+- **Voice input** — Ask questions by speaking in any language (Whisper large-v3 via Groq).
 - **Text-to-speech** — Responses can be read aloud in the user's language (gTTS).
-- **Live news** — Automatically fetches the latest updates from SEM and OSAR RSS feeds daily.
+- **Live news** — Automatically fetches the latest updates from SEM and OSAR RSS feeds daily. Total article count shown in the sidebar.
 - **30-day appeal reminder** — Proactively warns about the critical appeal deadline after a rejected decision.
-- **Conversation history** — Full chat stored locally in SQLite; context preserved across turns.
+- **Conversation history** — Full chat stored in SQLite; context preserved across turns.
+- **Feedback system** — Thumbs up / thumbs down on every reply, stored for quality improvement.
 - **No account needed** — Open the app, ask a question. That is all.
 
 ---
@@ -28,30 +41,46 @@ AmanCH answers questions about permits, work rights, asylum procedures, healthca
 ```
 AmanCH/
 │
-├── frontend/
-│   └── app.py                  # Streamlit UI — the full web interface
+├── frontend-react/                  # React + Vite web app (deployed on Vercel)
+│   ├── src/
+│   │   ├── App.jsx                  # Main app: state management, routing logic
+│   │   ├── App.css                  # Full design system (CSS variables, layout)
+│   │   ├── api.js                   # Axios API client
+│   │   └── components/
+│   │       ├── Header.jsx           # Top bar with Swiss cross logo
+│   │       ├── Sidebar.jsx          # Canton picker, latest news, emergency contacts
+│   │       ├── PermitBar.jsx        # Permit type selector (N/F/B/C/S/?)
+│   │       ├── WelcomeScreen.jsx    # Topic grid + quick question buttons
+│   │       ├── MessageList.jsx      # Chat bubbles, TTS, feedback, sources
+│   │       └── ChatInput.jsx        # Text input + voice recording
+│   ├── .env                         # Production API URL (VITE_API_URL)
+│   └── vite.config.js
 │
 ├── backend/
-│   ├── database.py             # SQLite layer: conversations, sources, news, feedback
-│   ├── embeddings.py           # Sentence-transformer model for semantic search
-│   ├── llm_service.py          # Groq API calls, language detection, URL sanitisation
-│   ├── prompts.py              # System prompt for the AmanCH assistant
-│   ├── resolver.py             # Query parsing: permit detection, topic detection, search query builder
-│   └── state_tracker.py        # Conversation state (current permit across turns)
+│   ├── api.py                       # FastAPI app — all REST endpoints
+│   ├── database.py                  # SQLite layer: conversations, sources, news, feedback
+│   ├── embeddings.py                # Sentence-transformer model for semantic search
+│   ├── llm_service.py               # Groq API calls, language detection, URL sanitisation
+│   ├── prompts.py                   # System prompt for the AmanCH assistant
+│   ├── resolver.py                  # Query parsing: permit/topic detection, search builder
+│   └── state_tracker.py            # Conversation state (permit across turns)
+│
+├── frontend/
+│   └── app.py                       # Streamlit UI (legacy — kept as backup)
 │
 ├── data/
-│   ├── app.db                  # SQLite database (auto-created on first run)
-│   └── official_sources.json   # 70+ curated Swiss official sources (SEM, OSAR, cantons)
+│   ├── app.db                       # SQLite database (auto-created on first run)
+│   └── official_sources.json        # 70+ curated Swiss official sources
 │
 ├── scripts/
-│   └── fetch_news.py           # Fetches SEM + OSAR RSS feeds, saves to auto_news table
+│   └── fetch_news.py                # Fetches SEM + OSAR RSS feeds → auto_news table
 │
-├── .streamlit/
-│   └── config.toml             # Streamlit config (file watcher disabled for performance)
-│
-├── .env                        # Your API key (not committed to git)
+├── run_api.py                       # FastAPI entry point (reads $PORT env var)
+├── render.yaml                      # Render deployment config
+├── Dockerfile                       # Docker build for full stack
+├── docker-compose.yml
 ├── requirements.txt
-└── generate_pitch_deck.py      # Generates the project pitch deck as a .pptx file
+└── generate_pitch_deck.py           # Generates AmanCH_PitchDeck.pptx
 ```
 
 ---
@@ -60,102 +89,36 @@ AmanCH/
 
 | Layer | Technology | Why |
 |---|---|---|
-| **Frontend** | Streamlit | Rapid Python-native web UI, no JavaScript needed |
-| **LLM** | LLaMA 3.3-70b via Groq API | Fast inference, strong multilingual capability, OpenAI-compatible |
+| **Frontend** | React 18 + Vite | Component-based, fast build, ready for React Native mobile app |
+| **Styling** | CSS variables (design tokens) | Consistent theme, easy to extend to mobile |
+| **API client** | Axios | Clean async calls, easy error handling |
+| **Markdown** | react-markdown + remark-gfm | Renders bot replies with clickable links |
+| **Backend** | FastAPI + Uvicorn | Fast async Python REST API, auto-generated docs at `/docs` |
+| **LLM** | LLaMA 3.3-70b via Groq API | Fast inference, strong multilingual capability |
 | **Speech-to-text** | Whisper large-v3 via Groq | 99-language transcription, same API key |
 | **Text-to-speech** | gTTS (Google TTS) | Free, works for all major languages |
 | **Semantic search** | `paraphrase-multilingual-MiniLM-L12-v2` | Compact multilingual embedding model, runs locally |
-| **Database** | SQLite | Zero-config, serverless, stores knowledge base + conversations |
+| **Database** | SQLite | Zero-config, stores knowledge base + conversations + news |
 | **News feed** | feedparser + SEM/OSAR RSS | Keeps answers current without manual updates |
-| **Env management** | python-dotenv | Keeps API key out of source code |
+| **Hosting — frontend** | Vercel | Auto-deploys from `main` branch, global CDN |
+| **Hosting — backend** | Render | Python runtime, free tier, auto-deploy on push |
 
 ---
 
-## Run with Docker
+## API Endpoints
 
-The easiest way to run AmanCH locally — no Python or venv setup needed.
+The FastAPI backend exposes these endpoints (interactive docs at `/docs`):
 
-**Prerequisites:** Install [Docker Desktop](https://www.docker.com/products/docker-desktop/) (free, available for Windows, Mac, and Linux). Make sure it is running before the steps below.
-
-**Option A — Docker Compose (recommended):**
-```bash
-# 1. Create your .env file with your Groq API key
-echo 'GROQ_API_KEY=your_key_here' > .env
-
-# 2. Build and run
-docker compose up
-```
-
-**Option B — Docker directly:**
-```bash
-docker build -t amanch .
-docker run -p 8501:8501 --env GROQ_API_KEY=your_key_here amanch
-```
-
-Open [http://localhost:8501](http://localhost:8501) in your browser.
-
-> **Note:** The `data/` folder is mounted as a volume in Docker Compose, so your conversation history and news cache persist between container restarts.
-
----
-
-## Setup (without Docker)
-
-### 1. Clone the repository
-
-```bash
-git clone https://github.com/your-username/Refugee-Assistant-Switzerland.git
-cd Refugee-Assistant-Switzerland
-```
-
-### 2. Create a virtual environment
-
-```bash
-python -m venv .venv
-
-# Windows
-.venv\Scripts\activate
-
-# macOS / Linux
-source .venv/bin/activate
-```
-
-### 3. Install dependencies
-
-```bash
-pip install -r requirements.txt
-```
-
-### 4. Create your `.env` file
-
-Create a file named `.env` in the project root:
-
-```env
-GROQ_API_KEY=your_groq_api_key_here
-```
-
-To get a free Groq API key:
-1. Go to [console.groq.com](https://console.groq.com)
-2. Sign up for a free account
-3. Navigate to **API Keys** and create a new key
-4. Paste it into your `.env` file
-
-### 5. Run the app
-
-```bash
-streamlit run frontend/app.py
-```
-
-The app will open automatically in your browser at `http://localhost:8501`.
-
-> On first launch, the embedding model (`paraphrase-multilingual-MiniLM-L12-v2`) is downloaded once (~120 MB) and cached locally. This is a one-time step.
-
----
-
-## Environment Variables
-
-| Variable | Required | Description |
+| Method | Path | Description |
 |---|---|---|
-| `GROQ_API_KEY` | Yes | API key for Groq (LLM + Whisper transcription) |
+| `GET` | `/health` | Health check |
+| `POST` | `/conversation` | Start a new conversation → returns `conversation_id` |
+| `GET` | `/conversation/{id}/messages` | Retrieve message history |
+| `POST` | `/chat` | Send a message → returns AI reply + sources |
+| `GET` | `/news` | Latest news articles + total indexed count |
+| `POST` | `/feedback` | Submit thumbs up/down rating |
+| `POST` | `/transcribe` | Upload audio → returns transcribed text |
+| `POST` | `/tts` | Convert text to speech → returns base64 MP3 |
 
 ---
 
@@ -170,7 +133,7 @@ User question (any language)
         │
         ▼
   Source Search
-  (hybrid keyword + semantic search across 70+ Swiss official sources + live news)
+  (hybrid keyword + semantic search — 70+ Swiss official sources + live news)
         │
         ▼
   LLM Call (LLaMA 3.3-70b via Groq)
@@ -181,10 +144,113 @@ User question (any language)
   (strips any invented URLs — only approved Swiss domains allowed)
         │
         ▼
-  Answer shown in user's language
+  Answer in user's language + clickable source links
 ```
 
 The assistant is explicitly forbidden from inventing URLs, extrapolating beyond sources, or giving personal legal advice. If it does not know, it says so and directs the user to SEM or OSAR.
+
+---
+
+## Local Development
+
+### Prerequisites
+
+- Node.js 18+ and npm
+- Python 3.10+
+- A free [Groq API key](https://console.groq.com)
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/alitech19/Refugee-Assistant-Switzerland.git
+cd Refugee-Assistant-Switzerland
+```
+
+### 2. Backend setup
+
+```bash
+# Create virtual environment
+python -m venv .venv
+
+# Activate — Windows
+.venv\Scripts\activate
+
+# Activate — macOS / Linux
+source .venv/bin/activate
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Create .env file with your Groq API key
+echo GROQ_API_KEY=your_key_here > .env
+
+# Run the FastAPI server
+python run_api.py
+# → http://localhost:8000
+# → Interactive docs: http://localhost:8000/docs
+```
+
+### 3. Frontend setup
+
+```bash
+cd frontend-react
+
+# Install dependencies
+npm install
+
+# Create local env file pointing to local backend
+echo VITE_API_URL=http://localhost:8000 > .env.local
+
+# Start dev server
+npm run dev
+# → http://localhost:5173
+```
+
+> `.env.local` is gitignored and overrides `.env` in local development. The committed `.env` file points to the production Render API URL.
+
+### 4. Run with Docker (alternative)
+
+```bash
+# Create your .env file first
+echo GROQ_API_KEY=your_key_here > .env
+
+# Build and run
+docker compose up
+```
+
+Open [http://localhost:8501](http://localhost:8501) in your browser (Streamlit legacy) or run the React app separately.
+
+---
+
+## Deployment
+
+### Backend — Render
+
+The backend auto-deploys from `main` via `render.yaml`. To set up from scratch:
+
+1. Connect the GitHub repo to Render
+2. Render detects `render.yaml` automatically
+3. Add `GROQ_API_KEY` as an environment variable in the Render dashboard
+4. First deploy takes ~3–5 minutes (embedding model download)
+
+### Frontend — Vercel
+
+The React app auto-deploys from `main` via Vercel. To set up from scratch:
+
+1. Import the GitHub repo in Vercel
+2. Set **Framework Preset** to `Vite`
+3. Set **Root Directory** to `frontend-react`
+4. Add environment variable: `VITE_API_URL = https://amanch.onrender.com`
+5. Deploy — Vercel rebuilds automatically on every push to `main`
+
+---
+
+## Environment Variables
+
+| Variable | Where | Required | Description |
+|---|---|---|---|
+| `GROQ_API_KEY` | Backend `.env` / Render dashboard | Yes | Groq API key for LLM + Whisper |
+| `VITE_API_URL` | `frontend-react/.env` / Vercel dashboard | Yes | URL of the FastAPI backend |
 
 ---
 
@@ -192,66 +258,13 @@ The assistant is explicitly forbidden from inventing URLs, extrapolating beyond 
 
 `data/official_sources.json` contains 70+ manually curated entries covering:
 
-- Swiss Federal sources: SEM (State Secretariat for Migration), OSAR, ch.ch, FIDE, UNHCR
+- Swiss Federal sources: SEM, OSAR, ch.ch, FIDE, UNHCR
 - All 26 cantonal migration offices with direct URLs
 - Permit-specific pages for N, F, B, C, S permit types
 - Integration programmes and language courses for major cantons
 - Work authorisation, family reunification, healthcare, education, and appeals
 
-Sources are loaded into SQLite on startup. Embeddings are computed lazily and cached in the database — they are only recomputed when source content changes.
-
----
-
-## Scheduled News Fetch
-
-The app fetches SEM and OSAR RSS feeds automatically once per day at startup. To also run it on a schedule independently (e.g. to keep the database fresh even when the app is not running), set up a Windows Task Scheduler job:
-
-**Option A — Task Scheduler (GUI):**
-1. Open **Task Scheduler** → Create Basic Task
-2. Name: `AmanCH News Fetch`
-3. Trigger: Daily at 07:00
-4. Action: Start a program
-   - Program: `.venv\Scripts\python.exe`
-   - Arguments: `scripts\fetch_news.py`
-   - Start in: `C:\path\to\Refugee-Assistant-Switzerland`
-5. Finish → Enable
-
-**Option B — Command Prompt (Administrator):**
-```cmd
-schtasks /create /tn "AmanCHNews" ^
-  /tr "\"C:\path\to\.venv\Scripts\python.exe\" \"C:\path\to\scripts\fetch_news.py\"" ^
-  /sc daily /st 07:00 /f
-```
-
----
-
-## Key Architecture Decisions
-
-**Why keyword + semantic hybrid search, not pure vectors?**
-Swiss asylum law is structured and domain-specific. A hybrid approach (keyword scoring for exact permit/canton matches + semantic embeddings for cross-language queries) gives better precision than either alone, while running entirely on CPU with a compact 120 MB model.
-
-**Why Groq + LLaMA 3.3-70b?**
-Fast inference (token/s far above OpenAI on equivalent models), strong multilingual capability, and an OpenAI-compatible API that makes swapping models trivial. The free tier covers normal usage.
-
-**Why SQLite?**
-Zero configuration, no server to manage, and a single file that holds the knowledge base, conversation history, feedback, news, and settings. Straightforward to back up or move.
-
-**Why Streamlit?**
-The entire UI is Python — no JavaScript, no separate frontend build step. This keeps the codebase small and the deployment simple for a single-user or small-group tool.
-
----
-
-## Important Disclaimer
-
-AmanCH provides **guidance only — not legal advice**.
-
-For important decisions (asylum appeals, rejected applications, family reunification, work authorisation), users must always verify with:
-
-- **SEM** — [sem.admin.ch](https://www.sem.admin.ch) — Federal migration authority
-- **OSAR** — [osar.ch](https://www.osar.ch) — Free legal aid for asylum seekers
-- **Their cantonal migration office** — For canton-specific rules and procedures
-
-The 30-day appeal window after a rejected asylum decision is critical. Missing it forfeits the right to appeal.
+Sources are loaded into SQLite on startup. Embeddings are computed lazily and cached — only recomputed when source content changes.
 
 ---
 
@@ -259,7 +272,7 @@ The 30-day appeal window after a rejected asylum decision is critical. Missing i
 
 Arabic · Tigrinya · Amharic · Somali · Dari · Farsi · Pashto · Kurdish · Ukrainian · Turkish · German · French · Italian · Swahili · English · and more
 
-The language is detected automatically from the user's message. No selection required.
+Language is detected automatically from the user's message. No selection required.
 
 ---
 
@@ -275,9 +288,39 @@ The language is detected automatically from the user's message. No selection req
 
 ---
 
+## Important Disclaimer
+
+AmanCH provides **guidance only — not legal advice**.
+
+For important decisions (asylum appeals, rejected applications, family reunification, work authorisation), always verify with:
+
+- **SEM** — [sem.admin.ch](https://www.sem.admin.ch) — Federal migration authority
+- **OSAR** — [osar.ch](https://www.osar.ch) — Free legal aid for asylum seekers
+- **Your cantonal migration office** — For canton-specific rules and procedures
+
+The 30-day appeal window after a rejected asylum decision is critical. Missing it forfeits the right to appeal.
+
+---
+
+## Key Architecture Decisions
+
+**Why React + FastAPI instead of Streamlit?**
+The React + FastAPI architecture separates concerns cleanly, enables a proper REST API consumed by any client, and is the natural foundation for a future React Native iOS/Android app. Streamlit is kept as a legacy backup.
+
+**Why keyword + semantic hybrid search?**
+Swiss asylum law is structured and domain-specific. A hybrid approach (keyword scoring for exact permit/canton matches + semantic embeddings for cross-language queries) gives better precision than either alone, while running entirely on CPU with a compact 120 MB model.
+
+**Why Groq + LLaMA 3.3-70b?**
+Fast inference, strong multilingual capability, and an OpenAI-compatible API that makes swapping models trivial. The free tier covers normal usage.
+
+**Why SQLite?**
+Zero configuration, no server to manage, and a single file holding the knowledge base, conversation history, feedback, news, and settings. Straightforward to back up or move.
+
+---
+
 ## License
 
-This project is open source. See [LICENSE](LICENSE) for details.
+This project is open source under the MIT License. See [LICENSE](LICENSE) for details.
 
 ---
 
