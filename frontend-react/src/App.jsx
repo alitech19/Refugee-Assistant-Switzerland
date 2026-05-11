@@ -36,8 +36,13 @@ export default function App() {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, loading]);
 
+  function closeSidebarOnMobile() {
+    if (window.innerWidth <= 768) setSidebarOpen(false);
+  }
+
   async function handleSend(text) {
     if (!text.trim() || !conversationId || loading) return;
+    closeSidebarOnMobile();
     setMessages(prev => [...prev, { role: "user", content: text, sources: [] }]);
     setLoading(true);
     try {
@@ -91,11 +96,15 @@ export default function App() {
 
   return (
     <div className="app-shell">
+      {sidebarOpen && (
+        <div className="sidebar-backdrop" onClick={() => setSidebarOpen(false)} />
+      )}
       <Sidebar
         open={sidebarOpen}
         canton={canton}
         onCantonChange={setCanton}
         onNewConversation={handleNewConversation}
+        onClose={() => setSidebarOpen(false)}
       />
       <div className={`main-area ${sidebarOpen ? "sidebar-open" : ""}`}>
         <Header onToggleSidebar={() => setSidebarOpen(o => !o)} />

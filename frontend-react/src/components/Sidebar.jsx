@@ -11,7 +11,7 @@ const CANTONS = [
   "Valais (VS)", "Vaud (VD)", "Zug (ZG)", "Zurich (ZH)",
 ];
 
-export default function Sidebar({ open, canton, onCantonChange, onNewConversation }) {
+export default function Sidebar({ open, canton, onCantonChange, onNewConversation, onClose }) {
   const [news, setNews] = useState([]);
   const [totalArticles, setTotalArticles] = useState(null);
   const [newsOpen, setNewsOpen] = useState(false);
@@ -27,6 +27,10 @@ export default function Sidebar({ open, canton, onCantonChange, onNewConversatio
 
   return (
     <aside className="sidebar">
+      <div className="sidebar-close-row">
+        <span className="sidebar-brand">AmanCH</span>
+        <button className="sidebar-close-btn" onClick={onClose} aria-label="Close sidebar">✕</button>
+      </div>
       <div className="sidebar-section">
         <h3 className="sidebar-title">Your Canton</h3>
         <p className="sidebar-hint">Select your canton for local answers:</p>
