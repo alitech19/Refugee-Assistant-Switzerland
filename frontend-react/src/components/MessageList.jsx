@@ -43,7 +43,9 @@ function Message({ msg, index, onFeedback, onTTS }) {
         <div className="sources">
           {msg.sources.map((s, i) => (
             <div key={i} className="source-item">
-              <a href={s.url} target="_blank" rel="noreferrer"><strong>{s.title}</strong></a>
+              <a href={s.url} target="_blank" rel="noreferrer" className="source-link">
+                🔗 {s.title}
+              </a>
               {s.published_at && <span className="source-date"> · {s.published_at}</span>}
             </div>
           ))}
