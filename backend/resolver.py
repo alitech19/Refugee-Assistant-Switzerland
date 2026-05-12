@@ -299,15 +299,9 @@ def _build_search_query(
     if parts:
         return " ".join(parts) + " Switzerland"
 
-    # Fallback: only use raw input if it is mostly Latin script
-    # (avoids sending Arabic/Cyrillic text into an English keyword search)
-    latin_chars = sum(1 for c in user_input if c.isascii() and c.isalpha())
-    total_chars = sum(1 for c in user_input if c.isalpha())
-    if total_chars > 0 and (latin_chars / total_chars) >= 0.7:
-        return user_input.strip()
-
-    # Non-Latin script with no detected topic — return generic Swiss asylum query
-    return "asylum permit rights Switzerland"
+    # Pass raw input for all scripts — the multilingual embedding model handles
+    # Arabic, Cyrillic, Ethiopic etc. directly for semantic search.
+    return user_input.strip()
 
 
 def resolve_user_query(user_input: str, state: dict[str, Any]) -> dict[str, Any]:
