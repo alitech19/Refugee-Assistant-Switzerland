@@ -29,7 +29,8 @@ AmanCH answers questions about permits, work rights, asylum procedures, healthca
 
 ## Features
 
-- **15+ languages** — Arabic, Tigrinya, Somali, Dari, Ukrainian, Turkish, German, French, Italian, English, and more. Language is detected automatically; the assistant always replies in the same language.
+- **Multilingual interface** — Switch the entire UI (menus, buttons, labels) to English, Arabic, Ukrainian, or Turkish via the language selector in the header. Arabic switches the layout to right-to-left (RTL) automatically.
+- **15+ conversation languages** — Arabic, Tigrinya, Somali, Dari, Ukrainian, Turkish, German, French, Italian, English, and more. Language is detected automatically from each message; the assistant always replies in the same language as the user.
 - **Permit-aware answers** — Select your permit type (N · F · B · C · S · ?) and every answer is tailored to that permit's specific rights and restrictions.
 - **Canton-specific information** — Select your canton to get answers about local migration offices, language courses, and integration programmes.
 - **RAG pipeline** — Every answer is grounded in retrieved Swiss official sources. The LLM is forbidden from inventing URLs or fabricating legal facts.
@@ -52,10 +53,11 @@ AmanCH/
 ├── frontend-react/                  # React + Vite web app (deployed on Vercel)
 │   ├── src/
 │   │   ├── App.jsx                  # Main app: state management, routing logic
-│   │   ├── App.css                  # Full design system (CSS variables, layout)
+│   │   ├── App.css                  # Full design system (CSS variables, layout, RTL overrides)
 │   │   ├── api.js                   # Axios API client
+│   │   ├── i18n.js                  # UI translations (EN/AR/UK/TR) + LANGUAGES export
 │   │   └── components/
-│   │       ├── Header.jsx           # Top bar with Swiss cross logo
+│   │       ├── Header.jsx           # Top bar with Swiss cross logo + language selector
 │   │       ├── Sidebar.jsx          # Canton picker, latest news, emergency contacts
 │   │       ├── PermitBar.jsx        # Permit type selector (N/F/B/C/S/?)
 │   │       ├── WelcomeScreen.jsx    # Topic grid + quick question buttons
