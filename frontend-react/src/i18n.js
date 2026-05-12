@@ -152,7 +152,6 @@ const t = {
     helpful: "مفيد",
     notHelpful: "غير مفيد",
   },
-};
 
   uk: {
     // Header
