@@ -7,3 +7,8 @@ __pycache__
 *.pyo
 data/app.db
 .streamlit/secrets.toml
+
+# React build artifacts (not needed in the Python/FastAPI image)
+frontend-react/node_modules
+frontend-react/.vite
+frontend-react/dist
