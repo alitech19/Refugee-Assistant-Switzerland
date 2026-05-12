@@ -14,13 +14,26 @@ def _detect_language(text: str) -> str:
     if total_alpha == 0:
         return "English"
 
-    arabic   = sum(1 for c in text if '؀' <= c <= 'ۿ')
-    cyrillic = sum(1 for c in text if 'Ѐ' <= c <= 'ӿ')
-    ethiopic = sum(1 for c in text if 'ሀ' <= c <= '፿')
+    arabic_script = sum(1 for c in text if '؀' <= c <= 'ۿ')
+    cyrillic      = sum(1 for c in text if 'Ѐ' <= c <= 'ӿ')
+    ethiopic      = sum(1 for c in text if 'ሀ' <= c <= '፿')
 
-    if arabic   / total_alpha > 0.2: return "Arabic"
-    if cyrillic / total_alpha > 0.2: return "Ukrainian"
-    if ethiopic / total_alpha > 0.2: return "Amharic or Tigrinya"
+    if cyrillic / total_alpha > 0.2:
+        return "Ukrainian"
+    if ethiopic / total_alpha > 0.2:
+        return "Amharic or Tigrinya"
+
+    if arabic_script / total_alpha > 0.2:
+        # Distinguish Arabic from Dari/Farsi and Pashto by unique characters
+        # Pashto has letters not found in Arabic or Farsi: ښ ګ ډ ړ ږ ټ ځ څ
+        pashto_chars = set('ښګډړږټځڅ')
+        # Dari/Farsi has letters not found in Arabic: گ پ چ ژ
+        dari_chars   = set('گپچژ')
+        if any(c in pashto_chars for c in text):
+            return "Pashto"
+        if any(c in dari_chars for c in text):
+            return "Dari"
+        return "Arabic"
 
     # Latin script — score by common function words
     words = set(re.findall(r'\b[a-z]+\b', text.lower()))
@@ -145,7 +158,7 @@ def _sanitize_urls(text: str, sources: list[dict[str, Any]]) -> str:
     return text
 
 
-_SOURCE_CONTENT_LIMIT = 400  # characters per source sent to the LLM
+_SOURCE_CONTENT_LIMIT = 1000  # characters per source sent to the LLM
 
 
 def _format_sources(sources: list[dict[str, Any]]) -> str:
@@ -221,7 +234,7 @@ def process_chat_turn(
 
     api_messages = [{"role": "system", "content": system_with_date}]
 
-    for msg in messages[:-1][-6:]:
+    for msg in messages[:-1][-10:]:
         api_messages.append({"role": msg["role"], "content": msg["content"]})
 
     last_content = messages[-1]["content"]
