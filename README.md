@@ -1,5 +1,13 @@
 # AmanCH — Refugee Assistant Switzerland
 
+[![Live App](https://img.shields.io/badge/live%20app-Vercel-brightgreen?logo=vercel)](https://refugee-assistant-switzerland.vercel.app)
+[![API](https://img.shields.io/badge/API-Render-blue?logo=render)](https://amanch.onrender.com/health)
+[![License](https://img.shields.io/badge/license-MIT-yellow)](LICENSE)
+[![Python](https://img.shields.io/badge/python-3.11-blue?logo=python&logoColor=white)](https://www.python.org/)
+[![React](https://img.shields.io/badge/react-18-61DAFB?logo=react&logoColor=black)](https://react.dev/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.100+-009688?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
+[![Powered by Groq](https://img.shields.io/badge/LLM-Groq%20%2F%20LLaMA%203.3-orange)](https://console.groq.com)
+
 > **Free, multilingual AI assistant helping refugees and asylum seekers understand Switzerland's asylum system — in their own language.**
 > *Aman = Peace · CH = Switzerland*
 
