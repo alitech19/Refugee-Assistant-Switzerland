@@ -2,7 +2,6 @@ const t = {
   en: {
     // Header
     subtitle: "Refugee Assistant Switzerland",
-    langToggle: "العربية",
 
     // Sidebar
     yourCanton: "Your Canton",
@@ -80,7 +79,6 @@ const t = {
   ar: {
     // Header
     subtitle: "مساعد اللاجئين في سويسرا",
-    langToggle: "English",
 
     // Sidebar
     yourCanton: "منطقتك (الكانتون)",
@@ -155,5 +153,167 @@ const t = {
     notHelpful: "غير مفيد",
   },
 };
+
+  uk: {
+    // Header
+    subtitle: "Помічник біженців у Швейцарії",
+
+    // Sidebar
+    yourCanton: "Ваш кантон",
+    cantonHint: "Виберіть кантон для місцевих відповідей:",
+    cantonPlaceholder: "— Виберіть ваш кантон —",
+    cantonBadge: (c) => `📍 ${c}`,
+    latestNews: "Останні новини",
+    articlesIndexed: (n) => `${n} статей проіндексовано з SEM та швейцарських джерел`,
+    loadingNews: "Завантаження новин…",
+    emergencyContacts: "Екстрені контакти",
+    emergencyNumbers: "🚨 Поліція: 117 · Швидка допомога: 144 · Надзвичайні: 112",
+    osar: "OSAR — Безкоштовна юридична допомога",
+    sem: "SEM — Орган з питань міграції",
+    redcross: "Швейцарський Червоний Хрест",
+    chch: "ch.ch — Швейцарський портал",
+    newConversation: "+ Почати нову розмову",
+    storedLocally: "🔒 Розмови зберігаються локально через Groq AI.",
+
+    // PermitBar
+    myPermit: "Мій дозвіл:",
+    permits: [
+      { code: "N", label: "Шукач притулку — процедура розглядається" },
+      { code: "F", label: "Тимчасово допущена особа" },
+      { code: "B", label: "Визнаний біженець" },
+      { code: "C", label: "Дозвіл на постійне проживання" },
+      { code: "S", label: "Статус захисту (напр. Україна)" },
+      { code: "?", label: "Я не знаю свій тип дозволу" },
+    ],
+
+    // WelcomeScreen
+    welcomeInfo1: "Чим я можу допомогти: Процедура надання притулку · Дозволи (N, F, B, C, S) · Права на роботу · Мовні курси · Охорона здоров'я · Возз'єднання сімей · Апеляції · Житло",
+    welcomeInfo2: "Мови: Я відповідаю вашою мовою — арабська, тигринья, сомалі, дарі, українська, турецька, німецька, французька, італійська, англійська та інші.",
+    welcomeInfo3label: "Важливо:",
+    welcomeInfo3: " Я надаю лише рекомендації — не юридичну пораду. Для апеляцій або термінових питань зверніться до",
+    welcomeInfo3osar: "OSAR",
+    welcomeInfo3mid: "(безкоштовна юридична допомога) або",
+    welcomeInfo3sem: "SEM",
+    welcomeInfo3end: "безпосередньо.",
+    welcomeHeading: "Що ви хочете дізнатися сьогодні?",
+    welcomeHint: "Натисніть на тему або введіть запитання нижче — я відповідаю вашою мовою.",
+    commonHeading: "Поширені запитання:",
+
+    topics: [
+      { emoji: "🔖", label: "Дозволи",      question: "Які типи дозволів існують у Швейцарії та що дозволяє кожен з них?" },
+      { emoji: "📋", label: "Притулок",      question: "Які кроки швейцарської процедури надання притулку?" },
+      { emoji: "💼", label: "Робота",        question: "Чи можу я працювати у Швейцарії та що мені потрібно зробити?" },
+      { emoji: "🏥", label: "Охорона здоров'я", question: "Як отримати медичну допомогу та медичне страхування у Швейцарії?" },
+      { emoji: "🎓", label: "Інтеграція",   question: "Які мовні курси та програми інтеграції доступні для біженців?" },
+      { emoji: "👨‍👩‍👧", label: "Сім'я",     question: "Як я можу привезти свою сім'ю до Швейцарії?" },
+      { emoji: "⚖️", label: "Апеляції",     question: "Як оскаржити відмову в наданні притулку?" },
+      { emoji: "🏠", label: "Житло",        question: "Яке житло отримують шукачі притулку у Швейцарії?" },
+    ],
+    commonQ: [
+      "Що мені робити, коли я вперше приїжджаю до Швейцарії як біженець?",
+      "Що таке дозвіл F і чи можу я з ним працювати?",
+      "Як оскаржити відмову в наданні притулку?",
+      "Як я можу привезти свою сім'ю до Швейцарії?",
+      "Що таке дозвіл S для українців?",
+      "Які останні оновлення щодо притулку у Швейцарії?",
+    ],
+
+    // ChatInput
+    placeholder: "Запитайте будь-що — притулок, дозволи, робота, охорона здоров'я… (будь-яка мова)",
+    stopRecording: "Зупинити запис",
+    startRecording: "Вимовте своє запитання",
+    micDenied: "Доступ до мікрофона заборонено. Дозвольте доступ для використання голосового введення.",
+
+    // MessageList
+    feedbackRecorded: "Відгук записано",
+    listenBtn: "Слухати",
+    helpful: "Корисно",
+    notHelpful: "Не корисно",
+  },
+
+  tr: {
+    // Header
+    subtitle: "İsviçre Mülteci Asistanı",
+
+    // Sidebar
+    yourCanton: "Kantonunuz",
+    cantonHint: "Yerel yanıtlar için kantonunuzu seçin:",
+    cantonPlaceholder: "— Kantonunuzu seçin —",
+    cantonBadge: (c) => `📍 ${c}`,
+    latestNews: "Son Haberler",
+    articlesIndexed: (n) => `SEM ve İsviçre kaynaklarından ${n} makale dizine eklendi`,
+    loadingNews: "Haberler yükleniyor…",
+    emergencyContacts: "Acil Durum Kişileri",
+    emergencyNumbers: "🚨 Polis: 117 · Ambulans: 144 · Acil: 112",
+    osar: "OSAR — Ücretsiz hukuki yardım",
+    sem: "SEM — Göç makamı",
+    redcross: "İsviçre Kızılhaçı",
+    chch: "ch.ch — İsviçre portalı",
+    newConversation: "+ Yeni konuşma başlat",
+    storedLocally: "🔒 Konuşmalar Groq AI aracılığıyla yerel olarak saklanır.",
+
+    // PermitBar
+    myPermit: "İznim:",
+    permits: [
+      { code: "N", label: "Sığınmacı — prosedür beklemede" },
+      { code: "F", label: "Geçici olarak kabul edilmiş" },
+      { code: "B", label: "Tanınmış mülteci" },
+      { code: "C", label: "Oturma izni" },
+      { code: "S", label: "Koruma statüsü (örn. Ukrayna)" },
+      { code: "?", label: "İzin türümü bilmiyorum" },
+    ],
+
+    // WelcomeScreen
+    welcomeInfo1: "Yardımcı olabileceğim konular: İsviçre iltica prosedürü · İzinler (N, F, B, C, S) · Çalışma hakları · Dil kursları · Sağlık hizmetleri · Aile birleşimi · İtirazlar · Konut",
+    welcomeInfo2: "Diller: Kendi dilinizde yanıt veriyorum — Arapça, Tigrinya, Somali, Dari, Ukraynaca, Türkçe, Almanca, Fransızca, İtalyanca, İngilizce ve daha fazlası.",
+    welcomeInfo3label: "Önemli:",
+    welcomeInfo3: " Yalnızca rehberlik sağlıyorum — hukuki tavsiye değil. İtirazlar veya acil durumlar için",
+    welcomeInfo3osar: "OSAR",
+    welcomeInfo3mid: "(ücretsiz hukuki yardım) veya",
+    welcomeInfo3sem: "SEM",
+    welcomeInfo3end: "ile doğrudan iletişime geçin.",
+    welcomeHeading: "Bugün ne öğrenmek istersiniz?",
+    welcomeHint: "Bir konuya dokunun veya aşağıya sorunuzu yazın — kendi dilinizde cevap veriyorum.",
+    commonHeading: "Sık sorulan sorular:",
+
+    topics: [
+      { emoji: "🔖", label: "İzinler",        question: "İsviçre'de hangi tür izinler var ve her biri ne sağlıyor?" },
+      { emoji: "📋", label: "İltica",          question: "İsviçre iltica prosedürünün adımları nelerdir?" },
+      { emoji: "💼", label: "Çalışma",         question: "İsviçre'de çalışabilir miyim ve ne yapmam gerekiyor?" },
+      { emoji: "🏥", label: "Sağlık",          question: "İsviçre'de sağlık hizmetlerine nasıl erişir ve sağlık sigortası nasıl alırım?" },
+      { emoji: "🎓", label: "Entegrasyon",     question: "Mülteciler için hangi dil kursları ve entegrasyon programları mevcut?" },
+      { emoji: "👨‍👩‍👧", label: "Aile",         question: "Ailemi İsviçre'ye nasıl getirebilirim?" },
+      { emoji: "⚖️", label: "İtiraz",          question: "Reddedilen iltica kararına nasıl itiraz ederim?" },
+      { emoji: "🏠", label: "Konut",           question: "İsviçre'de sığınmacılar hangi konutu alıyor?" },
+    ],
+    commonQ: [
+      "İsviçre'ye mülteci olarak ilk geldiğimde ne yapmalıyım?",
+      "F izni nedir ve onunla çalışabilir miyim?",
+      "Reddedilen iltica kararına nasıl itiraz ederim?",
+      "Ailemi İsviçre'ye nasıl getirebilirim?",
+      "Ukraynalılar için S izni nedir?",
+      "İsviçre'deki en son iltica güncellemeleri nelerdir?",
+    ],
+
+    // ChatInput
+    placeholder: "Her şeyi sorun — iltica, izinler, çalışma, sağlık… (herhangi bir dil)",
+    stopRecording: "Kaydı durdur",
+    startRecording: "Sorunuzu söyleyin",
+    micDenied: "Mikrofon erişimi reddedildi. Sesli giriş kullanmak için lütfen erişime izin verin.",
+
+    // MessageList
+    feedbackRecorded: "Geri bildirim kaydedildi",
+    listenBtn: "Dinle",
+    helpful: "Yararlı",
+    notHelpful: "Yararlı değil",
+  },
+};
+
+export const LANGUAGES = [
+  { code: "en", label: "English" },
+  { code: "ar", label: "العربية" },
+  { code: "uk", label: "Українська" },
+  { code: "tr", label: "Türkçe" },
+];
 
 export default t;

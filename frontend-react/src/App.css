@@ -111,13 +111,18 @@ a:hover { text-decoration: underline; color: var(--gold); }
 .header-name { color: #fff; font-size: 1.4rem; font-weight: 800; line-height: 1.1; letter-spacing: -0.02em; }
 .header-sub  { color: rgba(255,255,255,0.75); font-size: 0.72rem; margin-top: 1px; letter-spacing: 0.02em; }
 .header-langs { font-size: 0.72rem; color: rgba(255,255,255,0.5); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.lang-toggle-btn {
+.lang-select {
   background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25);
-  color: #fff; border-radius: 8px; padding: 0.3rem 0.75rem;
+  color: #fff; border-radius: 8px; padding: 0.3rem 0.6rem;
   font-size: 0.82rem; font-weight: 600; cursor: pointer;
   white-space: nowrap; flex-shrink: 0; transition: background 0.15s;
+  appearance: none; -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='rgba(255,255,255,0.6)'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 0.5rem center;
+  padding-right: 1.6rem;
 }
-.lang-toggle-btn:hover { background: rgba(255,255,255,0.22); }
+.lang-select:focus { outline: none; background-color: rgba(255,255,255,0.2); }
+.lang-select option { background: var(--primary); color: #fff; font-weight: 500; }
 
 /* ── Content ──────────────────────────────────── */
 .content {
