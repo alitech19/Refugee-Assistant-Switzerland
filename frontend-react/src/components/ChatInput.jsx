@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
 
-export default function ChatInput({ onSend, onVoice, disabled }) {
+export default function ChatInput({ onSend, onVoice, disabled, t }) {
   const [text, setText]         = useState("");
   const [recording, setRecording] = useState(false);
   const mediaRef = useRef(null);
@@ -40,7 +40,7 @@ export default function ChatInput({ onSend, onVoice, disabled }) {
       mediaRef.current = recorder;
       setRecording(true);
     } catch {
-      alert("Microphone access denied. Please allow microphone access to use voice input.");
+      alert(t.micDenied);
     }
   }
 
@@ -50,7 +50,7 @@ export default function ChatInput({ onSend, onVoice, disabled }) {
         type="button"
         className={`voice-btn ${recording ? "recording" : ""}`}
         onClick={toggleRecording}
-        title={recording ? "Stop recording" : "Speak your question"}
+        title={recording ? t.stopRecording : t.startRecording}
       >
         {recording ? "⏹" : "🎤"}
       </button>
@@ -59,7 +59,7 @@ export default function ChatInput({ onSend, onVoice, disabled }) {
         value={text}
         onChange={e => setText(e.target.value)}
         onKeyDown={handleKey}
-        placeholder="Ask anything — asylum, permits, work, healthcare… (any language)"
+        placeholder={t.placeholder}
         rows={1}
         disabled={disabled}
       />
