@@ -1,8 +1,10 @@
 import sys
+import os
 sys.stdout.reconfigure(encoding="utf-8", errors="replace")
-sys.path.insert(0, ".")
+# Run from project root: python tests/test_search.py
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from src.database import init_db, seed_sources_from_json, search_sources
+from backend.database import init_db, seed_sources_from_json, search_sources
 
 print("Loading model and seeding sources (first run may take ~15s)...")
 init_db()

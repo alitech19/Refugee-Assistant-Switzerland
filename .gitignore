@@ -147,6 +147,10 @@ __pycache__/
 *.pyc
 data/app.db
 
+# Generated output files (run tools/ scripts to regenerate)
+*.docx
+*.pptx
+
 # Spyder project settings
 .spyderproject
 .spyproject
