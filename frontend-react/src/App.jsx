@@ -6,18 +6,8 @@ import PermitBar from "./components/PermitBar";
 import MessageList from "./components/MessageList";
 import WelcomeScreen from "./components/WelcomeScreen";
 import ChatInput from "./components/ChatInput";
+import translations from "./i18n";
 import "./App.css";
-
-const QUICK_TOPICS = [
-  { emoji: "🔖", label: "Permits",     question: "What types of permits exist in Switzerland and what does each one allow?" },
-  { emoji: "📋", label: "Asylum",      question: "What are the steps of the Swiss asylum procedure?" },
-  { emoji: "💼", label: "Work",        question: "Can I work in Switzerland and what do I need to do?" },
-  { emoji: "🏥", label: "Healthcare",  question: "How do I access healthcare and get health insurance in Switzerland?" },
-  { emoji: "🎓", label: "Integration", question: "What language courses and integration programs are available for refugees?" },
-  { emoji: "👨‍👩‍👧", label: "Family",    question: "How can I bring my family to Switzerland?" },
-  { emoji: "⚖️", label: "Appeals",     question: "How do I appeal a rejected asylum decision?" },
-  { emoji: "🏠", label: "Housing",     question: "What housing do asylum seekers receive in Switzerland?" },
-];
 
 export default function App() {
   const [conversationId, setConversationId] = useState(null);
@@ -26,6 +16,8 @@ export default function App() {
   const [canton, setCanton]                 = useState(null);
   const [loading, setLoading]               = useState(false);
   const [sidebarOpen, setSidebarOpen]       = useState(window.innerWidth > 768);
+  const [uiLang, setUiLang]                 = useState("en");
+  const t = translations[uiLang];
   const bottomRef = useRef(null);
 
   useEffect(() => {
@@ -95,7 +87,7 @@ export default function App() {
   }
 
   return (
-    <div className="app-shell">
+    <div className="app-shell" dir={uiLang === "ar" ? "rtl" : "ltr"}>
       {sidebarOpen && (
         <div className="sidebar-backdrop" onClick={() => setSidebarOpen(false)} />
       )}
@@ -105,19 +97,25 @@ export default function App() {
         onCantonChange={setCanton}
         onNewConversation={handleNewConversation}
         onClose={() => setSidebarOpen(false)}
+        t={t}
       />
       <div className={`main-area ${sidebarOpen ? "sidebar-open" : ""}`}>
-        <Header onToggleSidebar={() => setSidebarOpen(o => !o)} />
+        <Header
+          onToggleSidebar={() => setSidebarOpen(o => !o)}
+          uiLang={uiLang}
+          onToggleLang={() => setUiLang(l => l === "en" ? "ar" : "en")}
+          t={t}
+        />
         <div className="content">
-          <PermitBar selected={permit} onSelect={setPermit} />
+          <PermitBar selected={permit} onSelect={setPermit} t={t} />
           <div className="chat-area">
             {messages.length === 0
-              ? <WelcomeScreen topics={QUICK_TOPICS} onSelect={handleSend} />
-              : <MessageList messages={messages} loading={loading} onFeedback={handleFeedback} onTTS={handleTTS} />
+              ? <WelcomeScreen topics={t.topics} commonQ={t.commonQ} onSelect={handleSend} t={t} />
+              : <MessageList messages={messages} loading={loading} onFeedback={handleFeedback} onTTS={handleTTS} t={t} />
             }
             <div ref={bottomRef} />
           </div>
-          <ChatInput onSend={handleSend} onVoice={handleVoice} disabled={loading || !conversationId} />
+          <ChatInput onSend={handleSend} onVoice={handleVoice} disabled={loading || !conversationId} t={t} />
         </div>
       </div>
     </div>

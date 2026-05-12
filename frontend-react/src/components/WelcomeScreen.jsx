@@ -1,23 +1,20 @@
-const COMMON_Q = [
-  "What do I do when I first arrive in Switzerland as a refugee?",
-  "What is Permit F and can I work with it?",
-  "How do I appeal a rejected asylum decision?",
-  "How can I bring my family to Switzerland?",
-  "What is Permit S for Ukrainians?",
-  "What are the latest asylum updates in Switzerland?",
-];
-
-export default function WelcomeScreen({ topics, onSelect }) {
+export default function WelcomeScreen({ topics, commonQ, onSelect, t }) {
   return (
     <div className="welcome">
       <div className="welcome-info">
-        <p><strong>What I can help with:</strong> Swiss asylum procedure · Permits (N, F, B, C, S) · Work rights · Language courses · Healthcare · Family reunification · Appeals · Housing</p>
-        <p><strong>Languages:</strong> I reply in your language — Arabic, Tigrinya, Somali, Dari, Ukrainian, Turkish, German, French, Italian, English, and more.</p>
-        <p><strong>Important:</strong> I give guidance only — not legal advice. For appeals or urgent matters, contact <a href="https://www.osar.ch" target="_blank" rel="noreferrer">OSAR</a> (free legal aid) or <a href="https://www.sem.admin.ch" target="_blank" rel="noreferrer">SEM</a> directly.</p>
+        <p><strong>{t.welcomeInfo1.split(':')[0]}:</strong>{t.welcomeInfo1.split(':').slice(1).join(':')}</p>
+        <p><strong>{t.welcomeInfo2.split(':')[0]}:</strong>{t.welcomeInfo2.split(':').slice(1).join(':')}</p>
+        <p>
+          <strong>{t.welcomeInfo3label}</strong>{t.welcomeInfo3}{" "}
+          <a href="https://www.osar.ch" target="_blank" rel="noreferrer">{t.welcomeInfo3osar}</a>{" "}
+          {t.welcomeInfo3mid}{" "}
+          <a href="https://www.sem.admin.ch" target="_blank" rel="noreferrer">{t.welcomeInfo3sem}</a>{" "}
+          {t.welcomeInfo3end}
+        </p>
       </div>
 
-      <h3 className="welcome-heading">What would you like to know today?</h3>
-      <p className="welcome-hint">Tap a topic or type your question below — I answer in your language.</p>
+      <h3 className="welcome-heading">{t.welcomeHeading}</h3>
+      <p className="welcome-hint">{t.welcomeHint}</p>
 
       <div className="topic-grid">
         {topics.map(({ emoji, label, question }) => (
@@ -28,9 +25,9 @@ export default function WelcomeScreen({ topics, onSelect }) {
         ))}
       </div>
 
-      <h4 className="welcome-heading" style={{ marginTop: "1.5rem" }}>Common questions:</h4>
+      <h4 className="welcome-heading" style={{ marginTop: "1.5rem" }}>{t.commonHeading}</h4>
       <div className="common-grid">
-        {COMMON_Q.map((q, i) => (
+        {commonQ.map((q, i) => (
           <button key={i} className="common-btn" onClick={() => onSelect(q)}>
             {q}
           </button>

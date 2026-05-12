@@ -11,7 +11,7 @@ const CANTONS = [
   "Valais (VS)", "Vaud (VD)", "Zug (ZG)", "Zurich (ZH)",
 ];
 
-export default function Sidebar({ open, canton, onCantonChange, onNewConversation, onClose }) {
+export default function Sidebar({ open, canton, onCantonChange, onNewConversation, onClose, t }) {
   const [news, setNews] = useState([]);
   const [totalArticles, setTotalArticles] = useState(null);
   const [newsOpen, setNewsOpen] = useState(false);
@@ -32,30 +32,30 @@ export default function Sidebar({ open, canton, onCantonChange, onNewConversatio
         <button className="sidebar-close-btn" onClick={onClose} aria-label="Close sidebar">✕</button>
       </div>
       <div className="sidebar-section">
-        <h3 className="sidebar-title">Your Canton</h3>
-        <p className="sidebar-hint">Select your canton for local answers:</p>
+        <h3 className="sidebar-title">{t.yourCanton}</h3>
+        <p className="sidebar-hint">{t.cantonHint}</p>
         <select
           className="canton-select"
           value={canton || ""}
           onChange={e => onCantonChange(e.target.value || null)}
         >
-          <option value="">— Select your canton —</option>
+          <option value="">{t.cantonPlaceholder}</option>
           {CANTONS.map(c => <option key={c} value={c}>{c}</option>)}
         </select>
-        {canton && <div className="canton-badge">📍 {canton}</div>}
+        {canton && <div className="canton-badge">{t.cantonBadge(canton)}</div>}
       </div>
 
       <div className="sidebar-section">
         <button className="news-toggle" onClick={() => setNewsOpen(o => !o)}>
-          📰 Latest News {newsOpen ? "▲" : "▼"}
+          📰 {t.latestNews} {newsOpen ? "▲" : "▼"}
         </button>
         {totalArticles !== null && (
-          <p className="news-total">{totalArticles} articles indexed from SEM & Swiss sources</p>
+          <p className="news-total">{t.articlesIndexed(totalArticles)}</p>
         )}
         {newsOpen && (
           <div className="news-list">
             {news.length === 0
-              ? <p className="sidebar-hint">Loading news…</p>
+              ? <p className="sidebar-hint">{t.loadingNews}</p>
               : news.map((item, i) => (
                 <div key={i} className="news-item">
                   <a href={item.url} target="_blank" rel="noreferrer">
@@ -70,23 +70,21 @@ export default function Sidebar({ open, canton, onCantonChange, onNewConversatio
       </div>
 
       <div className="sidebar-section">
-        <h3 className="sidebar-title">Emergency Contacts</h3>
-        <div className="emergency-box">
-          🚨 Police: <strong>117</strong> · Ambulance: <strong>144</strong> · Emergency: <strong>112</strong>
-        </div>
+        <h3 className="sidebar-title">{t.emergencyContacts}</h3>
+        <div className="emergency-box">{t.emergencyNumbers}</div>
         <ul className="emergency-links">
-          <li><a href="https://www.osar.ch" target="_blank" rel="noreferrer">OSAR — Free legal aid</a></li>
-          <li><a href="https://www.sem.admin.ch" target="_blank" rel="noreferrer">SEM — Migration authority</a></li>
-          <li><a href="https://www.redcross.ch" target="_blank" rel="noreferrer">Swiss Red Cross</a></li>
-          <li><a href="https://www.ch.ch/en/" target="_blank" rel="noreferrer">ch.ch — Swiss portal</a></li>
+          <li><a href="https://www.osar.ch" target="_blank" rel="noreferrer">{t.osar}</a></li>
+          <li><a href="https://www.sem.admin.ch" target="_blank" rel="noreferrer">{t.sem}</a></li>
+          <li><a href="https://www.redcross.ch" target="_blank" rel="noreferrer">{t.redcross}</a></li>
+          <li><a href="https://www.ch.ch/en/" target="_blank" rel="noreferrer">{t.chch}</a></li>
         </ul>
       </div>
 
       <div className="sidebar-section">
         <button className="new-chat-btn" onClick={onNewConversation}>
-          + Start new conversation
+          {t.newConversation}
         </button>
-        <p className="sidebar-hint">🔒 Conversations stored locally via Groq AI.</p>
+        <p className="sidebar-hint">{t.storedLocally}</p>
       </div>
     </aside>
   );

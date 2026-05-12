@@ -1,18 +1,9 @@
-const PERMITS = [
-  { code: "N", label: "Asylum seeker — procedure pending" },
-  { code: "F", label: "Provisionally admitted" },
-  { code: "B", label: "Recognised refugee" },
-  { code: "C", label: "Settlement permit" },
-  { code: "S", label: "Protection status (e.g. Ukraine)" },
-  { code: "?", label: "I don't know my permit type" },
-];
-
-export default function PermitBar({ selected, onSelect }) {
+export default function PermitBar({ selected, onSelect, t }) {
   return (
     <div className="permit-bar">
-      <span className="permit-label">My permit:</span>
+      <span className="permit-label">{t.myPermit}</span>
       <div className="permit-pills">
-        {PERMITS.map(({ code, label }) => (
+        {t.permits.map(({ code, label }) => (
           <button
             key={code}
             title={label}

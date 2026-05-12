@@ -1,4 +1,4 @@
-export default function Header({ onToggleSidebar }) {
+export default function Header({ onToggleSidebar, onToggleLang, t }) {
   return (
     <header className="header">
       <button className="sidebar-toggle" onClick={onToggleSidebar} aria-label="Toggle sidebar">
@@ -13,12 +13,12 @@ export default function Header({ onToggleSidebar }) {
         </div>
         <div>
           <div className="header-name">AmanCH</div>
-          <div className="header-sub">Refugee Assistant Switzerland</div>
+          <div className="header-sub">{t.subtitle}</div>
         </div>
       </div>
-      <div className="header-langs">
-        Welcome · Willkommen · Bienvenue · أهلاً · Ласкаво
-      </div>
+      <button className="lang-toggle-btn" onClick={onToggleLang} title="Switch language">
+        🌐 {t.langToggle}
+      </button>
     </header>
   );
 }

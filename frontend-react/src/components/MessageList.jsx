@@ -8,7 +8,7 @@ const mdComponents = {
   ),
 };
 
-function Message({ msg, index, onFeedback, onTTS }) {
+function Message({ msg, index, onFeedback, onTTS, t }) {
   const [sourcesOpen, setSourcesOpen] = useState(false);
   const isBot = msg.role === "assistant";
 
@@ -23,24 +23,24 @@ function Message({ msg, index, onFeedback, onTTS }) {
 
       {isBot && (
         <div className="message-actions">
-          <button className="action-btn" onClick={() => onTTS(msg.content, msg.detectedLang || "English")} title="Listen">
+          <button className="action-btn" onClick={() => onTTS(msg.content, msg.detectedLang || "English")} title={t.listenBtn}>
             🔊
           </button>
 
           {msg.sources?.length > 0 && (
             <button className="action-btn" onClick={() => setSourcesOpen(o => !o)}>
-              📎 Sources {sourcesOpen ? "▲" : "▼"}
+              📎 {t.sources} {sourcesOpen ? "▲" : "▼"}
             </button>
           )}
 
           {msg.rated ? (
             <span className="feedback-recorded">
-              {msg.rated === 1 ? "👍" : "👎"} Feedback recorded
+              {msg.rated === 1 ? "👍" : "👎"} {t.feedbackRecorded}
             </span>
           ) : (
             <>
-              <button className="action-btn" onClick={() => onFeedback(index, 1)} title="Helpful">👍</button>
-              <button className="action-btn" onClick={() => onFeedback(index, -1)} title="Not helpful">👎</button>
+              <button className="action-btn" onClick={() => onFeedback(index, 1)} title={t.helpful}>👍</button>
+              <button className="action-btn" onClick={() => onFeedback(index, -1)} title={t.notHelpful}>👎</button>
             </>
           )}
         </div>
@@ -62,11 +62,11 @@ function Message({ msg, index, onFeedback, onTTS }) {
   );
 }
 
-export default function MessageList({ messages, loading, onFeedback, onTTS }) {
+export default function MessageList({ messages, loading, onFeedback, onTTS, t }) {
   return (
     <div className="message-list">
       {messages.map((msg, i) => (
-        <Message key={i} msg={msg} index={i} onFeedback={onFeedback} onTTS={onTTS} />
+        <Message key={i} msg={msg} index={i} onFeedback={onFeedback} onTTS={onTTS} t={t} />
       ))}
       {loading && (
         <div className="message bot">
