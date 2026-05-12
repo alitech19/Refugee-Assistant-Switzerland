@@ -65,9 +65,6 @@ AmanCH/
 │   ├── resolver.py                  # Query parsing: permit/topic detection, search builder
 │   └── state_tracker.py            # Conversation state (permit across turns)
 │
-├── frontend/
-│   └── app.py                       # Streamlit UI (legacy — kept as backup)
-│
 ├── data/
 │   ├── app.db                       # SQLite database (auto-created on first run)
 │   └── official_sources.json        # 70+ curated Swiss official sources
@@ -75,12 +72,17 @@ AmanCH/
 ├── scripts/
 │   └── fetch_news.py                # Fetches SEM + OSAR RSS feeds → auto_news table
 │
+├── tests/
+│   └── test_search.py               # RAG search quality tests
+├── tools/
+│   ├── generate_pitch_deck.py       # Generates AmanCH_PitchDeck.pptx
+│   └── generate_project_brief.py    # Generates AmanCH_ProjectBrief.docx
+│
 ├── run_api.py                       # FastAPI entry point (reads $PORT env var)
 ├── render.yaml                      # Render deployment config
-├── Dockerfile                       # Docker build for full stack
-├── docker-compose.yml
-├── requirements.txt
-└── generate_pitch_deck.py           # Generates AmanCH_PitchDeck.pptx
+├── Dockerfile                       # FastAPI Docker image
+├── docker-compose.yml               # Runs api (port 8000) + frontend (port 80)
+└── requirements.txt
 ```
 
 ---
@@ -218,7 +220,7 @@ echo GROQ_API_KEY=your_key_here > .env
 docker compose up
 ```
 
-Open [http://localhost:8501](http://localhost:8501) in your browser (Streamlit legacy) or run the React app separately.
+Open [http://localhost:80](http://localhost:80) for the React app and [http://localhost:8000/docs](http://localhost:8000/docs) for the API.
 
 ---
 
@@ -304,8 +306,8 @@ The 30-day appeal window after a rejected asylum decision is critical. Missing i
 
 ## Key Architecture Decisions
 
-**Why React + FastAPI instead of Streamlit?**
-The React + FastAPI architecture separates concerns cleanly, enables a proper REST API consumed by any client, and is the natural foundation for a future React Native iOS/Android app. Streamlit is kept as a legacy backup.
+**Why React + FastAPI?**
+The React + FastAPI architecture separates concerns cleanly, enables a proper REST API consumed by any client, and is the natural foundation for a future React Native iOS/Android app.
 
 **Why keyword + semantic hybrid search?**
 Swiss asylum law is structured and domain-specific. A hybrid approach (keyword scoring for exact permit/canton matches + semantic embeddings for cross-language queries) gives better precision than either alone, while running entirely on CPU with a compact 120 MB model.
