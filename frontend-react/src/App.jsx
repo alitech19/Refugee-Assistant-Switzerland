@@ -103,7 +103,7 @@ export default function App() {
         <Header
           onToggleSidebar={() => setSidebarOpen(o => !o)}
           uiLang={uiLang}
-          onToggleLang={() => setUiLang(l => l === "en" ? "ar" : "en")}
+          onChangeLang={setUiLang}
           t={t}
         />
         <div className="content">

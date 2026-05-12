@@ -1,4 +1,6 @@
-export default function Header({ onToggleSidebar, onToggleLang, t }) {
+import { LANGUAGES } from "../i18n";
+
+export default function Header({ onToggleSidebar, uiLang, onChangeLang, t }) {
   return (
     <header className="header">
       <button className="sidebar-toggle" onClick={onToggleSidebar} aria-label="Toggle sidebar">
@@ -16,9 +18,16 @@ export default function Header({ onToggleSidebar, onToggleLang, t }) {
           <div className="header-sub">{t.subtitle}</div>
         </div>
       </div>
-      <button className="lang-toggle-btn" onClick={onToggleLang} title="Switch language">
-        🌐 {t.langToggle}
-      </button>
+      <select
+        className="lang-select"
+        value={uiLang}
+        onChange={e => onChangeLang(e.target.value)}
+        aria-label="Interface language"
+      >
+        {LANGUAGES.map(({ code, label }) => (
+          <option key={code} value={code}>{label}</option>
+        ))}
+      </select>
     </header>
   );
 }
