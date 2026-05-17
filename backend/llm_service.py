@@ -60,6 +60,33 @@ client = OpenAI(
 MODEL = "llama-3.3-70b-versatile"
 
 
+def translate_to_english(text: str) -> str:
+    """Translate a short query to English for better search matching.
+    Returns the original text unchanged if translation fails or client is unavailable."""
+    if not client:
+        return text
+    try:
+        response = client.chat.completions.create(
+            model=MODEL,
+            messages=[
+                {
+                    "role": "system",
+                    "content": (
+                        "Translate the following text to English. "
+                        "Output ONLY the English translation — no explanation, no quotes."
+                    ),
+                },
+                {"role": "user", "content": text[:500]},
+            ],
+            temperature=0.0,
+            max_tokens=150,
+        )
+        translated = response.choices[0].message.content.strip()
+        return translated if translated else text
+    except Exception:
+        return text
+
+
 def transcribe_audio(audio_file) -> str:
     """Transcribe audio using Groq Whisper. Supports 99 languages."""
     if not client:
@@ -158,7 +185,7 @@ def _sanitize_urls(text: str, sources: list[dict[str, Any]]) -> str:
     return text
 
 
-_SOURCE_CONTENT_LIMIT = 1000  # characters per source sent to the LLM
+_SOURCE_CONTENT_LIMIT = 2500  # characters per source sent to the LLM
 
 
 def _format_sources(sources: list[dict[str, Any]]) -> str:
@@ -189,6 +216,18 @@ def process_chat_turn(
         )
 
     sources_text = _format_sources(sources)
+
+    # If no verified sources were retrieved, refuse to answer from training data.
+    # A wrong answer about Swiss asylum law is worse than no answer.
+    if not sources_text:
+        return (
+            "I don't have a verified official source to answer this accurately right now.\n\n"
+            "Please check directly with:\n"
+            "- **SEM** — [sem.admin.ch](https://www.sem.admin.ch)\n"
+            "- **OSAR** (free legal aid) — [osar.ch](https://www.osar.ch)\n"
+            "- Your **cantonal migration office** for local questions\n\n"
+            "If you rephrase your question or give more detail, I may be able to find a relevant source."
+        )
 
     today = date.today().strftime("%B %d, %Y")
     if permit and permit != "?":

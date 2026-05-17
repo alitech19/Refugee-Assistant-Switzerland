@@ -1,6 +1,15 @@
 import re
 from typing import Any
 
+
+def _is_non_latin(text: str) -> bool:
+    """Return True when most alphabetic characters are non-Latin (Arabic, Cyrillic, etc.)."""
+    alpha = [c for c in text if c.isalpha()]
+    if not alpha:
+        return False
+    latin = sum(1 for c in alpha if "a" <= c.lower() <= "z")
+    return (latin / len(alpha)) < 0.3
+
 # Matches permit letter in many languages:
 # English: "permit N", French: "permis F", German: "Ausweis B / Bewilligung B"
 # Italian: "permesso B", Arabic: "تصريح N", Ukrainian: "дозвіл N"
@@ -299,9 +308,17 @@ def _build_search_query(
     if parts:
         return " ".join(parts) + " Switzerland"
 
-    # Pass raw input for all scripts — the multilingual embedding model handles
-    # Arabic, Cyrillic, Ethiopic etc. directly for semantic search.
-    return user_input.strip()
+    # No permit or topic detected — fall back to the raw input.
+    # If the query is in a non-Latin script (Arabic, Cyrillic, Ethiopic…),
+    # translate it to English so keyword scoring works against the English source content.
+    raw = user_input.strip()
+    if _is_non_latin(raw):
+        try:
+            from backend.llm_service import translate_to_english
+            raw = translate_to_english(raw)
+        except Exception:
+            pass
+    return raw
 
 
 def resolve_user_query(user_input: str, state: dict[str, Any]) -> dict[str, Any]:
