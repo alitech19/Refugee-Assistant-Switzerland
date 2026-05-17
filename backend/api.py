@@ -39,7 +39,12 @@ app = FastAPI(title="AmanCH API", version="1.0.0")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://localhost:5173", "*"],
+    allow_origins=[
+        "http://localhost:3000",
+        "http://localhost:5173",
+        "https://refugee-assistant-switzerland.vercel.app",
+        "https://amanch.onrender.com",
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -183,7 +188,7 @@ def chat(req: ChatRequest):
     sources = (
         []
         if _is_trivial(req.message)
-        else search_sources(resolved["standalone_query"], limit=5, canton=req.canton)
+        else search_sources(resolved["standalone_query"], limit=8, canton=req.canton)
     )
 
     # LLM call
